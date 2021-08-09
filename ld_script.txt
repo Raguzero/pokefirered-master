@@ -414,6 +414,7 @@ SECTIONS {
         src/string_util.o(.rodata);
         src/link.o(.rodata);
         src/rtc.o(.rodata);
+        src/reset_rtc_screen.o(.rodata);
         src/main_menu.o(.rodata);
         src/data.o(.rodata);
         src/battle_bg.o(.rodata);
