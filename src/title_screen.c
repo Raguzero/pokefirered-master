@@ -10,6 +10,7 @@
 #include "load_save.h"
 #include "new_game.h"
 #include "save.h"
+#include "event_data.h"
 #include "main_menu.h"
 #include "clear_save_data_screen.h"
 #include "reset_rtc_screen.h"
@@ -604,8 +605,10 @@ static void SetTitleScreenScene_Run(s16 * data)
             DestroyTask(FindTaskIdByFunc(Task_TitleScreenMain));
             SetMainCallback2(CB2_FadeOutTransitionToSaveClearScreen);
         }
-        else if (JOY_HELD(KEYSTROKE_RESET_RTC) == KEYSTROKE_RESET_RTC) // && CanResetRTC() == TRUE
+        else if (JOY_HELD(KEYSTROKE_RESET_RTC) == KEYSTROKE_RESET_RTC && CanResetRTC() == TRUE)
         {
+            // warning: at this point, this is buggy and
+            // will corrupt save data including the PC Boxes.
             ScheduleHideSlashSprite(data[6]);
             DestroyTask(FindTaskIdByFunc(Task_TitleScreenMain));
             SetMainCallback2(CB2_FadeOutTransitionToResetRtcScreen);

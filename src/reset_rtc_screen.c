@@ -21,6 +21,8 @@
 #include "gpu_regs.h"
 #include "constants/rgb.h"
 
+// WARNING: causes box / save corruption in its current state
+
 struct ResetRtcStruct
 {
     /*0x0*/ u8 dataIndex;
