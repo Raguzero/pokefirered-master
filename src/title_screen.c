@@ -12,6 +12,7 @@
 #include "save.h"
 #include "main_menu.h"
 #include "clear_save_data_screen.h"
+#include "reset_rtc_screen.h"
 #include "berry_fix_program.h"
 #include "decompress.h"
 #include "constants/songs.h"
@@ -55,6 +56,8 @@ static void ScheduleStopScanlineEffect(void);
 static void LoadMainTitleScreenPalsAndResetBgs(void);
 static void CB2_FadeOutTransitionToSaveClearScreen(void);
 static void SpriteCallback_TitleScreenFlameOrLeaf(struct Sprite * sprite);
+static void CB2_GoToResetRtcScreen(void);
+static void CB2_FadeOutTransitionToResetRtcScreen(void);
 static void CB2_FadeOutTransitionToBerryFix(void);
 static void LoadSpriteGfxAndPals(void);
 static void Task_FlameOrLeafSpawner(u8 taskId);
@@ -578,6 +581,7 @@ static void SetTitleScreenScene_FadeIn(s16 * data)
 }
 
 #define KEYSTROKE_DELSAVE (B_BUTTON | SELECT_BUTTON | DPAD_UP)
+#define KEYSTROKE_RESET_RTC (B_BUTTON | SELECT_BUTTON | DPAD_LEFT)
 #define KEYSTROKE_BERRY_FIX (B_BUTTON | SELECT_BUTTON)
 
 static void SetTitleScreenScene_Run(s16 * data)
@@ -600,6 +604,12 @@ static void SetTitleScreenScene_Run(s16 * data)
             DestroyTask(FindTaskIdByFunc(Task_TitleScreenMain));
             SetMainCallback2(CB2_FadeOutTransitionToSaveClearScreen);
         }
+        else if (JOY_HELD(KEYSTROKE_RESET_RTC) == KEYSTROKE_RESET_RTC) // && CanResetRTC() == TRUE
+        {
+            ScheduleHideSlashSprite(data[6]);
+            DestroyTask(FindTaskIdByFunc(Task_TitleScreenMain));
+            SetMainCallback2(CB2_FadeOutTransitionToResetRtcScreen);
+        }
         else if (JOY_HELD(KEYSTROKE_BERRY_FIX) == KEYSTROKE_BERRY_FIX)
         {
             ScheduleHideSlashSprite(data[6]);
@@ -615,6 +625,15 @@ static void SetTitleScreenScene_Run(s16 * data)
             SetTitleScreenScene(data, TITLESCREENSCEEN_RESTART);
         }
         break;
+    }
+}
+
+static void CB2_FadeOutTransitionToResetRtcScreen(void)
+{
+    if (!UpdatePaletteFade())
+    {
+        m4aMPlayAllStop();
+        SetMainCallback2(CB2_InitResetRtcScreen);
     }
 }
 
