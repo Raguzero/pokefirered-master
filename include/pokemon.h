@@ -95,7 +95,7 @@ struct BoxPokemon
     u8 isBadEgg:1;
     u8 hasSpecies:1;
     u8 isEgg:1;
-    u8 unused:5;
+    u8 hpType:5; // previously unused
     u8 otName[OT_NAME_LENGTH];
     u8 markings;
     u16 checksum;
@@ -460,5 +460,6 @@ bool8 CheckBattleTypeGhost(struct Pokemon *mon, u8 bank);
 struct OakSpeechNidoranFStruct *OakSpeechNidoranFSetup(u8 battlePosition, bool8 enable);
 void OakSpeechNidoranFFreeResources(void);
 void *OakSpeechNidoranFGetBuffer(u8 bufferId);
+u8 GetRandomType(void);
 
 #endif // GUARD_POKEMON_H

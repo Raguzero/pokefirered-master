@@ -1669,6 +1669,26 @@ static const struct SpriteTemplate sOakSpeechNidoranFDummyTemplate =
     .callback = SpriteCallbackDummy,
 };
 
+static const u8 gHiddenPowerTypes[NUMBER_OF_MON_TYPES - 2] = {
+    TYPE_FIGHTING,
+    TYPE_FLYING,
+    TYPE_POISON,
+    TYPE_GROUND,
+    TYPE_ROCK,
+    TYPE_BUG,
+    TYPE_GHOST,
+    TYPE_STEEL,
+    TYPE_FIRE,
+    TYPE_WATER,
+    TYPE_GRASS,
+    TYPE_ELECTRIC,
+    TYPE_PSYCHIC,
+    TYPE_ICE,
+    TYPE_DRAGON,
+    TYPE_DARK,
+    TYPE_FAIRY
+};
+
 // code
 void ZeroBoxMonData(struct BoxPokemon *boxMon)
 {
@@ -1727,6 +1747,7 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
     u32 personality;
     u32 value;
     u16 checksum;
+    u8 hiddenPowerType;
 
     ZeroBoxMonData(boxMon);
 
@@ -1736,6 +1757,9 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
         personality = Random32();
 
     SetBoxMonData(boxMon, MON_DATA_PERSONALITY, &personality);
+	
+    hiddenPowerType = GetRandomType();
+    boxMon->hpType = hiddenPowerType;
 
     //Determine original trainer ID
     if (otIdType == OT_ID_RANDOM_NO_SHINY) //Pokemon cannot be shiny
@@ -6254,4 +6278,14 @@ void *OakSpeechNidoranFGetBuffer(u8 bufferId)
             bufferId = 0;
         return sOakSpeechNidoranResources->bufferPtrs[bufferId];
     }
+}
+
+u8 GetRandomType() {
+    u32 random;
+    u8 randomType;
+    random = Random32();
+    random = random % (NUMBER_OF_MON_TYPES - 2);
+    randomType = gHiddenPowerTypes[random];
+
+    return randomType;
 }

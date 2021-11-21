@@ -380,4 +380,7 @@
 #define MOVETUTOR_BLAST_BURN   16
 #define MOVETUTOR_HYDRO_CANNON 17
 
+// NUEVO: Poder de Hidden Power
+#define MOVE_HIDDEN_POWER_DMG 70
+
 #endif  // GUARD_CONSTANTS_MOVES_H
