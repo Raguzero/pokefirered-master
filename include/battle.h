@@ -157,7 +157,7 @@ struct DisableStruct
     /*0x14*/ u8 battlerPreventingEscape;
     /*0x15*/ u8 battlerWithSureHit;
     /*0x16*/ u8 isFirstTurn;
-    /*0x17*/ u8 unk17;
+    /*0x17*/ u8 slowStartTimer;
     /*0x18*/ u8 truantCounter : 1;
     /*0x18*/ u8 truantSwitchInHack : 1; // unused? 
     /*0x18*/ u8 unk18_a_2 : 2;
@@ -225,6 +225,7 @@ struct SpecialStatus
     u8 specialBattlerId;
     u8 field12;
     u8 field13;
+	u8 slowStarted:1;
 };
 
 extern struct SpecialStatus gSpecialStatuses[MAX_BATTLERS_COUNT];

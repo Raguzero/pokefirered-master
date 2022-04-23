@@ -2493,8 +2493,20 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         defense *= 2;
     if (attackerHoldEffect == HOLD_EFFECT_THICK_CLUB && (attacker->species == SPECIES_CUBONE || attacker->species == SPECIES_MAROWAK))
         attack *= 2;
+	if (defender->ability == ABILITY_FUR_COAT)
+        defense *= 2; 
     if (defender->ability == ABILITY_THICK_FAT && (type == TYPE_FIRE || type == TYPE_ICE))
 		gBattleMovePower /= 2;
+    if (defender->ability == ABILITY_ICE_SCALES && IS_TYPE_SPECIAL(gBattleMoves[move]))
+        spAttack /= 2;
+    if (defender->ability == ABILITY_FLUFFY && (type == TYPE_FIRE))
+        gBattleMovePower = (200 * gBattleMovePower) / 100;
+    if (defender->ability == ABILITY_FLUFFY && ((gBattleMoves[move].flags & FLAG_MAKES_CONTACT)))
+       spAttack /= 2, attack /= 2;
+    if (attacker->ability == ABILITY_TOUGH_CLAWS && ((gBattleMoves[move].flags & FLAG_MAKES_CONTACT)))
+		gBattleMovePower = (130 * gBattleMovePower) / 100;
+	if (attacker->ability == ABILITY_SNIPER && gCritMultiplier == 2)
+        gBattleMovePower = (150 * gBattleMovePower) / 100;
     if (attacker->ability == ABILITY_HUSTLE)
         attack = (150 * attack) / 100;
     if (attacker->ability == ABILITY_PLUS && ABILITY_ON_FIELD2(ABILITY_MINUS))
@@ -2503,12 +2515,32 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         spAttack = (150 * spAttack) / 100;
     if (attacker->ability == ABILITY_GUTS && attacker->status1)
         attack = (150 * attack) / 100;
+    if (attacker->ability == ABILITY_TOXIC_BOOST && (attacker->status1 & STATUS1_POISON || attacker->status1 & STATUS1_TOXIC_POISON))
+        attack = (150 * attack) / 100;
+	if (attacker->ability == ABILITY_SLOW_START && gDisableStructs[battlerIdAtk].slowStartTimer <= 4)
+        attack /= 2;
     if (defender->ability == ABILITY_MARVEL_SCALE && defender->status1)
         defense = (150 * defense) / 100;
+	if (defender->ability == ABILITY_DRY_SKIN && (gBattleMoves[gCurrentMove].type == TYPE_FIRE))
+        gBattleMovePower = (125 * gBattleMovePower) / 100;
+	if (defender->ability == ABILITY_PUNK_ROCK && (move == MOVE_SNORE || move == MOVE_OVERDRIVE || move == MOVE_BOOMBURST || move == MOVE_UPROAR || move == MOVE_HYPER_VOICE))
+      defense *= 2, spDefense *= 2;
+	if ((move == MOVE_SNORE || move == MOVE_OVERDRIVE || move == MOVE_BOOMBURST || move == MOVE_UPROAR || move == MOVE_HYPER_VOICE) && attacker->ability == ABILITY_PUNK_ROCK)
+		gBattleMovePower = (130 * gBattleMovePower) / 100;
+	if ((move == MOVE_CRUNCH || move == MOVE_BITE || move == MOVE_POISON_FANG || move == MOVE_HYPER_FANG) && attacker->ability == ABILITY_STRONG_JAW)
+		gBattleMovePower = (150 * gBattleMovePower) / 100;
     if (type == TYPE_ELECTRIC && AbilityBattleEffects(ABILITYEFFECT_FIELD_SPORT, 0, 0, 0xFD, 0))
         gBattleMovePower /= 2;
     if (type == TYPE_FIRE && AbilityBattleEffects(ABILITYEFFECT_FIELD_SPORT, 0, 0, 0xFE, 0))
         gBattleMovePower /= 2;
+    if (type == TYPE_STEEL && attacker->ability == ABILITY_STEELWORKER)
+        gBattleMovePower = (150 * gBattleMovePower) / 100;
+    if ((type == TYPE_STEEL || type == TYPE_ROCK || type == TYPE_GROUND) && attacker->ability == ABILITY_SAND_FORCE && WEATHER_HAS_EFFECT && gBattleWeather & WEATHER_SANDSTORM_ANY)
+        gBattleMovePower = (130 * gBattleMovePower) / 100;
+    if (type == TYPE_ELECTRIC && attacker->ability == ABILITY_TRANSISTOR)
+        gBattleMovePower = (150 * gBattleMovePower) / 100;
+    if (type == TYPE_DRAGON && attacker->ability == ABILITY_DRAGON_MAW)
+        gBattleMovePower = (150 * gBattleMovePower) / 100;
     if (type == TYPE_GRASS && attacker->ability == ABILITY_OVERGROW && attacker->hp <= (attacker->maxHP / 3))
         gBattleMovePower = (150 * gBattleMovePower) / 100;
     if (type == TYPE_FIRE && attacker->ability == ABILITY_BLAZE && attacker->hp <= (attacker->maxHP / 3))
@@ -2610,7 +2642,7 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
             damage /= 2;
 
         // any weather except sun weakens solar beam
-        if (WEATHER_HAS_EFFECT2 && (gBattleWeather & (WEATHER_RAIN_ANY | WEATHER_SANDSTORM_ANY | WEATHER_HAIL)) && gCurrentMove == MOVE_SOLAR_BEAM)
+        if (WEATHER_HAS_EFFECT2 && (gBattleWeather & (WEATHER_RAIN_ANY | WEATHER_SANDSTORM_ANY | WEATHER_HAIL_ANY)) && gCurrentMove == MOVE_SOLAR_BEAM)
             damage /= 2;
     }
 

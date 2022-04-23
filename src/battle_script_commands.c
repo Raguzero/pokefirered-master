@@ -1099,6 +1099,8 @@ static void atk01_accuracycheck(void)
             calc = (calc * 130) / 100; // 1.3 compound eyes boost
         if (WEATHER_HAS_EFFECT && gBattleMons[gBattlerTarget].ability == ABILITY_SAND_VEIL && gBattleWeather & WEATHER_SANDSTORM_ANY)
             calc = (calc * 80) / 100; // 1.2 sand veil loss
+	    if (WEATHER_HAS_EFFECT && gBattleMons[gBattlerTarget].ability == ABILITY_SNOW_CLOAK && gBattleWeather & WEATHER_HAIL_ANY)
+            calc = (calc * 80) / 100; // 1.2 snow cloak loss
         if (gBattleMons[gBattlerAttacker].ability == ABILITY_HUSTLE && IS_TYPE_PHYSICAL(gBattleMoves[move]))
             calc = (calc * 80) / 100; // 1.2 hustle loss
         if (gBattleMons[gBattlerTarget].item == ITEM_ENIGMA_BERRY)
@@ -1201,6 +1203,7 @@ static void atk04_critcalc(void)
         holdEffect = ItemId_GetHoldEffect(item);
     gPotentialItemEffectBattler = gBattlerAttacker;
     critChance  = 2 * ((gBattleMons[gBattlerAttacker].status2 & STATUS2_FOCUS_ENERGY) != 0)
+				+ (gBattleMons[gBattlerAttacker].ability == ABILITY_SUPER_LUCK)
                 + (gBattleMoves[gCurrentMove].effect == EFFECT_HIGH_CRITICAL)
                 + (gBattleMoves[gCurrentMove].effect == EFFECT_SKY_ATTACK)
                 + (gBattleMoves[gCurrentMove].effect == EFFECT_BLAZE_KICK)
@@ -1359,6 +1362,17 @@ static void atk06_typecalc(void)
     }
     if (gMoveResultFlags & MOVE_RESULT_DOESNT_AFFECT_FOE)
         gProtectStructs[gBattlerAttacker].targetNotAffected = 1;
+
+	// Solid Rock
+	if (gMoveResultFlags & MOVE_RESULT_SUPER_EFFECTIVE && (gBattleMons[gBattlerTarget].ability == ABILITY_SOLID_ROCK))
+		{
+            gBattleMoveDamage = gBattleMoveDamage * 15;
+            gBattleMoveDamage = gBattleMoveDamage / 20;
+		}
+	// Tinted Lens
+	if ((gMoveResultFlags & MOVE_RESULT_NOT_VERY_EFFECTIVE) && gBattleMons[gBattlerAttacker].ability == ABILITY_TINTED_LENS)
+        gBattleMoveDamage = gBattleMoveDamage *= 2;
+
     ++gBattlescriptCurrInstr;
 }
 
@@ -1516,6 +1530,19 @@ u8 TypeCalc(u16 move, u8 attacker, u8 defender)
      && (!(flags & MOVE_RESULT_SUPER_EFFECTIVE) || ((flags & (MOVE_RESULT_SUPER_EFFECTIVE | MOVE_RESULT_NOT_VERY_EFFECTIVE)) == (MOVE_RESULT_SUPER_EFFECTIVE | MOVE_RESULT_NOT_VERY_EFFECTIVE)))
      && gBattleMoves[move].power)
         flags |= MOVE_RESULT_MISSED;
+		
+
+	// Solid Rock
+	if (gMoveResultFlags & MOVE_RESULT_SUPER_EFFECTIVE && (gBattleMons[gBattlerTarget].ability == ABILITY_SOLID_ROCK))
+	{
+        gBattleMoveDamage = gBattleMoveDamage * 15;
+        gBattleMoveDamage = gBattleMoveDamage / 20;
+	}
+	
+	// Tinted Lens
+	if ((gMoveResultFlags & MOVE_RESULT_NOT_VERY_EFFECTIVE) && gBattleMons[gBattlerAttacker].ability == ABILITY_TINTED_LENS)
+        gBattleMoveDamage = gBattleMoveDamage *= 2;
+		
     return flags;
 }
 
@@ -2183,17 +2210,21 @@ void SetMoveEffect(bool8 primary, u8 certain)
             }
             if ((IS_BATTLER_OF_TYPE(gEffectBattler, TYPE_POISON) || IS_BATTLER_OF_TYPE(gEffectBattler, TYPE_STEEL))
              && (gHitMarker & HITMARKER_IGNORE_SAFEGUARD)
-             && (primary == TRUE || certain == MOVE_EFFECT_CERTAIN))
+             && (primary == TRUE || certain == MOVE_EFFECT_CERTAIN)
+			 && (gBattleMons[gBattlerAttacker].ability != ABILITY_CORROSION))
             {
                 BattleScriptPush(gBattlescriptCurrInstr + 1);
                 gBattlescriptCurrInstr = BattleScript_PSNPrevention;
                 gBattleCommunication[MULTISTRING_CHOOSER] = 2;
                 return;
             }
+		 if (gBattleMons[gBattlerAttacker].ability != ABILITY_CORROSION)
+		   {
             if (IS_BATTLER_OF_TYPE(gEffectBattler, TYPE_POISON))
                 break;
             if (IS_BATTLER_OF_TYPE(gEffectBattler, TYPE_STEEL))
                 break;
+		   }
             if (gBattleMons[gEffectBattler].status1)
                 break;
             if (gBattleMons[gEffectBattler].ability == ABILITY_IMMUNITY)
@@ -2297,7 +2328,8 @@ void SetMoveEffect(bool8 primary, u8 certain)
             }
             if ((IS_BATTLER_OF_TYPE(gEffectBattler, TYPE_POISON) || IS_BATTLER_OF_TYPE(gEffectBattler, TYPE_STEEL))
              && (gHitMarker & HITMARKER_IGNORE_SAFEGUARD)
-             && (primary == TRUE || certain == MOVE_EFFECT_CERTAIN))
+             && (primary == TRUE || certain == MOVE_EFFECT_CERTAIN)
+			 && (gBattleMons[gBattlerAttacker].ability != ABILITY_CORROSION))
             {
                 BattleScriptPush(gBattlescriptCurrInstr + 1);
                 gBattlescriptCurrInstr = BattleScript_PSNPrevention;
@@ -2306,7 +2338,7 @@ void SetMoveEffect(bool8 primary, u8 certain)
             }
             if (gBattleMons[gEffectBattler].status1)
                 break;
-            if (!IS_BATTLER_OF_TYPE(gEffectBattler, TYPE_POISON) && !IS_BATTLER_OF_TYPE(gEffectBattler, TYPE_STEEL))
+            if ((!IS_BATTLER_OF_TYPE(gEffectBattler, TYPE_POISON) && !IS_BATTLER_OF_TYPE(gEffectBattler, TYPE_STEEL)) || gBattleMons[gBattlerAttacker].ability == ABILITY_CORROSION)
             {
                 if (gBattleMons[gEffectBattler].ability == ABILITY_IMMUNITY)
                     break;
@@ -6936,6 +6968,9 @@ static void atk96_weatherdamage(void)
              && gBattleMons[gBattlerAttacker].type2 != TYPE_STEEL
              && gBattleMons[gBattlerAttacker].type2 != TYPE_GROUND
              && gBattleMons[gBattlerAttacker].ability != ABILITY_SAND_VEIL
+             && gBattleMons[gBattlerAttacker].ability != ABILITY_SAND_RUSH
+			 && gBattleMons[gBattlerAttacker].ability != ABILITY_OVERCOAT
+			 && gBattleMons[gBattlerAttacker].ability != ABILITY_SAND_FORCE
              && !(gStatuses3[gBattlerAttacker] & STATUS3_UNDERGROUND)
              && !(gStatuses3[gBattlerAttacker] & STATUS3_UNDERWATER))
             {
@@ -6948,9 +6983,13 @@ static void atk96_weatherdamage(void)
                 gBattleMoveDamage = 0;
             }
         }
-        if (gBattleWeather & WEATHER_HAIL)
+        if (gBattleWeather & WEATHER_HAIL_ANY)
         {
             if (!IS_BATTLER_OF_TYPE(gBattlerAttacker, TYPE_ICE)
+			 && gBattleMons[gBattlerAttacker].ability != ABILITY_SNOW_CLOAK
+		 	 && gBattleMons[gBattlerAttacker].ability != ABILITY_ICE_BODY
+		 	 && gBattleMons[gBattlerAttacker].ability != ABILITY_SLUSH_RUSH
+			 && gBattleMons[gBattlerAttacker].ability != ABILITY_OVERCOAT
              && !(gStatuses3[gBattlerAttacker] & STATUS3_UNDERGROUND)
              && !(gStatuses3[gBattlerAttacker] & STATUS3_UNDERWATER))
             {
@@ -8245,7 +8284,7 @@ static void atkC8_sethail(void)
     }
     else
     {
-        gBattleWeather = WEATHER_HAIL;
+        gBattleWeather = WEATHER_HAIL_TEMPORARY;
         gBattleCommunication[MULTISTRING_CHOOSER] = 5;
         gWishFutureKnock.weatherDuration = 5;
     }

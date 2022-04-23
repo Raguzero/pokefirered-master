@@ -60,6 +60,7 @@ AI_CBM_CheckIfNegatesType::
 	get_ability AI_TARGET
 	if_equal ABILITY_VOLT_ABSORB, CheckIfVoltAbsorbCancelsElectric
 	if_equal ABILITY_WATER_ABSORB, CheckIfWaterAbsorbCancelsWater
+	if_equal ABILITY_DRY_SKIN, CheckIfWaterAbsorbCancelsWater
 	if_equal ABILITY_FLASH_FIRE, CheckIfFlashFireCancelsFire
 	if_equal ABILITY_WONDER_GUARD, CheckIfWonderGuardCancelsMove
 	if_equal ABILITY_LEVITATE, CheckIfLevitateCancelsGroundMove
@@ -773,6 +774,7 @@ AI_CheckViability:: @ 81DA445
 	if_effect EFFECT_WATER_SPORT, AI_CV_WaterSport
 	if_effect EFFECT_CALM_MIND, AI_CV_SpDefUp
 	if_effect EFFECT_DRAGON_DANCE, AI_CV_DragonDance
+	if_effect EFFECT_SANDSTORM, AI_CV_Sandstorm
 	end
 
 AI_CV_Sleep:: @ 81DA71C
@@ -2390,6 +2392,10 @@ AI_CV_Hail:: @ 81DB707
 	if_equal AI_WEATHER_SUN, AI_CV_Hail2
 	if_equal AI_WEATHER_RAIN, AI_CV_Hail2
 	if_equal AI_WEATHER_SANDSTORM, AI_CV_Hail2
+    get_ability AI_USER
+	if_equal ABILITY_ICE_BODY, AI_CV_Hail2
+	if_equal ABILITY_SNOW_CLOAK, AI_CV_Hail2
+	if_equal ABILITY_SLUSH_RUSH, AI_CV_Hail2
 	goto AI_CV_Hail_End
 
 AI_CV_Hail2:: @ 81DB726
@@ -2517,6 +2523,10 @@ AI_CV_ChangeSelfAbility_AbilitiesToEncourage:: @ 81DB80F
 	.byte ABILITY_PURE_POWER
 	.byte ABILITY_CHLOROPHYLL
 	.byte ABILITY_SHIELD_DUST
+    .byte ABILITY_ICE_BODY
+    .byte ABILITY_SNOW_CLOAK
+    .byte ABILITY_SAND_RUSH
+    .byte ABILITY_SLUSH_RUSH
 	.byte -1
 
 AI_CV_Superpower:: @ 81DB820
@@ -2763,6 +2773,27 @@ AI_CV_DragonDance2:: @ 81DBA66
 
 AI_CV_DragonDance_End:: @ 81DBA6E
 	end
+	
+AI_CV_Sandstorm:
+	if_hp_less_than AI_USER, 40, AI_CV_Sandstorm_ScoreDown1
+	get_weather
+	if_equal AI_WEATHER_SUN, AI_CV_Sandstorm2
+	if_equal AI_WEATHER_RAIN, AI_CV_Sandstorm2
+	if_equal AI_WEATHER_HAIL, AI_CV_Sandstorm2
+    get_ability AI_USER
+	if_equal ABILITY_SAND_VEIL, AI_CV_Sandstorm2
+	if_equal ABILITY_SAND_RUSH, AI_CV_Sandstorm2
+	goto AI_CV_Sandstorm_End
+
+AI_CV_Sandstorm2:
+	score +1
+	goto AI_CV_Sandstorm_End
+
+AI_CV_Sandstorm_ScoreDown1:
+	score -1
+
+AI_CV_Sandstorm_End:
+	end	
 
 AI_TryToFaint:: @ 81DBA6F
 	if_can_faint AI_TryToFaint_TryToEncourageQuickAttack

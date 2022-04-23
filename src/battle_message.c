@@ -433,6 +433,29 @@ static const u8 sText_SpDef2[] = _("SP. DEF");
 static const u8 sText_Accuracy[] = _("accuracy");
 static const u8 sText_Evasiveness[] = _("evasiveness");
 
+static const u8 sText_PkmnsXWhippedUpHailstorm[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX}'s {B_SCR_ACTIVE_ABILITY}\nwhipped up a hailstorm!");
+static const u8 sText_AttackerAquiredAbility[] = _("{B_ATK_NAME_WITH_PREFIX} acquired\n{B_LAST_ABILITY}!");
+static const u8 sText_ImposterTransform[] = _("{B_ATK_NAME_WITH_PREFIX} transformed into\n{B_DEF_NAME_WITH_PREFIX} using IMPOSTER!");
+static const u8 sText_CursedBodyDisabled[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1} was disabled\nby {B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY}!");
+static const u8 sText_DrySkinDmg[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_ATK_ABILITY} caused damage \nfrom the sun's rays!");
+static const u8 sText_FriskActivates[] = _("{B_ATK_NAME_WITH_PREFIX} frisked {B_DEF_NAME_WITH_PREFIX} and\nfound its {B_LAST_ITEM}!");
+static const u8 sText_SpeedRaisedUsing[] = _("{B_DEF_NAME_WITH_PREFIX}'s raised its SPEED\nusing its {B_DEF_ABILITY}!");
+static const u8 sText_SpAttackRaisedUsing[] = _("{B_DEF_NAME_WITH_PREFIX}'s raised its SP.ATTACK\nusing its {B_DEF_ABILITY}!");
+static const u8 sText_Protean[] = _("{B_ATK_NAME_WITH_PREFIX}'s PROTEAN\nmade it the {STRING 0} type!");
+static const u8 sText_SlowStarted[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} can't get it going!");
+static const u8 sText_SlowStartEnds[] = _("{B_SCR_ACTIVE_NAME_WITH_PREFIX} put its act together!");
+static const u8 sText_PerishBody[] = _("Both Pokémon will faint\nin 3 turns!");
+static const s8 sText_PowerHerbActivation[] = _("{B_ATK_NAME_WITH_PREFIX} became fully charged\ndue to its POWER HERB!");
+static const u8 sText_PkmnTrappedByThunderCage[] = _("{B_DEF_NAME_WITH_PREFIX} was trapped\nby THUNDER CAGE!");
+static const u8 sText_drastically[] = _("drastically ");
+static const u8 sText_severely[] = _("severely ");
+static const u8 sText_BufferEnds[] = _("{B_ATK_NAME_WITH_PREFIX}'s {B_BUFF1}\nwore off!");
+static const u8 sText_ASandstormKickedUp[] = _("A sandstorm kicked up!");
+static const u8 sText_AttackerGotOverInfatuation[] =_("{B_ATK_NAME_WITH_PREFIX} got over\nits infatuation!");
+static const u8 sText_TormentedNoMore[] = _("{B_ATK_NAME_WITH_PREFIX} is\ntormented no more!");
+static const u8 sText_CanActFaster[] = _("{B_ATK_NAME_WITH_PREFIX} can act\nfaster, thanks to {B_LAST_ITEM}!");
+static const u8 sText_PkmnPreventsTauntWith[] = _("{B_DEF_NAME_WITH_PREFIX}'s {B_DEF_ABILITY}\nprevents TAUNT!");
+
 const u8 *const gStatNamesTable[] = {
     sText_HP2,
     sText_Attack2,
@@ -887,7 +910,29 @@ const u8 *const gBattleStringsTable[] = {
     [STRINGID_TRAINER1MON1COMEBACK - 12]          = sText_Trainer1RecallPkmn1,
     [STRINGID_TRAINER1WINTEXT - 12]               = sText_Trainer1WinText,
     [STRINGID_TRAINER1MON2COMEBACK - 12]          = sText_Trainer1RecallPkmn2,
-    [STRINGID_TRAINER1MON1AND2COMEBACK - 12]      = sText_Trainer1RecallBoth
+    [STRINGID_TRAINER1MON1AND2COMEBACK - 12]      = sText_Trainer1RecallBoth,
+	[STRINGID_PKMNSXWHIPPEDUPHAILSTORM - 12] = sText_PkmnsXWhippedUpHailstorm,
+	[STRINGID_ATTACKERACQUIREDABILITY - 12] = sText_AttackerAquiredAbility,
+	[STRINGID_IMPOSTERTRANSFORM - 12] = sText_ImposterTransform,
+	[STRINGID_CUSEDBODYDISABLED - 12] = sText_CursedBodyDisabled,
+	[STRINGID_DRYSKIN - 12] = sText_DrySkinDmg,
+    [STRINGID_FRISKACTIVATES - 12] = sText_FriskActivates,
+    [STRINGID_SATKRAISEUSING - 12] = sText_SpAttackRaisedUsing,
+    [STRINGID_SPEEDRAISEUSING - 12] = sText_SpeedRaisedUsing,
+    [STRINGID_PROTEANACTIVATES - 12] = sText_Protean,
+    [STRINGID_SLOWSTARTED - 12] = sText_SlowStarted,
+    [STRINGID_SLOWSTARTENDS - 12] = sText_SlowStartEnds,
+	[STRINGID_PERISHBODY - 12] = sText_PerishBody,
+    [STRINGID_POWERHERB - 12] = sText_PowerHerbActivation,
+    [STRINGID_TRAPPEDBYTHUNDERCAGE - 12] = sText_PkmnTrappedByThunderCage,
+	[STRINGID_DRASTICALLY - 12] = sText_drastically,
+	[STRINGID_SEVERELY - 12] = sText_severely,
+	[STRINGID_BUFFERENDS - 12] = sText_BufferEnds, // TAUNT WORE OFF
+	[STRINGID_ASANDSTORMKICKEDUP - 12] = sText_ASandstormKickedUp,
+    [STRINGID_TORMENTEDNOMORE - 12] = sText_TormentedNoMore,
+    [STRINGID_ATKGOTOVERINFATUATION - 12] = sText_AttackerGotOverInfatuation,
+	[STRINGID_CANACTFASTERTHANKSTO - 12] = sText_CanActFaster,
+	[STRINGID_PKMNPREVENTSTAUNTWITH - 12] = sText_PkmnPreventsTauntWith
 };
 
 const u16 gMissStringIds[] = {

@@ -229,6 +229,28 @@ extern const u8 BattleScript_GhostBallDodge[];
 extern const u8 BattleScript_OldMan_Pokedude_CaughtMessage[];
 extern const u8 BattleScript_SilphScopeUnveiled[];
 extern const u8 BattleScript_BattleTowerTrainerBattleWon[];
+extern const u8 BattleScript_SnowWarningActivates[];
+extern const u8 BattleScript_IceBodyActivates[];
+extern const u8 BattleScript_MummyActivates[];
+extern const u8 BattleScript_ImposterActivates[];
+extern const u8 BattleScript_CursedBodyActivates[];
+extern const u8 BattleScript_DrySkinDmg[];
+extern const u8 BattleScript_WanderingSpiritActivates[];
+extern const u8 BattleScript_FriskActivates[];
+extern const u8 BattleScript_FriskMsg[];
+extern const u8 BattleScript_SturdyNewEffect[];
+extern const u8 BattleScript_MoveStatDrain_PPLoss[];
+extern const u8 BattleScript_MoveStatDrain[];
+extern const u8 BattleScript_Protean[];
+extern const u8 BattleScript_SlowStarted[];
+extern const u8 BattleScript_SlowStartEnds[];
+extern const u8 BattleScript_PerishBodyActivates[];
+extern const u8 BattleScript_BufferEndTurn[]; // TAUNT WORE OFF
+extern const u8 BattleScript_SandSpitActivates[];
+extern const u8 BattleScript_MentalHerbCureRet[];
+extern const u8 BattleScript_MentalHerbCureEnd2[];
+extern const u8 BattleScript_QuickClawActivation[];
+extern const u8 BattleScript_PowderMoveNoEffect[];
 
 extern const u8 *const gBattleScriptsForMoveEffects[];
 extern const u8 *const gBattlescriptsForBallThrow[];
