@@ -308,6 +308,22 @@ static const u8 sItemEffect_LeafStone[6] = {
     [4] = ITEM4_EVO_STONE,
 };
 
+static const u8 gItemEffect_DawnStone[6] = {
+    [4] = ITEM4_EVO_STONE,
+};
+
+static const u8 gItemEffect_DuskStone[6] = {
+    [4] = ITEM4_EVO_STONE,
+};
+
+static const u8 gItemEffect_ShinyStone[6] = {
+    [4] = ITEM4_EVO_STONE,
+};
+
+static const u8 gItemEffect_IceStone[6] = {
+    [4] = ITEM4_EVO_STONE,
+};
+
 static const u8 sItemEffect_CheriBerry[6] = {
     [3] = ITEM3_PARALYSIS,
 };
@@ -350,6 +366,66 @@ static const u8 sItemEffect_SitrusBerry[7] = {
     [4] = ITEM4_HEAL_HP,
     [6] = 30,
 };
+/*
+static const u8 gItemEffect_GHPUp[10] = {
+    [4] = ITEM4_EV_HP,
+    [5] = ITEM5_FRIENDSHIP_ALL,
+    [6] = 252,
+    [7] = FRIENDSHIP_VITAMIN_INCREASE_LOW,
+    [8] = FRIENDSHIP_VITAMIN_INCREASE_MED,
+    [9] = FRIENDSHIP_VITAMIN_INCREASE_HIGH,
+};
+
+static const u8 gItemEffect_GProtein[10] = {
+    [4] = ITEM4_EV_ATK,
+    [5] = ITEM5_FRIENDSHIP_ALL,
+    [6] = 252,
+    [7] = FRIENDSHIP_VITAMIN_INCREASE_LOW,
+    [8] = FRIENDSHIP_VITAMIN_INCREASE_MED,
+    [9] = FRIENDSHIP_VITAMIN_INCREASE_HIGH,
+};
+
+static const u8 gItemEffect_GIron[10] = {
+    [5] = ITEM5_EV_DEF | ITEM5_FRIENDSHIP_ALL,
+    [6] = 252,
+    [7] = FRIENDSHIP_VITAMIN_INCREASE_LOW,
+    [8] = FRIENDSHIP_VITAMIN_INCREASE_MED,
+    [9] = FRIENDSHIP_VITAMIN_INCREASE_HIGH,
+};
+
+static const u8 gItemEffect_GCarbos[10] = {
+    [5] = ITEM5_EV_SPEED | ITEM5_FRIENDSHIP_ALL,
+    [6] = 252,
+    [7] = FRIENDSHIP_VITAMIN_INCREASE_LOW,
+    [8] = FRIENDSHIP_VITAMIN_INCREASE_MED,
+    [9] = FRIENDSHIP_VITAMIN_INCREASE_HIGH,
+};
+
+static const u8 gItemEffect_GCalcium[10] = {
+    [5] = ITEM5_EV_SPATK | ITEM5_FRIENDSHIP_ALL,
+    [6] = 252,
+    [7] = FRIENDSHIP_VITAMIN_INCREASE_LOW,
+    [8] = FRIENDSHIP_VITAMIN_INCREASE_MED,
+    [9] = FRIENDSHIP_VITAMIN_INCREASE_HIGH,
+};
+
+static const u8 gItemEffect_GZinc[10] = {
+    [5] = ITEM5_EV_SPDEF | ITEM5_FRIENDSHIP_ALL,
+    [6] = 252,
+    [7] = FRIENDSHIP_VITAMIN_INCREASE_LOW,
+    [8] = FRIENDSHIP_VITAMIN_INCREASE_MED,
+    [9] = FRIENDSHIP_VITAMIN_INCREASE_HIGH,
+};
+
+static const u8 gItemEffect_SweetHeart[10] = {
+    [6] = ITEM6_FRIENDSHIP,
+    [7] = 255, // amistad que establece el objeto al usarse
+};
+
+static const u8 gItemEffect_SecretPotion[10] = {
+    [6] = ITEM6_IVS,
+    [7] = 31, // IVs que establece el objeto al usarse
+};*/
 
 const u8 *const gItemEffectTable[] =
 {
@@ -406,6 +482,10 @@ const u8 *const gItemEffectTable[] =
     [ITEM_THUNDER_STONE - ITEM_POTION] = sItemEffect_ThunderStone,
     [ITEM_WATER_STONE - ITEM_POTION] = sItemEffect_WaterStone,
     [ITEM_LEAF_STONE - ITEM_POTION] = sItemEffect_LeafStone,
+    [ITEM_DAWN_STONE - ITEM_POTION] = gItemEffect_DawnStone,
+    [ITEM_DUSK_STONE - ITEM_POTION] = gItemEffect_DuskStone,
+    [ITEM_SHINY_STONE - ITEM_POTION] = gItemEffect_ShinyStone,
+    [ITEM_ICE_STONE - ITEM_POTION] = gItemEffect_IceStone,
     [ITEM_CHERI_BERRY - ITEM_POTION] = sItemEffect_CheriBerry,
     [ITEM_CHESTO_BERRY - ITEM_POTION] = sItemEffect_ChestoBerry,
     [ITEM_PECHA_BERRY - ITEM_POTION] = sItemEffect_PechaBerry,
@@ -416,5 +496,14 @@ const u8 *const gItemEffectTable[] =
     [ITEM_PERSIM_BERRY - ITEM_POTION] = sItemEffect_PersimBerry,
     [ITEM_LUM_BERRY - ITEM_POTION] = sItemEffect_LumBerry,
     [ITEM_SITRUS_BERRY - ITEM_POTION] = sItemEffect_SitrusBerry,
+  /*  [ITEM_G_HP_UP - ITEM_POTION] = gItemEffect_GHPUp,
+    [ITEM_G_PROTEIN - ITEM_POTION] = gItemEffect_GProtein,
+    [ITEM_G_IRON - ITEM_POTION] = gItemEffect_GIron,
+    [ITEM_G_CARBOS - ITEM_POTION] = gItemEffect_GCarbos,
+    [ITEM_G_CALCIUM - ITEM_POTION] = gItemEffect_GCalcium,
+    [ITEM_G_ZINC - ITEM_POTION] = gItemEffect_GZinc,
+    [ITEM_GOLDEN_CANDY - ITEM_POTION] = gItemEffect_RareCandy,
+    [ITEM_SWEET_HEART - ITEM_POTION] = gItemEffect_SweetHeart,
+    [ITEM_SECRET_POTION - ITEM_POTION] = gItemEffect_SecretPotion,*/
     [LAST_BERRY_INDEX - ITEM_POTION] = NULL,
 };

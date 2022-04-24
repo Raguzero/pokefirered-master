@@ -418,6 +418,12 @@ void FieldUseFunc_Ether(u8 taskId)
     sub_80A16D0(taskId);
 }
 
+void ItemUseOutOfBattle_AbilityCapsule(u8 taskId)
+{
+    gItemUseCB = ItemUseCB_AbilityCapsule;
+    sub_80A16D0(taskId);
+}
+
 void FieldUseFunc_PpUp(u8 taskId)
 {
     gItemUseCB = ItemUseCB_PPUp;

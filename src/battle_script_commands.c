@@ -4073,7 +4073,7 @@ static void atk49_moveend(void)
             break;
         case ATK49_CHOICE_MOVE: // update choice band move
             if (gHitMarker & HITMARKER_OBEYS
-             && holdEffectAtk == HOLD_EFFECT_CHOICE_BAND
+             && (holdEffectAtk == HOLD_EFFECT_CHOICE_BAND || holdEffectAtk == HOLD_EFFECT_CHOICE_SCARF || holdEffectAtk == HOLD_EFFECT_CHOICE_SPECS)
              && gChosenMove != MOVE_STRUGGLE 
              && (*choicedMoveAtk == 0 || *choicedMoveAtk == 0xFFFF))
             {

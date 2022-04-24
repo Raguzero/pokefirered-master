@@ -3353,6 +3353,8 @@ u8 GetWhoStrikesFirst(u8 battler1, u8 battler2, bool8 ignoreChosenMoves)
         holdEffect = ItemId_GetHoldEffect(gBattleMons[battler1].item);
         holdEffectParam = ItemId_GetHoldEffectParam(gBattleMons[battler1].item);
     }
+	if (gBattleMons[battler1].item == ITEM_CHOICE_SCARF)
+        speedBattler1 *= 1.5;
     // badge boost
     if (!(gBattleTypeFlags & BATTLE_TYPE_LINK)
      && FlagGet(FLAG_BADGE03_GET)
@@ -3380,6 +3382,8 @@ u8 GetWhoStrikesFirst(u8 battler1, u8 battler2, bool8 ignoreChosenMoves)
         holdEffect = ItemId_GetHoldEffect(gBattleMons[battler2].item);
         holdEffectParam = ItemId_GetHoldEffectParam(gBattleMons[battler2].item);
     }
+	if (gBattleMons[battler2].item == ITEM_CHOICE_SCARF)
+        speedBattler2 *= 1.5;
     // badge boost
     if (!(gBattleTypeFlags & BATTLE_TYPE_LINK)
      && FlagGet(FLAG_BADGE03_GET)
