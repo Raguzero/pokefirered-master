@@ -10,7 +10,7 @@ voicegroup301:: @ 113c971
 	voice_directsound 60, 0, DirectSoundWaveData_1138d70, 255, 0, 255, 165
 	voice_directsound 60, 0, DirectSoundWaveData_1138d70, 255, 0, 255, 165
 	voice_directsound 60, 0, DirectSoundWaveData_1138d70, 255, 0, 255, 165
-	voice_square_1 255, 255, 255, 255, 255, 255 		@PLACEHOLDER: Bad sample file "12742a4"
+	voice_square_1 60, 0, 255, 255, 255, 255, 255, 255 		@PLACEHOLDER: Bad sample file "12742a4"
 	voice_directsound 60, 0, DirectSoundWaveData_1138d70, 255, 0, 255, 165
 	voice_directsound 60, 0, DirectSoundWaveData_1138d70, 255, 0, 255, 165
 	voice_directsound 60, 0, DirectSoundWaveData_1138d70, 255, 0, 255, 165
@@ -120,7 +120,7 @@ voicegroup301:: @ 113c971
 	voice_directsound 60, 0, DirectSoundWaveData_113b690, 255, 0, 255, 165
 	voice_directsound 60, 0, DirectSoundWaveData_113b690, 255, 0, 255, 165
 	voice_directsound 60, 0, DirectSoundWaveData_113b690, 255, 0, 255, 165
-	voice_square_1 255, 255, 255, 255, 255, 255 		@PLACEHOLDER: Bad sample file "1276bc4"
+	voice_square_1 60, 0, 255, 255, 255, 255, 255, 255 		@PLACEHOLDER: Bad sample file "1276bc4"
 	voice_directsound 60, 0, DirectSoundWaveData_113b690, 255, 0, 255, 165
 	voice_directsound 60, 0, DirectSoundWaveData_113b690, 255, 0, 255, 165
 	voice_directsound 60, 0, DirectSoundWaveData_113b690, 255, 0, 255, 165

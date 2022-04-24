@@ -70,13 +70,13 @@ voicegroup295:: @ 1134ce8
 	voice_directsound 60, 0, DirectSoundWaveData_1114018, 255, 0, 255, 235
 	voice_directsound 60, 0, DirectSoundWaveData_1114018, 255, 0, 255, 235
 	voice_directsound 60, 0, DirectSoundWaveData_111439c, 255, 0, 255, 235
-	voice_square_1 0, 2, 0, 0, 15, 0
+	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0
 	voice_directsound 60, 0, DirectSoundWaveData_111451c, 255, 0, 255, 245
 	voice_directsound 60, 0, DirectSoundWaveData_11147b0, 255, 0, 255, 245
 	voice_directsound 60, 0, DirectSoundWaveData_11152f4, 255, 0, 255, 245
 	voice_directsound 60, 0, DirectSoundWaveData_11158f4, 255, 0, 255, 245
 	voice_directsound 60, 0, DirectSoundWaveData_111602c, 255, 0, 255, 245
-	voice_square_1 0, 2, 0, 0, 15, 0
+	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0
 	voice_directsound 60, 0, DirectSoundWaveData_1116654, 255, 0, 255, 245
 	voice_directsound 60, 0, DirectSoundWaveData_11166a8, 255, 0, 255, 245
 	voice_directsound 60, 0, DirectSoundWaveData_1116b6c, 255, 235, 0, 204
@@ -86,7 +86,7 @@ voicegroup295:: @ 1134ce8
 	voice_directsound 60, 0, DirectSoundWaveData_1118d84, 255, 0, 255, 245
 	voice_directsound 60, 0, DirectSoundWaveData_1119710, 255, 0, 255, 245
 	voice_directsound 60, 0, DirectSoundWaveData_100aeac, 255, 235, 0, 235
-	voice_square_1 0, 2, 0, 0, 15, 0
+	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0
 	voice_directsound 60, 0, DirectSoundWaveData_111a2b0, 255, 0, 255, 245
 	voice_directsound 60, 0, DirectSoundWaveData_111a804, 255, 250, 0, 249
 	voice_directsound 60, 0, DirectSoundWaveData_100cbb8, 255, 250, 0, 249
@@ -96,7 +96,7 @@ voicegroup295:: @ 1134ce8
 	voice_directsound 60, 0, DirectSoundWaveData_112376c, 255, 0, 255, 245
 	voice_directsound 60, 0, DirectSoundWaveData_1124010, 255, 0, 255, 245
 	voice_directsound 60, 0, DirectSoundWaveData_1124864, 255, 242, 0, 242
-	voice_square_1 0, 2, 0, 0, 15, 0
+	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0
 	voice_directsound 60, 0, DirectSoundWaveData_1125848, 255, 0, 255, 245
 	voice_directsound 60, 0, DirectSoundWaveData_1125d98, 255, 0, 255, 245
 	voice_directsound 60, 0, DirectSoundWaveData_1126694, 255, 0, 255, 245
@@ -106,7 +106,7 @@ voicegroup295:: @ 1134ce8
 	voice_directsound 60, 0, DirectSoundWaveData_11283a0, 255, 0, 255, 245
 	voice_directsound 60, 0, DirectSoundWaveData_1128804, 255, 0, 255, 245
 	voice_directsound 60, 0, DirectSoundWaveData_1128ca4, 255, 0, 255, 245
-	voice_square_1 0, 2, 0, 0, 15, 0
+	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0
 	voice_directsound 60, 0, DirectSoundWaveData_1129404, 255, 0, 255, 245
 	voice_directsound 60, 0, DirectSoundWaveData_112b29c, 255, 0, 255, 245
 	voice_directsound 60, 0, DirectSoundWaveData_112b558, 255, 0, 255, 245
@@ -116,16 +116,16 @@ voicegroup295:: @ 1134ce8
 	voice_directsound 60, 0, DirectSoundWaveData_112d01c, 255, 0, 255, 245
 	voice_directsound 60, 0, DirectSoundWaveData_112d9d8, 255, 242, 0, 242
 	voice_directsound 60, 0, DirectSoundWaveData_112e0ec, 255, 0, 255, 245
-	voice_square_1 0, 2, 0, 0, 15, 0
+	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0
 	voice_directsound 60, 0, DirectSoundWaveData_112e448, 255, 0, 255, 245
 	voice_directsound 60, 0, DirectSoundWaveData_112fa10, 255, 235, 0, 235
 	voice_directsound 60, 0, DirectSoundWaveData_11307fc, 255, 0, 255, 245
 	voice_directsound 60, 0, DirectSoundWaveData_1009b80, 255, 235, 0, 235
 	voice_directsound 60, 0, DirectSoundWaveData_111451c, 8, 0, 0, 0
-	voice_square_1 255, 255, 255, 255, 255, 255 		@PLACEHOLDER: Unkown voice entry type: 51
-	voice_square_1 255, 255, 255, 255, 255, 255 		@PLACEHOLDER: Unkown voice entry type: 51
-	voice_square_1 255, 255, 255, 255, 255, 255 		@PLACEHOLDER: Unkown voice entry type: 51
-	voice_square_1 255, 255, 255, 255, 255, 255 		@PLACEHOLDER: Bad programmable Wave pointer "f110f0e"
-	voice_square_1 255, 255, 255, 255, 255, 255 		@PLACEHOLDER: Unkown voice entry type: 15
-	voice_square_1 255, 255, 255, 255, 255, 255 		@PLACEHOLDER: Unkown voice entry type: 27
-	voice_square_1 255, 255, 255, 255, 255, 255 		@PLACEHOLDER: Unkown voice entry type: 37
+	voice_square_1 60, 0, 255, 255, 255, 255, 255, 255 		@PLACEHOLDER: Unkown voice entry type: 51
+	voice_square_1 60, 0, 255, 255, 255, 255, 255, 255 		@PLACEHOLDER: Unkown voice entry type: 51
+	voice_square_1 60, 0, 255, 255, 255, 255, 255, 255 		@PLACEHOLDER: Unkown voice entry type: 51
+	voice_square_1 60, 0, 255, 255, 255, 255, 255, 255 		@PLACEHOLDER: Bad programmable Wave pointer "f110f0e"
+	voice_square_1 60, 0, 255, 255, 255, 255, 255, 255 		@PLACEHOLDER: Unkown voice entry type: 15
+	voice_square_1 60, 0, 255, 255, 255, 255, 255, 255 		@PLACEHOLDER: Unkown voice entry type: 27
+	voice_square_1 60, 0, 255, 255, 255, 255, 255, 255 		@PLACEHOLDER: Unkown voice entry type: 37

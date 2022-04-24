@@ -112,13 +112,13 @@ voicegroup290:: @ 1134af0
 	voice_directsound 60, 0, DirectSoundWaveData_1114018, 255, 0, 255, 235
 	voice_directsound 60, 0, DirectSoundWaveData_1114018, 255, 0, 255, 235
 	voice_directsound 60, 0, DirectSoundWaveData_111439c, 255, 0, 255, 235
-	voice_square_1 0, 2, 0, 0, 15, 0
+	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0
 	voice_directsound 60, 0, DirectSoundWaveData_111451c, 255, 0, 255, 245
 	voice_directsound 60, 0, DirectSoundWaveData_11147b0, 255, 0, 255, 245
 	voice_directsound 60, 0, DirectSoundWaveData_11152f4, 255, 0, 255, 245
 	voice_directsound 60, 0, DirectSoundWaveData_11158f4, 255, 0, 255, 245
 	voice_directsound 60, 0, DirectSoundWaveData_111602c, 255, 0, 255, 245
-	voice_square_1 0, 2, 0, 0, 15, 0
+	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0
 	voice_directsound 60, 0, DirectSoundWaveData_1116654, 255, 0, 255, 245
 	voice_directsound 60, 0, DirectSoundWaveData_11166a8, 255, 0, 255, 245
 	voice_directsound 60, 0, DirectSoundWaveData_1116b6c, 255, 235, 0, 204
@@ -128,4 +128,4 @@ voicegroup290:: @ 1134af0
 	voice_directsound 60, 0, DirectSoundWaveData_1118d84, 255, 0, 255, 245
 	voice_directsound 60, 0, DirectSoundWaveData_1119710, 255, 0, 255, 245
 	voice_directsound 60, 0, DirectSoundWaveData_100aeac, 255, 235, 0, 235
-	voice_square_1 0, 2, 0, 0, 15, 0
+	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0

@@ -127,5 +127,5 @@ voicegroup287:: @ 1134a3c
 	voice_directsound 60, 0, DirectSoundWaveData_1114018, 255, 0, 255, 235
 	voice_directsound 60, 0, DirectSoundWaveData_1114018, 255, 0, 255, 235
 	voice_directsound 60, 0, DirectSoundWaveData_111439c, 255, 0, 255, 235
-	voice_square_1 0, 2, 0, 0, 15, 0
+	voice_square_1 60, 0, 0, 2, 0, 0, 15, 0
 	voice_directsound 60, 0, DirectSoundWaveData_111451c, 255, 0, 255, 245
