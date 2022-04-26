@@ -36,6 +36,7 @@
 #include "help_system.h"
 #include "constants/songs.h"
 #include "constants/field_weather.h"
+#include "rtc.h"
 
 enum StartMenuOption
 {
@@ -111,6 +112,8 @@ static void task50_after_link_battle_save(u8 taskId);
 static void PrintSaveStats(void);
 static void CloseSaveStatsWindow(void);
 static void CloseStartMenu(void);
+// Menú de hora
+static void ShowStartMenuExtraWindow(void);
 
 static const struct MenuAction sStartMenuActionTable[] = {
     { gStartMenuText_Pokedex, {.u8_void = StartMenuPokedexCallback} },
@@ -133,6 +136,9 @@ static const struct WindowTemplate sSafariZoneStatsWindowTemplate = {
     .paletteNum = 15,
     .baseBlock = 0x008
 };
+
+// Menú de hora
+static const struct WindowTemplate sStartMenuWindowTemplate = {0, 1, 1, 4, 2, 0xF, 8}; // Parámetros de la ventana extra
 
 static const u8 *const sStartMenuDescPointers[] = {
     gStartMenuDesc_Pokedex,
@@ -213,6 +219,7 @@ static void SetUpStartMenu_NormalField(void)
     AppendToStartMenuItems(STARTMENU_SAVE);
     AppendToStartMenuItems(STARTMENU_OPTION);
     AppendToStartMenuItems(STARTMENU_EXIT);
+    ShowStartMenuExtraWindow();
 }
 
 static void SetUpStartMenu_SafariZone(void)
@@ -224,6 +231,7 @@ static void SetUpStartMenu_SafariZone(void)
     AppendToStartMenuItems(STARTMENU_PLAYER);
     AppendToStartMenuItems(STARTMENU_OPTION);
     AppendToStartMenuItems(STARTMENU_EXIT);
+    ShowStartMenuExtraWindow();
 }
 
 static void SetUpStartMenu_Link(void)
@@ -264,6 +272,11 @@ static void DestroySafariZoneStatsWindow(void)
         ClearStdWindowAndFrameToTransparent(sSafariZoneStatsWindowId, FALSE);
         CopyWindowToVram(sSafariZoneStatsWindowId, COPYWIN_GFX);
         RemoveWindow(sSafariZoneStatsWindowId);
+    }
+    else
+    { //Borra de la pantalla la venta auxiliar de la hora
+        ClearStdWindowAndFrameToTransparent(sSafariZoneStatsWindowId, FALSE);
+        RemoveWindow(sSafariZoneStatsWindowId);	
     }
 }
 
@@ -1002,4 +1015,14 @@ void AppendToList(u8 *list, u8 *cursor, u8 newEntry)
 {
     list[*cursor] = newEntry;
     (*cursor)++;
+}
+
+static void ShowStartMenuExtraWindow(void) // Función que carga una ventana auxiliar en el menú de pausa.
+{	
+    sSafariZoneStatsWindowId = AddWindow(&sStartMenuWindowTemplate);
+    PutWindowTilemap(sSafariZoneStatsWindowId);
+    DrawStdWindowFrame(sSafariZoneStatsWindowId, FALSE);
+	FormatDecimalTimeWOSeconds(gStringVar4, Rtc_GetCurrentHour(), Rtc_GetCurrentMinute());                                     
+    AddTextPrinterParameterized(sSafariZoneStatsWindowId, 1, gStringVar4, 0, 1, 0xFF, NULL); 
+    CopyWindowToVram(sSafariZoneStatsWindowId, 2);
 }

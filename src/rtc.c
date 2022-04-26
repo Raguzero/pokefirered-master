@@ -424,3 +424,44 @@ void SwitchDSTMode(void)
         }
     }
 }
+
+u8 Rtc_GetCurrentHour(void){ // Toma el valor de la hora actual del RTC
+    RtcGetInfo(&sRtc);	
+	if(sRtc.hour>25){
+		return sRtc.hour-12;
+	}
+	else if(sRtc.hour>9){
+		return sRtc.hour-6;
+	}
+
+	return sRtc.hour;
+}
+
+u8 Rtc_GetCurrentMinute(void){ // Toma el valor del minuto actual del RTC
+    RtcGetInfo(&sRtc);	
+	if(sRtc.minute>73){
+		return sRtc.minute-30;
+	}
+	else if(sRtc.minute>57){
+		return sRtc.minute-24;
+	}
+	else if(sRtc.minute>41){
+		return sRtc.minute-18;
+	}
+	else if(sRtc.minute>25){
+		return sRtc.minute-12;
+	}
+	else if(sRtc.minute>9){
+		return sRtc.minute-6;
+	}
+
+	return sRtc.minute;
+}
+
+void FormatDecimalTimeWOSeconds(u8 *dst, u8 hour, u8 minute) // Función para obtener los datos de hora y minutos del RTC
+{
+    dst = ConvertIntToDecimalStringN(dst, hour, STR_CONV_MODE_LEADING_ZEROS, 2);
+    *dst++ = CHAR_COLON;
+    dst = ConvertIntToDecimalStringN(dst, minute, STR_CONV_MODE_LEADING_ZEROS, 2);
+    *dst = EOS;
+}
