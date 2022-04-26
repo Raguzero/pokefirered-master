@@ -1,5 +1,6 @@
 #include "global.h"
 #include "gflib.h"
+#include "day_night.h"
 #include "event_data.h"
 #include "event_object_movement.h"
 #include "field_camera.h"
@@ -2207,6 +2208,7 @@ void Unused_LoadObjectEventPaletteSet(u16 *paletteTags)
     }
 }
 
+// NOTE: Does not use LoadSpritePaletteDayNight because of naming screen
 static u8 TryLoadObjectPalette(const struct SpritePalette *spritePalette)
 {
     if (IndexOfSpritePaletteTag(spritePalette->tag) != 0xFF)
@@ -2221,7 +2223,7 @@ void PatchObjectPalette(u16 paletteTag, u8 paletteSlot)
 {
     u8 paletteIndex = FindObjectEventPaletteIndexByTag(paletteTag);
 
-    LoadPalette(sObjectEventSpritePalettes[paletteIndex].data, 16 * paletteSlot + 0x100, 0x20);
+    LoadPaletteDayNight(sObjectEventSpritePalettes[paletteIndex].data, 16 * paletteSlot + 0x100, 0x20);
     ApplyGlobalFieldPaletteTint(paletteSlot);
 }
 

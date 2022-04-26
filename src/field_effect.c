@@ -1,6 +1,7 @@
 #include "global.h"
 #include "gflib.h"
 #include "decompress.h"
+#include "day_night.h"
 #include "event_data.h"
 #include "event_object_movement.h"
 #include "field_camera.h"
@@ -422,6 +423,14 @@ static void FieldEffectScript_LoadTiles(const u8 **script)
     *script += sizeof(u32);
 }
 
+static void FieldEffectScript_LoadPaletteNoTint(const u8 **script)
+{
+    struct SpritePalette *palette = (struct SpritePalette *)FieldEffectScript_ReadWord(script);
+    LoadSpritePaletteDayNight(palette);
+    UpdateSpritePaletteWithWeather(IndexOfSpritePaletteTag(palette->tag));
+    *script += sizeof(u32);
+}
+
 void ApplyGlobalFieldPaletteTint(u8 paletteIdx)
 {
     switch (gGlobalFieldTintMode)
@@ -445,6 +454,13 @@ void ApplyGlobalFieldPaletteTint(u8 paletteIdx)
 }
 
 static void FieldEffectScript_LoadFadedPal(const u8 **script)
+{
+    struct SpritePalette *palette = (struct SpritePalette *)FieldEffectScript_ReadWord(script);
+    LoadSpritePaletteDayNight(palette);
+    *script += sizeof(u32);
+}
+
+static void FieldEffectScript_LoadFadedPaletteNoTint(const u8 **script)
 {
     const struct SpritePalette * spritePalette = (const struct SpritePalette * )FieldEffectScript_ReadWord(script);
     u8 idx = IndexOfSpritePaletteTag(spritePalette->tag);

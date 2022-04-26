@@ -51,6 +51,7 @@ struct PaletteFadeControl
 
 extern struct PaletteFadeControl gPaletteFade;
 extern u32 gPlttBufferTransferPending;
+extern u8 gPaletteDecompressionBuffer[]; // NEW for POKEFIRED
 extern u16 gPlttBufferUnfaded[PLTT_BUFFER_SIZE];
 extern u16 gPlttBufferFaded[PLTT_BUFFER_SIZE];
 
@@ -74,6 +75,7 @@ void TintPalette_GrayScale(u16 *palette, u16 count);
 void TintPalette_GrayScale2(u16 *palette, u16 count);
 void TintPalette_SepiaTone(u16 *palette, u16 count);
 void TintPalette_CustomTone(u16 *palette, u16 count, u16 rTone, u16 gTone, u16 bTone);
+void TintPalette_CustomToneWithCopy(const u16 *src, u16 *dest, u16 count, u16 rTone, u16 gTone, u16 bTone, bool8 excludeZeroes);
 void sub_80716F8(const u16 *src, u16 *dst, u16 count, u8 a4);
 void sub_80717A8(u32 a1, s8 a2, u8 a3, u8 a4, u16 a5, u8 a6, u8 a7);
 bool32 sub_807185C(u8 var);

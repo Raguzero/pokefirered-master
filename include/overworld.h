@@ -131,6 +131,7 @@ extern u8 gGlobalFieldTintMode;
 
 extern bool8 (* gFieldCallback2)(void);
 
+void ChooseAmbientCrySpecies(void);
 void SetLastHealLocationWarp(u8 healLocaionId);
 void LoadMapFromCameraTransition(u8 mapGroup, u8 mapNum);
 void CB2_ReturnToFieldFromDiploma(void);
