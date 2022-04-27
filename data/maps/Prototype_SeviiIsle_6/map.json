@@ -15,13 +15,21 @@
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
   "connections": [
     {
-      "map": "MAP_THREE_ISLAND",
+      "direction": "up",
       "offset": 0,
-      "direction": "up"
+      "map": "MAP_THREE_ISLAND"
     }
   ],
-  "object_events": [],
-  "warp_events": [],
-  "coord_events": [],
-  "bg_events": []
+  "object_events": [
+
+  ],
+  "warp_events": [
+
+  ],
+  "coord_events": [
+
+  ],
+  "bg_events": [
+
+  ]
 }
