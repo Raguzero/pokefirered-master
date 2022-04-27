@@ -21,6 +21,23 @@
             1
           ]
         },
+		{
+          "type": "land_mons_night",
+          "encounter_rates": [
+            20,
+            20,
+            10,
+            10,
+            10,
+            10,
+            5,
+            5,
+            4,
+            4,
+            1,
+            1
+          ]
+        },
         {
           "type": "water_mons",
           "encounter_rates": [

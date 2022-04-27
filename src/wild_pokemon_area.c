@@ -261,6 +261,8 @@ static bool32 PokemonInAnyEncounterTableInMap(const struct WildPokemonHeader * d
 {
     if (PokemonInEncounterTable(data->landMonsInfo, species, 12))
         return TRUE;
+    if (PokemonInEncounterTable(data->landMonsNightInfo, species, 12))
+        return TRUE;
     if (PokemonInEncounterTable(data->waterMonsInfo, species, 5))
         return TRUE;
     if (PokemonInEncounterTable(data->fishingMonsInfo, species, 12)) // 10
