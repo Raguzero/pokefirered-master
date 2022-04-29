@@ -25,7 +25,7 @@ struct HelpSystemVideoState
     /*0x15*/ u8 state;
 };
 
-static EWRAM_DATA u8 sMapTilesBackup[BG_CHAR_SIZE] = {0};
+//static EWRAM_DATA u8 sMapTilesBackup[BG_CHAR_SIZE] = {0};
 EWRAM_DATA u8 gDisableHelpSystemVolumeReduce = 0;
 EWRAM_DATA bool8 gHelpSystemToggleWithRButtonDisabled = FALSE;
 static EWRAM_DATA u8 sDelayTimer = 0;
@@ -67,7 +67,7 @@ u8 RunHelpSystemCallback(void)
         }
         break;
     case 1:
-        SaveMapTiles();
+        //SaveMapTiles();
         SaveMapGPURegs();
         SaveMapTextColors();
         (*(vu16 *)PLTT) = sPals[15];
@@ -112,7 +112,7 @@ u8 RunHelpSystemCallback(void)
         break;
     case 6:
         SetGpuReg(REG_OFFSET_DISPCNT, 0);
-        RestoreMapTiles();
+        //RestoreMapTiles();
         for (i = 0; i < 0x200; i += 2)
         {
             *((vu16 *)(PLTT + 0x000 + i)) = sPals[15];
@@ -159,10 +159,10 @@ void SaveMapGPURegs(void)
     sVideoState.savedBldCnt = GetGpuReg(REG_OFFSET_BLDCNT);
 }
 
-void SaveMapTiles(void)
+/*void SaveMapTiles(void)
 {
     RequestDma3Copy((void *)BG_CHAR_ADDR(3), sMapTilesBackup, BG_CHAR_SIZE, DMA3_16BIT);
-}
+}*/
 
 void SaveMapTextColors(void)
 {
@@ -188,10 +188,10 @@ void RestoreGPURegs(void)
     SetGpuReg(REG_OFFSET_DISPCNT, sVideoState.savedDispCnt);
 }
 
-void RestoreMapTiles(void)
+/*void RestoreMapTiles(void)
 {
     RequestDma3Copy(sMapTilesBackup, (void *)BG_CHAR_ADDR(3), BG_CHAR_SIZE, DMA3_16BIT);
-}
+}*/
 
 void RestoreMapTextColors(void)
 {

@@ -45,7 +45,7 @@ bool32 RunSaveFailedScreen(void)
         sSaveFailedScreenState = 1;
         break;
     case 1:
-        SaveMapTiles();
+        //SaveMapTiles();
         SaveMapGPURegs();
         SaveMapTextColors();
         BlankPalettes();
@@ -90,7 +90,7 @@ bool32 RunSaveFailedScreen(void)
         break;
     case 7:
         SetGpuReg(REG_OFFSET_DISPCNT, 0);
-        RestoreMapTiles();
+        //RestoreMapTiles();
         BlankPalettes();
         sSaveFailedScreenState = 8;
         break;
