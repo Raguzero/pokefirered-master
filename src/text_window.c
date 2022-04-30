@@ -5,6 +5,8 @@
 #include "quest_log.h"
 
 extern const u16 gUnknown_841F1C8[];
+static const u16 sTextWindowDexnavFrame[] = INCBIN_U16("graphics/text_window/dexnav_pal.gbapal");
+
 
 void sub_814FFC4(u8 windowId, u8 frameType, u16 destOffset, u8 palIdx);
 
@@ -163,4 +165,13 @@ const u16 *stdpal_get(u8 id)
     }
 
     return (const u16 *)(gUnknown_8471DEC) + id;
+}
+
+static const struct TextWindowGraphics sDexnavWindowFrame = {gUnknown_8470B0C, sTextWindowDexnavFrame};
+
+
+void LoadDexNavWindowGfx(u8 windowId, u16 dstOffset, u8 palOffset)
+{
+    LoadBgTiles(GetWindowAttribute(windowId, WINDOW_BG), sDexnavWindowFrame.tiles, 0x120, dstOffset);
+    LoadPalette(sDexnavWindowFrame.palette, palOffset, 32);
 }

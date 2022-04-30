@@ -20,10 +20,10 @@
 #define FLDEFF_JUMP_SMALL_SPLASH         16
 #define FLDEFF_LONG_GRASS                17
 #define FLDEFF_JUMP_LONG_GRASS           18
-#define FLDEFF_UNKNOWN_19                19
-#define FLDEFF_UNKNOWN_20                20
-#define FLDEFF_UNKNOWN_21                21
-#define FLDEFF_UNKNOWN_22                22
+#define FLDEFF_SHAKING_GRASS             19
+#define FLDEFF_SHAKING_LONG_GRASS        20
+#define FLDEFF_SAND_HOLE                 21
+#define FLDEFF_SPLASHING_WATER           22
 #define FLDEFF_BERRY_TREE_GROWTH_SPARKLE 23
 #define FLDEFF_DEEP_SAND_FOOTPRINTS      24
 #define FLDEFF_POKECENTER_HEAL           25
@@ -71,6 +71,7 @@
 #define FLDEFF_MOVE_DEOXYS_ROCK          67
 #define FLDEFF_DESTROY_DEOXYS_ROCK       68
 #define FLDEFF_UNK_45                    69 // TODO: related to fame checker photos
+#define FLDEFF_CAVE_DUST                 70
 
 #define FLDEFF_PAL_TAG_GENERAL_0          0x1004
 #define FLDEFF_PAL_TAG_GENERAL_1          0x1005
@@ -113,5 +114,6 @@
 #define FLDEFFOBJ_ASH_LAUNCH               33
 #define FLDEFFOBJ_BUBBLES                  34
 #define FLDEFFOBJ_SMALL_SPARKLE            35
+#define FLDEFFOBJ_CAVE_DUST                36
 
 #endif // GUARD_CONSTANTS_FIELD_EFFECTS_H

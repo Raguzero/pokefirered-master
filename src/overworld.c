@@ -3,6 +3,7 @@
 #include "bg_regs.h"
 #include "cable_club.h"
 #include "clock.h"
+#include "dexnav.h"
 #include "day_night.h"
 #include "credits.h"
 #include "event_data.h"
@@ -132,7 +133,6 @@ static u16 GetCenterScreenMetatileBehavior(void);
 static void SetDefaultFlashLevel(void);
 static void Overworld_TryMapConnectionMusicTransition(void);
 
-static void CB2_Overworld(void);
 static void CB2_LoadMap2(void);
 static void c2_80567AC(void);
 static void CB2_ReturnToFieldLocal(void);
@@ -757,6 +757,7 @@ void LoadMapFromCameraTransition(u8 mapGroup, u8 mapNum)
     LoadObjEventTemplatesFromHeader();
     TrySetMapSaveWarpStatus();
     ClearTempFieldEventData();
+	ResetDexNavSearch();
     ResetCyclingRoadChallengeData();
     RestartWildEncounterImmunitySteps();
     MapResetTrainerRematches(mapGroup, mapNum);
@@ -793,6 +794,7 @@ static void mli0_load_map(bool32 a1)
 
     TrySetMapSaveWarpStatus();
     ClearTempFieldEventData();
+	ResetDexNavSearch();
     ResetCyclingRoadChallengeData();
     RestartWildEncounterImmunitySteps();
     MapResetTrainerRematches(gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum);
@@ -1479,7 +1481,7 @@ void CB2_OverworldBasic(void)
     OverworldBasic();
 }
 
-static void CB2_Overworld(void)
+void CB2_Overworld(void)
 {
     bool32 fading = !!gPaletteFade.active;
     if (fading)

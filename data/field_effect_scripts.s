@@ -72,6 +72,7 @@ gFieldEffectScriptPointers:: @ 81D96AC
 	.4byte gFldEffScript_MoveDeoxysRock
 	.4byte gFldEffScript_Unk44
 	.4byte gFldEffScript_Unk45
+    .4byte gFldEffScript_CaveDust
 
 gFldEffScript_ExclamationMarkIcon:: @ 81D97C4
 	callnative FldEff_ExclamationMarkIcon1
@@ -343,4 +344,8 @@ gFldEffScript_Unk44:: @ 81D99A4
 
 gFldEffScript_Unk45:: @ 81D99AA
 	callnative FldEff_Unk45
-	end 
+	end
+
+gFldEffScript_CaveDust::
+    loadfadedpal_callnative gSpritePalette_CaveDust, FldEff_CaveDust
+	end

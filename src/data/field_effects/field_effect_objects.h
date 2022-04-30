@@ -1355,3 +1355,24 @@ const struct SpriteTemplate gFieldEffectObjectTemplate_SmallSparkle =
 };
 
 const struct SpritePalette gSpritePalette_SmallSparkle = { .data = gFieldEffectPal_SmallSparkle, .tag = FLDEFF_PAL_TAG_SMALL_SPARKLE };
+
+
+// cave dust
+static const struct SpriteFrameImage sPicTable_CaveDust[] = 
+{
+    overworld_frame(gFieldEffectObjectPic_CaveDust, 2, 2, 0),
+    overworld_frame(gFieldEffectObjectPic_CaveDust, 2, 2, 1),
+    overworld_frame(gFieldEffectObjectPic_CaveDust, 2, 2, 2),
+    overworld_frame(gFieldEffectObjectPic_CaveDust, 2, 2, 3),
+};
+const struct SpriteTemplate gFieldEffectObjectTemplate_CaveDust = {
+    .tileTag = SPRITE_INVALID_TAG,
+    .paletteTag = 0x1010, // 0x1012??
+    .oam = &gObjectEventBaseOam_16x16,
+    .anims = sAnimTable_WaterSurfacing,
+    .images = sPicTable_CaveDust,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = WaitFieldEffectSpriteAnim,
+};
+
+const struct SpritePalette gSpritePalette_CaveDust = {gFieldEffectObjectPalette_CaveDust, 0x1010}; // 0x1012??

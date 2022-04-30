@@ -34,6 +34,7 @@
 #include "trig.h"
 #include "vs_seeker.h"
 #include "util.h"
+#include "dexnav.h"
 #include "constants/abilities.h"
 #include "constants/battle_move_effects.h"
 #include "constants/battle_setup.h"
@@ -3784,6 +3785,16 @@ static void FreeResetData_ReturnToOvOrDoEvolutions(void)
 {
     if (!gPaletteFade.active)
     {
+		if (gDexnavBattle && (gBattleOutcome == B_OUTCOME_WON || gBattleOutcome == B_OUTCOME_CAUGHT))
+        {
+            if (gSaveBlock1Ptr->dexNavChain < DEXNAV_CHAIN_MAX)
+                gSaveBlock1Ptr->dexNavChain++;
+        }
+        else
+		{
+             gSaveBlock1Ptr->dexNavChain = 0;
+		}
+        gDexnavBattle = FALSE;
         ResetSpriteData();
         if (gLeveledUpInBattle == 0 || gBattleOutcome != B_OUTCOME_WON)
             gBattleMainFunc = ReturnFromBattleToOverworld;

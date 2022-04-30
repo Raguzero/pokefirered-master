@@ -812,9 +812,9 @@ u32 FldEff_Unknown19(void)
         sprite = &gSprites[spriteId];
         sprite->coordOffsetEnabled = TRUE;
         sprite->oam.priority = gFieldEffectArguments[3];
-        sprite->data[0] = FLDEFF_UNKNOWN_19;
+        sprite->data[0] = FLDEFF_SHAKING_GRASS;
     }
-    return 0;
+    return spriteId;
 }
 
 u32 FldEff_Unknown20(void)
@@ -829,9 +829,9 @@ u32 FldEff_Unknown20(void)
         sprite = &gSprites[spriteId];
         sprite->coordOffsetEnabled = TRUE;
         sprite->oam.priority = gFieldEffectArguments[3];
-        sprite->data[0] = FLDEFF_UNKNOWN_20;
+        sprite->data[0] = FLDEFF_SHAKING_LONG_GRASS;
     }
-    return 0;
+    return spriteId;
 }
 
 u32 FldEff_Unknown21(void)
@@ -846,9 +846,9 @@ u32 FldEff_Unknown21(void)
         sprite = &gSprites[spriteId];
         sprite->coordOffsetEnabled = TRUE;
         sprite->oam.priority = gFieldEffectArguments[3];
-        sprite->data[0] = FLDEFF_UNKNOWN_21;
+        sprite->data[0] = FLDEFF_SAND_HOLE;
     }
-    return 0;
+    return spriteId;
 }
 
 u32 FldEff_Unknown22(void)
@@ -863,9 +863,9 @@ u32 FldEff_Unknown22(void)
         sprite = &gSprites[spriteId];
         sprite->coordOffsetEnabled = TRUE;
         sprite->oam.priority = gFieldEffectArguments[3];
-        sprite->data[0] = FLDEFF_UNKNOWN_22;
+        sprite->data[0] = FLDEFF_SPLASHING_WATER;
     }
-    return 0;
+    return spriteId;
 }
 
 void StartAshFieldEffect(s16 x, s16 y, u16 metatileId, s16 d)
@@ -1335,7 +1335,7 @@ u32 FldEff_Sparkle(void)
         gSprites[spriteId].oam.priority = gFieldEffectArguments[2];
         gSprites[spriteId].coordOffsetEnabled = TRUE;
     }
-    return 0;
+    return spriteId;
 }
 
 void UpdateSparkleFieldEffect(struct Sprite * sprite)

@@ -34,6 +34,7 @@
 #include "option_menu.h"
 #include "save_menu_util.h"
 #include "help_system.h"
+#include "dexnav.h"
 #include "constants/songs.h"
 #include "constants/field_weather.h"
 #include "rtc.h"
@@ -49,6 +50,7 @@ enum StartMenuOption
     STARTMENU_EXIT,
     STARTMENU_RETIRE,
     STARTMENU_PLAYER2,
+    STARTMENU_DEXNAV,
     MAX_STARTMENU_ITEMS
 };
 
@@ -88,6 +90,7 @@ static bool8 StartMenuOptionCallback(void);
 static bool8 StartMenuExitCallback(void);
 static bool8 StartMenuSafariZoneRetireCallback(void);
 static bool8 StartMenuLinkPlayerCallback(void);
+static bool8 StartMenuDexNavCallback(void);
 static bool8 StartCB_Save1(void);
 static bool8 StartCB_Save2(void);
 static void StartMenu_PrepareForSave(void);
@@ -124,7 +127,8 @@ static const struct MenuAction sStartMenuActionTable[] = {
     { gStartMenuText_Option, {.u8_void = StartMenuOptionCallback} },
     { gStartMenuText_Exit, {.u8_void = StartMenuExitCallback} },
     { gStartMenuText_Retire, {.u8_void = StartMenuSafariZoneRetireCallback} },
-    { gStartMenuText_Player, {.u8_void = StartMenuLinkPlayerCallback} }
+    { gStartMenuText_Player, {.u8_void = StartMenuLinkPlayerCallback} },
+    { gText_MenuDexNav, {.u8_void = StartMenuDexNavCallback} }
 };
 
 static const struct WindowTemplate sSafariZoneStatsWindowTemplate = {
@@ -212,6 +216,8 @@ static void SetUpStartMenu_NormalField(void)
 {
     if (FlagGet(FLAG_SYS_POKEDEX_GET) == TRUE)
         AppendToStartMenuItems(STARTMENU_POKEDEX);
+	if (FlagGet(FLAG_SYS_DEXNAV_GET) == TRUE)
+        AppendToStartMenuItems(STARTMENU_DEXNAV);
     if (FlagGet(FLAG_SYS_POKEMON_GET) == TRUE)
         AppendToStartMenuItems(STARTMENU_POKEMON);
     AppendToStartMenuItems(STARTMENU_BAG);
@@ -1025,4 +1031,10 @@ static void ShowStartMenuExtraWindow(void) // Función que carga una ventana aux
 	FormatDecimalTimeWOSeconds(gStringVar4, Rtc_GetCurrentHour(), Rtc_GetCurrentMinute());                                     
     AddTextPrinterParameterized(sSafariZoneStatsWindowId, 1, gStringVar4, 0, 1, 0xFF, NULL); 
     CopyWindowToVram(sSafariZoneStatsWindowId, 2);
+}
+
+static bool8 StartMenuDexNavCallback(void)
+{
+	CreateTask(Task_OpenDexNavFromStartMenu, 0);
+    return TRUE;
 }

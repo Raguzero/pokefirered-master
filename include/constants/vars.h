@@ -290,9 +290,9 @@
 #define VAR_0x40EF                 0x40EF
 #define VAR_0x40F0                 0x40F0
 #define VAR_DAILY_BP               0x40F1
-#define VAR_0x40F2                 0x40F2
-#define VAR_0x40F3                 0x40F3
-#define VAR_0x40F4                 0x40F4
+#define VAR_DEXNAV_SPECIES         0x40F2 //  Registered dexnav species
+#define VAR_DEXNAV_STEP_COUNTER    0x40F3 // steps for finding hidden pokemon
+#define VAR_DEXNAV_LAST_SPECIES    0x40F4 // Last species in DexNav search
 #define VAR_0x40F5                 0x40F5
 #define VAR_0x40F6                 0x40F6
 #define VAR_0x40F7                 0x40F7

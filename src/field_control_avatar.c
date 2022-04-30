@@ -3,6 +3,7 @@
 #include "bike.h"
 #include "coord_event_weather.h"
 #include "daycare.h"
+#include "dexnav.h"
 #include "event_data.h"
 #include "event_object_movement.h"
 #include "event_scripts.h"
@@ -283,10 +284,20 @@ int ProcessPlayerFieldInput(struct FieldInput *input)
 
     if (input->pressedStartButton)
     {
-        gInputToStoreInQuestLogMaybe.pressedStartButton = TRUE;
-        FlagSet(FLAG_OPENED_START_MENU);
-        PlaySE(SE_WIN_OPEN);
-        ShowStartMenu();
+        if (FlagGet(FLAG_SYS_DEXNAV_SEARCH))
+        {
+            ResetDexNavSearch();
+            return FALSE;
+        }
+        else
+        {
+            PlaySE(SE_WIN_OPEN);
+            ShowStartMenu();
+        }
+      //  gInputToStoreInQuestLogMaybe.pressedStartButton = TRUE;   // DELETE ???
+       // FlagSet(FLAG_OPENED_START_MENU);  // DELETE ???
+        //PlaySE(SE_WIN_OPEN);
+        //ShowStartMenu();
         return TRUE;
     }
     if (input->pressedSelectButton && UseRegisteredKeyItemOnField() == TRUE)
@@ -294,7 +305,11 @@ int ProcessPlayerFieldInput(struct FieldInput *input)
         gInputToStoreInQuestLogMaybe.pressedSelectButton = TRUE;
         return TRUE;
     }
-
+    else if (input->tookStep && TryFindHiddenPokemon())
+        return TRUE;
+	else if (input->pressedRButton && TryStartDexnavSearch())
+        return TRUE;
+	
     return FALSE;
 }
 

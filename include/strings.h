@@ -644,6 +644,9 @@ extern const u8 gText_ClockHasBeenReset[];
 extern const u8 gText_SaveCompleted[];
 extern const u8 gText_SaveFailed[];
 
+// DexNav
+extern const u8 gText_MenuDexNav[];
+
 // start_menu
 extern const u8 gStartMenuText_Pokedex[];
 extern const u8 gStartMenuText_Bag[];

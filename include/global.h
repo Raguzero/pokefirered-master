@@ -851,6 +851,8 @@ struct SaveBlock1
     /*0x3D24*/ u8 filler3D24[0x10];
     /*0x3D34*/ u32 towerChallengeId;
     /*0x3D38*/ struct TrainerTower trainerTower[NUM_TOWER_CHALLENGE_TYPES];
+			   u8 dexNavSearchLevels[SPECIES_EGG]; // O ES u8 dexNavSearchLevels[NUM_SPECIES]; ???
+			   u8 dexNavChain;
 }; // size: 0x3D68
 
 struct MapPosition

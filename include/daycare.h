@@ -2,6 +2,7 @@
 #define GUARD_DAYCARE_H
 
 #include "global.h"
+#include "constants/daycare.h"
 
 u8 *GetMonNick(struct Pokemon *mon, u8 *dest);
 u8 *GetBoxMonNick(struct BoxPokemon *mon, u8 *dest);
@@ -30,5 +31,6 @@ void EggHatch(void);
 u8 GetEggStepsToSubtract(void);
 u16 sub_80722E0(void);
 bool8 ShouldEggHatch(void);
+u8 GetEggMoves(struct Pokemon *pokemon, u16 *eggMoves);
 
 #endif // GUARD_DAYCARE_H

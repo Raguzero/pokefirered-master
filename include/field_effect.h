@@ -29,4 +29,8 @@ void SpriteCB_PopOutOfAsh(struct Sprite * sprite);
 void SpriteCB_AshLaunch(struct Sprite * sprite);
 void FieldEffectActiveListClear(void);
 
+void FieldEffectFreeGraphicsResources(struct Sprite *sprite);
+
+void FieldEff_CaveDust(void);
+
 #endif //GUARD_FIELD_EFFECTS_H

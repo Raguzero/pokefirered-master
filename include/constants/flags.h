@@ -1371,13 +1371,13 @@
 #define FLAG_SYS_POKEMON_GET                                        (SYS_FLAGS + 0x28)
 #define FLAG_SYS_POKEDEX_GET                                        (SYS_FLAGS + 0x29)
 #define FLAG_SYS_DAYLIGHT_SAVING                                    (SYS_FLAGS + 0x2A) // FLAG_0x82A
-#define FLAG_0x82B                                                  (SYS_FLAGS + 0x2B)
+#define FLAG_SYS_DEXNAV_SEARCH                                      (SYS_FLAGS + 0x2B) // FLAG_0x82B 
 #define FLAG_SYS_GAME_CLEAR                                         (SYS_FLAGS + 0x2C)
 #define FLAG_SYS_SET_TRAINER_CARD_PROFILE                           (SYS_FLAGS + 0x2D)
-#define FLAG_0x82E                                                  (SYS_FLAGS + 0x2E)
+#define FLAG_SYS_DETECTOR_MODE                                      (SYS_FLAGS + 0x2E) // allow player to find hidden mons // FLAG_0x82E 
 #define FLAG_SYS_B_DASH                                             (SYS_FLAGS + 0x2F)
 #define FLAG_SYS_ON_CYCLING_ROAD                                    (SYS_FLAGS + 0x30)
-#define FLAG_0x831                                                  (SYS_FLAGS + 0x31)
+#define FLAG_SYS_DEXNAV_GET                                         (SYS_FLAGS + 0x31) // dexnav shows in start menu  // FLAG_0x831
 #define FLAG_0x832                                                  (SYS_FLAGS + 0x32)
 #define FLAG_0x833                                                  (SYS_FLAGS + 0x33)
 #define FLAG_SYS_NOT_SOMEONES_PC                                    (SYS_FLAGS + 0x34)
