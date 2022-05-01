@@ -100,12 +100,32 @@ struct TrainerMonItemCustomMoves
     u16 moves[4];
 };
 
+// NUEVO PARA CUSTOM TRAINER
+struct TrainerMonCustomMidele
+{
+    u16 iv;
+    u8 evs[6]; // HP, ATK, DEF, SPATK, SPDEF, SPEED
+    u8 nature;
+    u8 lvl;
+    bool8 syncLevel;
+    u16 species;
+    u16 heldItem;
+    u8 ability;
+    u8 shiny;
+    u16 moves[MAX_MON_MOVES];
+    u8 friendship;
+    u8 hpType;
+	u8 initial_status1;
+};
+// NUEVO PARA CUSTOM TRAINER
+
 union TrainerMonPtr
 {
     const struct TrainerMonNoItemDefaultMoves *NoItemDefaultMoves;
     const struct TrainerMonNoItemCustomMoves *NoItemCustomMoves;
     const struct TrainerMonItemDefaultMoves *ItemDefaultMoves;
     const struct TrainerMonItemCustomMoves *ItemCustomMoves;
+	const struct TrainerMonCustomMidele *ItemCustomMidele; // NUEVO PARA CUSTOM TRAINER
 };
 
 struct Trainer

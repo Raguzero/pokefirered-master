@@ -5232,6 +5232,14 @@ static void atk5D_getmoneyreward(void)
                     lastMonLevel = party4[gTrainers[gTrainerBattleOpponent_A].partySize - 1].lvl;
                 }
                 break;
+		// NUEVO PARA CUSTOM TRAINER
+			case F_TRAINER_PARTY_CUSTOM_MIDELE:
+				{
+                const struct TrainerMonCustomMidele *party = gTrainers[gTrainerBattleOpponent_A].party.ItemCustomMidele;
+                lastMonLevel = party[gTrainers[gTrainerBattleOpponent_A].partySize - 1].lvl;
+				}
+				break;
+		// NUEVO PARA CUSTOM TRAINER
             }
             for (; gTrainerMoneyTable[i].classId != 0xFF; i++)
             {

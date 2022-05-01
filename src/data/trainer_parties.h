@@ -4331,15 +4331,16 @@ static const struct TrainerMonItemDefaultMoves sTrainerMons_BlackBeltDaisuke[] =
     },
 };
 
-static const struct TrainerMonNoItemDefaultMoves sTrainerMons_RivalOaksLabSquirtle[] = {
+static const struct TrainerMonCustomMidele sTrainerMons_RivalOaksLabSquirtle[] = {
     {
-        .iv = 0,
-        .lvl = 5,
-        .species = SPECIES_SQUIRTLE,
+    .iv = 31,
+    .lvl = 5,
+    .species = SPECIES_SQUIRTLE,
+    .moves = {MOVE_TACKLE, MOVE_TAIL_WHIP, MOVE_NONE, MOVE_NONE}
     },
 };
 
-static const struct TrainerMonNoItemDefaultMoves sTrainerMons_RivalOaksLabBulbasaur[] = {
+static const struct TrainerMonCustomMidele sTrainerMons_RivalOaksLabBulbasaur[] = {
     {
         .iv = 0,
         .lvl = 5,
@@ -4347,7 +4348,7 @@ static const struct TrainerMonNoItemDefaultMoves sTrainerMons_RivalOaksLabBulbas
     },
 };
 
-static const struct TrainerMonNoItemDefaultMoves sTrainerMons_RivalOaksLabCharmander[] = {
+static const struct TrainerMonCustomMidele sTrainerMons_RivalOaksLabCharmander[] = {
     {
         .iv = 0,
         .lvl = 5,
@@ -4355,22 +4356,31 @@ static const struct TrainerMonNoItemDefaultMoves sTrainerMons_RivalOaksLabCharma
     },
 };
 
-static const struct TrainerMonNoItemCustomMoves sTrainerMons_RivalRoute22EarlySquirtle[] = {
+static const struct TrainerMonCustomMidele sTrainerMons_RivalRoute22EarlySquirtle[] = {
     {
-        .iv = 50,
-        .lvl = 9,
-        .species = SPECIES_PIDGEY,
-        .moves = {MOVE_TACKLE, MOVE_SAND_ATTACK, MOVE_NONE, MOVE_NONE},
+    .iv = 31,
+    .lvl = 9,
+    .species = SPECIES_DRATINI,
+	.nature = NATURE_TIMID,
+	.heldItem = ITEM_LEFTOVERS,
+	.initial_status1 = STATUS1_SLEEP,
+	.hpType = TYPE_ROCK,
+	.ability = 1,
+	.evs = {224, 0, 0, 0, 0, 0},
+    .moves = {MOVE_HIDDEN_POWER, MOVE_SLEEP_TALK, MOVE_FLAMETHROWER, MOVE_DRAGON_BREATH}
     },
     {
-        .iv = 50,
+        .iv = 31,
         .lvl = 9,
         .species = SPECIES_SQUIRTLE,
-        .moves = {MOVE_TACKLE, MOVE_TAIL_WHIP, MOVE_NONE, MOVE_NONE},
+		.nature = NATURE_RELAXED,
+		.friendship = 255,
+		.hpType = TYPE_ICE,
+        .moves = {MOVE_FRUSTRATION, MOVE_TAIL_WHIP, MOVE_HIDDEN_POWER, MOVE_NONE},
     },
 };
 
-static const struct TrainerMonNoItemCustomMoves sTrainerMons_RivalRoute22EarlyBulbasaur[] = {
+static const struct TrainerMonCustomMidele sTrainerMons_RivalRoute22EarlyBulbasaur[] = {
     {
         .iv = 50,
         .lvl = 9,
@@ -4385,7 +4395,7 @@ static const struct TrainerMonNoItemCustomMoves sTrainerMons_RivalRoute22EarlyBu
     },
 };
 
-static const struct TrainerMonNoItemCustomMoves sTrainerMons_RivalRoute22EarlyCharmander[] = {
+static const struct TrainerMonCustomMidele sTrainerMons_RivalRoute22EarlyCharmander[] = {
     {
         .iv = 50,
         .lvl = 9,

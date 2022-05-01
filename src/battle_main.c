@@ -11,6 +11,7 @@
 #include "battle_setup.h"
 #include "battle_string_ids.h"
 #include "berry.h"
+#include "daycare.h"
 #include "data.h"
 #include "decompress.h"
 #include "event_data.h"
@@ -1611,6 +1612,48 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
                 }
                 break;
             }
+		// NUEVO PARA CUSTOM TRAINER
+			case F_TRAINER_PARTY_CUSTOM_MIDELE:
+            {
+                const struct TrainerMonCustomMidele *partyData = gTrainers[trainerNum].party.ItemCustomMidele;
+                u8 mideleLevel;
+				
+                fixedIV = partyData[i].iv;
+              /*  if (FlagGet(FLAG_CIBERCAFE_RANDOM) == 1)
+                {
+                    mideleLevel = (partyData[i].lvl <= 2 ? partyData[i].lvl : 100); // si hubiese un poke FEAR, conservará su nivel
+                } */
+                // else if (partyData[i].syncLevel == TRUE)
+				if (partyData[i].syncLevel == TRUE)
+                {
+                    u8 playerPartyMaxLevel = GetPlayerPartyMaxLevel();
+                    u8 minLevel = partyData[i].lvl;
+                    mideleLevel = max(playerPartyMaxLevel, minLevel);
+                } 
+                else
+                {
+                    mideleLevel = partyData[i].lvl;
+                }
+                
+                CreateMonMidele(&party[i], partyData[i].species, mideleLevel, fixedIV, partyData[i].evs, partyData[i].nature, partyData[i].shiny, partyData[i].ability,
+                partyData[i].friendship, partyData[i].hpType, (u8) (nameHash + 51*GetEggSpecies(partyData[i].species)));
+
+                SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[i].heldItem);
+                {
+                u32 initial_status = (u32) (partyData[i].initial_status1);
+                SetMonData(&party[i], MON_DATA_STATUS, &initial_status);
+                }
+                for (j = 0; j < MAX_MON_MOVES; j++)
+                {
+                    u8 maxPp = CalculatePPWithBonus(partyData[i].moves[j], 3, 0);
+                    u8 fullpp = 0xFF;
+					SetMonData(&party[i], MON_DATA_MOVE1 + j, &partyData[i].moves[j]);
+                    SetMonData(&party[i], MON_DATA_PP1 + j, &maxPp);
+					SetMonData(&party[i], MON_DATA_PP_BONUSES, &fullpp);
+                }
+                break;
+            }
+			// NUEVO PARA CUSTOM TRAINER		
             }
         }
         gBattleTypeFlags |= gTrainers[trainerNum].doubleBattle;

@@ -588,6 +588,16 @@ static u8 GetSumOfEnemyPartyLevel(u16 opponentId, u8 numMons)
                 sum += party[i].lvl;
         }
         break;
+	// NUEVO PARA CUSTOM TRAINER
+	case F_TRAINER_PARTY_CUSTOM_MIDELE:
+        {
+            const struct TrainerMonCustomMidele *party;
+            party = gTrainers[opponentId].party.ItemCustomMidele;
+            for (i = 0; i < count; i++)
+                sum += party[i].lvl;
+        }
+        break;
+	// NUEVO PARA CUSTOM TRAINER
     }
     return sum;
 }

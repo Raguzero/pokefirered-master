@@ -1745,6 +1745,62 @@ void CreateMon(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 hasFix
     CalculateMonStats(mon);
 }
 
+// NUEVO PARA CUSTOM TRAINER
+void CreateMonMidele(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, const u8 *evs, u8 nature, u8 shiny, u8 abilityNumber, u8 friendship, u8 hpType, u8 genderValue)
+{
+    struct BoxPokemon *box;
+    u32 arg;
+    u32 personality;
+    u8 otIdType;
+
+    do
+    {
+        personality = (Random32() & 0xFFFFFF00) | genderValue;
+    }
+    while (nature != GetNatureFromPersonality(personality));
+
+    if (shiny == 0) {
+        otIdType = OT_ID_RANDOM_NO_SHINY;
+    } else {
+        otIdType = OT_ID_SHINY;
+    }
+    
+    // NUEVO: por defecto (o al establecer .ivs = 0) los IVs se establecerán a 31
+    if (fixedIV == 0) 
+    {
+        fixedIV = 31;
+    }
+
+    ZeroMonData(mon);
+    CreateBoxMon(&mon->box, species, level, fixedIV, TRUE, personality, otIdType, 0);
+    SetMonData(mon, MON_DATA_LEVEL, &level);
+    arg = 255;
+    SetMonData(mon, MON_DATA_MAIL, &arg);
+
+    SetMonData(mon, MON_DATA_HP_EV, &evs[0]);
+    SetMonData(mon, MON_DATA_ATK_EV, &evs[1]);
+    SetMonData(mon, MON_DATA_DEF_EV, &evs[2]);
+    SetMonData(mon, MON_DATA_SPATK_EV, &evs[3]);
+    SetMonData(mon, MON_DATA_SPDEF_EV, &evs[4]);
+    SetMonData(mon, MON_DATA_SPEED_EV, &evs[5]);
+
+    SetMonData(mon, MON_DATA_FRIENDSHIP, &friendship);
+
+    SetMonData(mon, MON_DATA_ABILITY_NUM, &abilityNumber);
+    
+    // NUEVO: tipo de Hidden Power personalizado (por defecto es TYPE_FAIRY)
+    box = &mon->box;
+    if (hpType == 0) {
+        box->hpType = TYPE_FAIRY;
+    } else {
+        box->hpType = hpType;
+    }
+    
+    CalculateMonStats(mon);
+}
+// NUEVO PARA CUSTOM TRAINER
+
+
 void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, u8 hasFixedPersonality, u32 fixedPersonality, u8 otIdType, u32 fixedOtId)
 {
     u8 speciesName[POKEMON_NAME_LENGTH + 1];
@@ -1776,6 +1832,17 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
             shinyValue = HIHALF(value) ^ LOHALF(value) ^ HIHALF(personality) ^ LOHALF(personality);
         } while (shinyValue < SHINY_ODDS);
     }
+	// NUEVO PARA CUSTOM TRAINER
+	 else if (otIdType == OT_ID_SHINY)
+    {
+        u32 shinyValue;
+        do
+        {
+            value = Random32();
+            shinyValue = HIHALF(value) ^ LOHALF(value) ^ HIHALF(personality) ^ LOHALF(personality);
+        } while (shinyValue >= SHINY_ODDS);
+    }
+	// NUEVO PARA CUSTOM TRAINER
     else if (otIdType == OT_ID_PRESET) //Pokemon has a preset OT ID
     {
         value = fixedOtId;
@@ -6433,4 +6500,25 @@ u8 GetRandomType() {
     randomType = gHiddenPowerTypes[random];
 
     return randomType;
+}
+
+u8 GetPlayerPartyMaxLevel(void) {
+    u8 currPartyMonLevel;
+    u8 maxLevel = 1;
+    u8 i;
+    
+    // Calculate max party level in "maxLevel" var.
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+        if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES, NULL) != SPECIES_NONE)
+        {
+            currPartyMonLevel = GetMonData(&gPlayerParty[i], MON_DATA_LEVEL, NULL);
+            if (currPartyMonLevel > maxLevel)
+            {
+                maxLevel = currPartyMonLevel;
+            }
+        }
+    }
+    
+    return maxLevel;
 }
