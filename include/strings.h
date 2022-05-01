@@ -1578,4 +1578,10 @@ extern const u8 gText_Thursday[];
 extern const u8 gText_Friday[];
 extern const u8 gText_Saturday[];
 
+// POKEMON CENTER GEN 8
+extern const u8 gText_RememberAMove[];
+extern const u8 gText_ForgetAMove[];
+extern const u8 gText_RateANickname[];
+
+
 #endif //GUARD_STRINGS_H

@@ -1359,3 +1359,8 @@ const u8 gText_Friday[] = _("Friday");
 const u8 gText_Saturday[] = _("Saturday");
 
 const u8 gText_MenuDexNav[] = _("DEXNAV");
+
+// Pokemon center move tutor/name rater menu
+const u8 gText_RememberAMove[] = _("REMEMBER A MOVE");
+const u8 gText_ForgetAMove[] = _("FORGET A MOVE");
+const u8 gText_RateANickname[] = _("RATE A NICKNAME");
