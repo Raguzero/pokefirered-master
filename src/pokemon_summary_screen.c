@@ -33,6 +33,7 @@
 #include "battle_interface.h"
 #include "mon_markings.h"
 #include "pokemon_storage_system.h"
+#include "graphics.h"
 
 // needs conflicting header to match (curIndex is s8 in the function, but has to be defined as u8 here)
 extern s16 SeekToNextMonInBox(struct BoxPokemon * boxMons, u8 curIndex, u8 maxIndex, u8 flags);
@@ -346,6 +347,143 @@ static const u32 sBgPal8[] = INCBIN_U32("graphics/interface/pokesummary_unk_8463
 static const u16 sMoveSelectionCursorPals[] = INCBIN_U16("graphics/interface/pokesummary_unk_8463720.gbapal");
 static const u32 sMoveSelectionCursorTiles_Left[] = INCBIN_U32("graphics/interface/pokesummary_unk_8463740.4bpp.lz");
 static const u32 sMoveSelectionCursorTiles_Right[] = INCBIN_U32("graphics/interface/pokesummary_unk_846386C.4bpp.lz");
+
+
+
+#define TAG_MOVE_TYPES 30002
+
+static const struct OamData sOamData_MoveTypes =
+{
+    .y = 0,
+    .affineMode = ST_OAM_AFFINE_OFF,
+    .objMode = ST_OAM_OBJ_NORMAL,
+    .mosaic = 0,
+    .bpp = ST_OAM_4BPP,
+    .shape = SPRITE_SHAPE(32x16),
+    .x = 0,
+    .matrixNum = 0,
+    .size = SPRITE_SIZE(32x16),
+    .tileNum = 0,
+    .priority = 1,
+    .paletteNum = 0,
+    .affineParam = 0,
+};
+
+static const union AnimCmd sSpriteAnim_TypeNormal[] = {
+    ANIMCMD_FRAME(TYPE_NORMAL * 8, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TypeFighting[] = {
+    ANIMCMD_FRAME(TYPE_FIGHTING * 8, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TypeFlying[] = {
+    ANIMCMD_FRAME(TYPE_FLYING * 8, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TypePoison[] = {
+    ANIMCMD_FRAME(TYPE_POISON * 8, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TypeGround[] = {
+    ANIMCMD_FRAME(TYPE_GROUND * 8, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TypeRock[] = {
+    ANIMCMD_FRAME(TYPE_ROCK * 8, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TypeBug[] = {
+    ANIMCMD_FRAME(TYPE_BUG * 8, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TypeGhost[] = {
+    ANIMCMD_FRAME(TYPE_GHOST * 8, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TypeSteel[] = {
+    ANIMCMD_FRAME(TYPE_STEEL * 8, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TypeMystery[] = {
+    ANIMCMD_FRAME(TYPE_MYSTERY * 8, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TypeFire[] = {
+    ANIMCMD_FRAME(TYPE_FIRE * 8, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TypeWater[] = {
+    ANIMCMD_FRAME(TYPE_WATER * 8, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TypeGrass[] = {
+    ANIMCMD_FRAME(TYPE_GRASS * 8, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TypeElectric[] = {
+    ANIMCMD_FRAME(TYPE_ELECTRIC * 8, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TypePsychic[] = {
+    ANIMCMD_FRAME(TYPE_PSYCHIC * 8, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TypeIce[] = {
+    ANIMCMD_FRAME(TYPE_ICE * 8, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TypeDragon[] = {
+    ANIMCMD_FRAME(TYPE_DRAGON * 8, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TypeDark[] = {
+    ANIMCMD_FRAME(TYPE_DARK * 8, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+static const union AnimCmd sSpriteAnim_TypeFairy[] = {
+    ANIMCMD_FRAME(TYPE_FAIRY * 8, 0, FALSE, FALSE),
+    ANIMCMD_END
+};
+
+static const union AnimCmd *const sSpriteAnimTable_MoveTypes[NUMBER_OF_MON_TYPES] = {
+    sSpriteAnim_TypeNormal,
+    sSpriteAnim_TypeFighting,
+    sSpriteAnim_TypeFlying,
+    sSpriteAnim_TypePoison,
+    sSpriteAnim_TypeGround,
+    sSpriteAnim_TypeRock,
+    sSpriteAnim_TypeBug,
+    sSpriteAnim_TypeGhost,
+    sSpriteAnim_TypeSteel,
+    sSpriteAnim_TypeMystery,
+    sSpriteAnim_TypeFire,
+    sSpriteAnim_TypeWater,
+    sSpriteAnim_TypeGrass,
+    sSpriteAnim_TypeElectric,
+    sSpriteAnim_TypePsychic,
+    sSpriteAnim_TypeIce,
+    sSpriteAnim_TypeDragon,
+    sSpriteAnim_TypeDark,
+    sSpriteAnim_TypeFairy,
+};
+
+const struct CompressedSpriteSheet gSpriteSheet_MoveTypes =
+{
+    .data = gMoveTypes_Gfx,
+    .size = (NUMBER_OF_MON_TYPES) * 0x100,
+    .tag = TAG_MOVE_TYPES
+};
+const struct SpriteTemplate gSpriteTemplate_MoveTypes =
+{
+    .tileTag = TAG_MOVE_TYPES,
+    .paletteTag = TAG_MOVE_TYPES,
+    .oam = &sOamData_MoveTypes,
+    .anims = sSpriteAnimTable_MoveTypes,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy
+};
 
 static const struct OamData sMoveSelectionCursorOamData =
 {

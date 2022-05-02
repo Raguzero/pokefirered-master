@@ -4942,4 +4942,7 @@ extern const u16 gUnknown_8E9C418[];
 extern const u16 gDexScreen_TopMenuIconPals_AtoZ[];
 extern const u32 gDexScreen_TopMenuIconTiles_AtoZ[];
 
+extern const u32 gMoveTypes_Gfx[];
+extern const u32 gMoveTypes_Pal[];
+
 #endif //GUARD_GRAPHICS_H

@@ -666,7 +666,7 @@ static bool8 DexNavPickTile(u8 environment, u8 areaX, u8 areaY, bool8 smallScan)
             switch (environment)
             {
             case ENCOUNTER_TYPE_LAND:
-                if (MetatileBehavior_UnusedIsTallGrass(tileBehaviour))  // Before MetatileBehavior_IsLandWildEncounter(tileBehaviour))
+                if (MetatileBehavior_IsLandWildEncounter(tileBehaviour))
                 {
                     if (currMapType == MAP_TYPE_UNDERGROUND)
                     { // inside (cave)
@@ -734,22 +734,22 @@ static bool8 TryStartHiddenMonFieldEffect(u8 environment, u8 xSize, u8 ySize, bo
             }
             else if (IsMapTypeIndoors(currMapType))
             {
-                if (MetatileBehavior_IsTallGrass_2(metatileBehaviour)) // Before (MetatileBehavior_IsTallGrass(metatileBehaviour)) //Grass in cave
+                if (MetatileBehavior_UnusedIsTallGrass(metatileBehaviour)) // Before (MetatileBehavior_IsTallGrass(metatileBehaviour)) //Grass in cave
                     fldEffId = FLDEFF_SHAKING_GRASS;
                 else if (MetatileBehavior_IsLongGrass(metatileBehaviour)) //Really tall grass
                     fldEffId = FLDEFF_SHAKING_LONG_GRASS;
-                else if (MetatileBehavior_IsSandOrShallowFlowingWater(metatileBehaviour)) // Before (MetatileBehavior_IsSandOrDeepSand(metatileBehaviour))
+                else if (MetatileBehavior_IsSandOrDeepSand(metatileBehaviour)) // Before (MetatileBehavior_IsSandOrDeepSand(metatileBehaviour))
                     fldEffId = FLDEFF_SAND_HOLE;
                 else
                     fldEffId = FLDEFF_CAVE_DUST;
             }
             else //outdoor, underwater
             {
-                if (MetatileBehavior_IsTallGrass_2(metatileBehaviour)) // Before (MetatileBehavior_IsTallGrass(metatileBehaviour)) //Regular grass
+                if (MetatileBehavior_UnusedIsTallGrass(metatileBehaviour)) // Before (MetatileBehavior_IsTallGrass(metatileBehaviour)) //Regular grass
                     fldEffId = FLDEFF_SHAKING_GRASS;
                 else if (MetatileBehavior_IsLongGrass(metatileBehaviour)) //Really tall grass
                     fldEffId = FLDEFF_SHAKING_LONG_GRASS;
-                else if (MetatileBehavior_IsSandOrShallowFlowingWater(metatileBehaviour)) //Desert Sand
+                else if (MetatileBehavior_IsSandOrDeepSand(metatileBehaviour)) //Desert Sand
                     fldEffId = FLDEFF_SAND_HOLE;
                 else if (MetatileBehavior_IsMountain(metatileBehaviour)) //Rough Terrain
                     fldEffId = FLDEFF_CAVE_DUST;
@@ -793,7 +793,7 @@ static void LoadSearchIconData(void)
 {
     // palettes clash with mon icon, so must load manually
     LoadSpriteSheet(&sSpriteSheet_HeldItem );
-    LoadPalette(gHeldItemPalette, 0x100 + (16 * sHeldItemOam.paletteNum), 32);
+    //LoadPalette(gHeldItemPalette, 0x100 + (16 * sHeldItemOam.paletteNum), 32);
     LoadCompressedSpriteSheetUsingHeap(&sPotentialStarSpriteSheet);
     //LoadCompressedSpriteSheetUsingHeap(&sSightSpriteSheet);   //eye replaced with arrow
     LoadCompressedSpriteSheetUsingHeap(&sOwnedIconSpriteSheet);
@@ -2231,22 +2231,22 @@ static void PrintSearchableSpecies(u16 species)
     
     PrintMapName();
 }
-/*
+
 static void CreateTypeIconSprites(void)
 {
     u8 i;
 
-    LoadCompressedSpriteSheet(&sTMSpriteSheet); // sSpriteSheet_MoveTypes ??
-    LoadCompressedPalette(gFireRedMenuElements2_Pal, 0x1D0, 0x60); // gMoveTypes_Pal
+    LoadCompressedSpriteSheet(&gSpriteSheet_MoveTypes);
+    LoadCompressedPalette(gMoveTypes_Pal, 0x1D0, 0x60);
     for (i = 0; i < 2; i++)
     {
         if (sDexNavUiDataPtr->typeIconSpriteIds[i] == 0xFF)
-            sDexNavUiDataPtr->typeIconSpriteIds[i] = CreateSprite(&sTMSpriteTemplate, 10, 10, 2);  // sSpriteTemplate_MoveTypes ??? 
-    
+            sDexNavUiDataPtr->typeIconSpriteIds[i] = CreateSprite(&gSpriteTemplate_MoveTypes, 10, 10, 2);    
+
         SetSpriteInvisibility(i, TRUE);
     }
 }
-*/
+
 static bool8 DexNav_DoGfxSetup(void)
 {
     u8 taskId;
@@ -2309,7 +2309,7 @@ static bool8 DexNav_DoGfxSetup(void)
     case 9:
         sDexNavUiDataPtr->typeIconSpriteIds[0] = 0xFF;
         sDexNavUiDataPtr->typeIconSpriteIds[1] = 0xFF;
-        //CreateTypeIconSprites();
+        CreateTypeIconSprites();
         gMain.state++;
         break;
     case 10:
@@ -2490,7 +2490,7 @@ static void Task_DexNavMain(u8 taskId)
         {            
             PrintSearchableSpecies(species);
             PlaySE(SE_DEX_SEARCH);
-            PlayCry7(species, 0); // PlayCry5 ???
+            PlayCry7(species, 0);
             
             // create value to store in a var
             VarSet(VAR_DEXNAV_SPECIES, ((sDexNavUiDataPtr->environment << 14) | species));

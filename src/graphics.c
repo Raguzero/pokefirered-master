@@ -1424,3 +1424,6 @@ const u16 gBerryCrush_Crusher_Pal[] = INCBIN_U16("graphics/berry_crush/berry_cru
 const u16 gUnknown_8EAFF60[] = INCBIN_U16("graphics/unknown/unknown_EAFF60.gbapal");
 const u32 gBerryCrush_Crusher_Gfx[] = INCBIN_U32("graphics/berry_crush/berry_crush.4bpp.lz");
 const u32 gBerryCrush_Crusher_Tilemap[] = INCBIN_U32("graphics/berry_crush/data_EB0ADC.bin.lz");
+
+const u32 gMoveTypes_Gfx[] = INCBIN_U32("graphics/types/move_types.4bpp.lz");
+const u32 gMoveTypes_Pal[] = INCBIN_U32("graphics/types/move_types.gbapal.lz");

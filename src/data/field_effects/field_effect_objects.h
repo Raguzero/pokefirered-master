@@ -1367,7 +1367,7 @@ static const struct SpriteFrameImage sPicTable_CaveDust[] =
 };
 const struct SpriteTemplate gFieldEffectObjectTemplate_CaveDust = {
     .tileTag = SPRITE_INVALID_TAG,
-    .paletteTag = 0x1010, // 0x1012??
+    .paletteTag = FLDEFF_PAL_TAG_CAVE_DUST,
     .oam = &gObjectEventBaseOam_16x16,
     .anims = sAnimTable_WaterSurfacing,
     .images = sPicTable_CaveDust,
@@ -1375,4 +1375,4 @@ const struct SpriteTemplate gFieldEffectObjectTemplate_CaveDust = {
     .callback = WaitFieldEffectSpriteAnim,
 };
 
-const struct SpritePalette gSpritePalette_CaveDust = {gFieldEffectObjectPalette_CaveDust, 0x1010}; // 0x1012??
+const struct SpritePalette gSpritePalette_CaveDust = {gFieldEffectObjectPalette_CaveDust, FLDEFF_PAL_TAG_CAVE_DUST};

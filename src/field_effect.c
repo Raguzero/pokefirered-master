@@ -3933,9 +3933,9 @@ u8 FldEff_CaveDust(void)
 {
     u8 spriteId;
 
-    sub_8063BC4((s16 *)&gFieldEffectArguments[0], (s16 *)&gFieldEffectArguments[1], 8, 8); // BEFORE sub_80930E0 DON'T WORK
-    spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[37], gFieldEffectArguments[0], gFieldEffectArguments[1], gFieldEffectArguments[2]);
-	if (spriteId != MAX_SPRITES)
+    sub_8063BC4((s16 *)&gFieldEffectArguments[0], (s16 *)&gFieldEffectArguments[1], 8, 8);
+    spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_CAVE_DUST], gFieldEffectArguments[0], gFieldEffectArguments[1], 0xFF);
+    if (spriteId != MAX_SPRITES)
     {
         gSprites[spriteId].coordOffsetEnabled = TRUE;
         gSprites[spriteId].data[0] = 22;

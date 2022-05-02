@@ -1205,7 +1205,7 @@ void UpdateBubblesFieldEffect(struct Sprite * sprite)
 
 u32 FldEff_BerryTreeGrowthSparkle(void)
 {
-    /*u8 spriteId;
+    u8 spriteId;
     struct Sprite * sprite;
 
     sub_8063BC4((s16 *)&gFieldEffectArguments[0], (s16 *)&gFieldEffectArguments[1], 8, 4);
@@ -1217,8 +1217,8 @@ u32 FldEff_BerryTreeGrowthSparkle(void)
         sprite->oam.priority = gFieldEffectArguments[3];
         sprite->oam.paletteNum = 5;
         sprite->data[0] = FLDEFF_BERRY_TREE_GROWTH_SPARKLE;
-    }*/
-    return 0;
+    }
+    return spriteId;
 }
 
 u32 ShowTreeDisguiseFieldEffect(void)

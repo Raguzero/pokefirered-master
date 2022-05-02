@@ -77,6 +77,7 @@
 #define FLDEFF_PAL_TAG_GENERAL_1          0x1005
 #define FLDEFF_PAL_TAG_ASH                0x100D
 #define FLDEFF_PAL_TAG_SMALL_SPARKLE      0x100F
+#define FLDEFF_PAL_TAG_CAVE_DUST          0x1012
 
 #define FLDEFFOBJ_SHADOW_S                  0
 #define FLDEFFOBJ_SHADOW_M                  1
