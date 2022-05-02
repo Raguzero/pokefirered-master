@@ -159,6 +159,7 @@ static void EndDexNavSearchSetupScript(const u8 *script, u8 taskId);
 // HIDDEN MONS
 static void DexNavDrawHiddenIcons(void);
 static void DrawHiddenSearchWindow(u8 width);
+static bool8 DexNavKnowsMove(u16 *moveDest, u16 move);
 
 //// Const Data
 // gui image data
@@ -1347,8 +1348,28 @@ static void DexNavGenerateMoveset(u16 species, u8 searchLevel, u8 encounterLevel
         {
             u8 index = RandRange(0, numEggMoves);
             moveDst[0] = eggMoveBuffer[index];
+            // If egg move is an already known move, skip assign
+            if (!DexNavKnowsMove(moveDst, eggMoveBuffer[index]))
+            {
+                moveDst[0] = eggMoveBuffer[index];
+            }
+
         }
     }
+}
+
+static bool8 DexNavKnowsMove(u16 *moveDest, u16 move)
+{
+    u8 i;
+    for (i = 0; i < MAX_MON_MOVES; i++)
+    {
+        if (moveDest[i] == move)
+        {
+            return TRUE;
+        }
+    }
+
+    return FALSE;
 }
 
 static u16 DexNavGenerateHeldItem(u16 species, u8 searchLevel)
