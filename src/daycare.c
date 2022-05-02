@@ -1100,7 +1100,7 @@ void CreateEgg(struct Pokemon *mon, u16 species, bool8 setHotSpringsLocation)
     SetMonData(mon, MON_DATA_NICKNAME, sJapaneseEggNickname);
     SetMonData(mon, MON_DATA_FRIENDSHIP, &gBaseStats[species].eggCycles);
     SetMonData(mon, MON_DATA_MET_LEVEL, &metLevel);
-    SetMonData(mon, MON_DATA_LANGUAGE, &language);
+    SetLanguage(mon, &language);
     if (setHotSpringsLocation)
     {
         metLocation = METLOC_SPECIAL_EGG;
@@ -1127,7 +1127,7 @@ static void SetInitialEggData(struct Pokemon *mon, u16 species, struct DayCare *
     SetMonData(mon, MON_DATA_NICKNAME, sJapaneseEggNickname);
     SetMonData(mon, MON_DATA_FRIENDSHIP, &gBaseStats[species].eggCycles);
     SetMonData(mon, MON_DATA_MET_LEVEL, &metLevel);
-    SetMonData(mon, MON_DATA_LANGUAGE, &language);
+    SetLanguage(mon, &language);
 }
 
 void GiveEggFromDaycare(void)
@@ -1632,7 +1632,7 @@ static void CreatedHatchedMon(struct Pokemon *egg, struct Pokemon *temp)
     }
 
     language = GAME_LANGUAGE;
-    SetMonData(temp, MON_DATA_LANGUAGE, &language);
+    SetLanguage(temp, &language);
     SetMonData(temp, MON_DATA_MET_GAME, &gameMet);
     SetMonData(temp, MON_DATA_MARKINGS, &markings);
 

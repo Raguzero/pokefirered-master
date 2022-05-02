@@ -1585,7 +1585,7 @@ static bool8 HasMonBeenRenamed(u8 idx)
     struct Pokemon * pokemon = &gPlayerParty[idx];
     u8 language;
     GetMonData(pokemon, MON_DATA_NICKNAME, gStringVar1);
-    language = GetMonData(pokemon, MON_DATA_LANGUAGE, &language);
+    language = GetLanguage(pokemon);
     if (language != LANGUAGE_ENGLISH)
         return TRUE;
     else if (StringCompare(gSpeciesNames[GetMonData(pokemon, MON_DATA_SPECIES, NULL)], gStringVar1) != 0)

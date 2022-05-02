@@ -91,7 +91,7 @@ struct BoxPokemon
     u32 personality;
     u32 otId;
     u8 nickname[POKEMON_NAME_LENGTH];
-    u8 language;
+    u8 languageAndNature;
     u8 isBadEgg:1;
     u8 hasSpecies:1;
     u8 isEgg:1;
@@ -181,7 +181,7 @@ struct BattlePokemon
     /*0x20*/ u8 ability;
     /*0x21*/ u8 type1;
     /*0x22*/ u8 type2;
-    /*0x23*/ u8 unknown;
+    /*0x23*/ u8 nature;
     /*0x24*/ u8 pp[4];
     /*0x28*/ u16 hp;
     /*0x2A*/ u8 level;
@@ -408,6 +408,9 @@ bool8 PokemonItemUseNoEffect(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mo
 u8 GetItemEffectParamOffset(u16 itemId, u8 effectByte, u8 effectBit);
 const u8 *Battle_PrintStatBoosterEffectMessage(u16 itemId);
 u8 GetNature(struct Pokemon *mon);
+u8 GetBoxMonNature(struct BoxPokemon *mon);
+void SetNature(struct Pokemon *mon, u8 *nature);
+void SetBoxMonNature(struct BoxPokemon *mon, u8 *nature);
 u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u8 type, u16 evolutionItem);
 u16 NationalPokedexNumToSpecies(u16 nationalNum);
 u16 SpeciesToNationalPokedexNum(u16 species);
@@ -442,7 +445,7 @@ const struct CompressedSpritePalette *GetMonSpritePalStruct(struct Pokemon *mon)
 const struct CompressedSpritePalette *GetMonSpritePalStructFromOtIdPersonality(u16 species, u32 otId , u32 personality);
 bool32 IsHMMove2(u16 move);
 bool8 IsPokeSpriteNotFlipped(u16 species);
-s8 GetFlavorRelationByPersonality(u32 personality, u8 flavor);
+s8 GetFlavorRelationByNature(u8 nature, u8 flavor);
 bool8 IsTradedMon(struct Pokemon *mon);
 bool8 IsOtherTrainer(u32 otId, u8 *otName);
 void MonRestorePP(struct Pokemon *mon);
@@ -465,5 +468,9 @@ void OakSpeechNidoranFFreeResources(void);
 void *OakSpeechNidoranFGetBuffer(u8 bufferId);
 u8 GetRandomType(void);
 u8 GetPlayerPartyMaxLevel(void);
+u8 GetLanguage(struct Pokemon *mon);
+u8 GetBoxMonLanguage(struct BoxPokemon *mon);
+void SetLanguage(struct Pokemon *mon, u8 *language);
+void SetBoxMonLanguage(struct BoxPokemon *mon, u8 *language);
 
 #endif // GUARD_POKEMON_H

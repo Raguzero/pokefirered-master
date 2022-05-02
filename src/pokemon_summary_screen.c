@@ -2266,7 +2266,7 @@ static void BufferMonInfo(void)
     GetMonData(&sMonSummaryScreen->currentMon, MON_DATA_OT_NAME, tempStr);
     StringCopyN_Multibyte(sMonSummaryScreen->summary.otNameStrBuf, tempStr, OT_NAME_LENGTH);
 
-    ConvertInternationalString(sMonSummaryScreen->summary.otNameStrBuf, GetMonData(&sMonSummaryScreen->currentMon, MON_DATA_LANGUAGE));
+    ConvertInternationalString(sMonSummaryScreen->summary.otNameStrBuf, GetLanguage(&sMonSummaryScreen->currentMon));
 
     otId = GetMonData(&sMonSummaryScreen->currentMon, MON_DATA_OT_ID) & 0xffff;
     ConvertIntToDecimalStringN(sMonSummaryScreen->summary.unk306C, otId, STR_CONV_MODE_LEADING_ZEROS, 5);

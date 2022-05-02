@@ -1809,6 +1809,8 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
     u16 checksum;
 	u32 shinyValue;
     u8 hiddenPowerType;
+    u8 nature;
+    u8 gameLanguage = gGameLanguage;
 
     ZeroBoxMonData(boxMon);
 
@@ -1816,6 +1818,8 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
         personality = fixedPersonality;
     else
         personality = Random32();
+	
+    nature = personality % 25;
 
     //SetBoxMonData(boxMon, MON_DATA_PERSONALITY, &personality);
 	
@@ -1870,7 +1874,8 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
     EncryptBoxMon(boxMon);
     GetSpeciesName(speciesName, species);
     SetBoxMonData(boxMon, MON_DATA_NICKNAME, speciesName);
-    SetBoxMonData(boxMon, MON_DATA_LANGUAGE, &gGameLanguage);
+    SetBoxMonNature(boxMon, &nature);
+    SetBoxMonLanguage(boxMon, &gameLanguage);
     SetBoxMonData(boxMon, MON_DATA_OT_NAME, gSaveBlock2Ptr->playerName);
     SetBoxMonData(boxMon, MON_DATA_SPECIES, &species);
     SetBoxMonData(boxMon, MON_DATA_EXP, &gExperienceTables[gBaseStats[species].growthRate][level]);
@@ -3130,7 +3135,7 @@ u32 GetBoxMonData(struct BoxPokemon *boxMon, s32 field, u8 *data)
             StringCopy(data, gText_EggNickname);
             retVal = StringLength(data);
         }
-        else if (boxMon->language == LANGUAGE_JAPANESE)
+        else if (boxMon->languageAndNature == LANGUAGE_JAPANESE)
         {
             data[0] = EXT_CTRL_CODE_BEGIN;
             data[1] = EXT_CTRL_CODE_JPN;
@@ -3154,8 +3159,8 @@ u32 GetBoxMonData(struct BoxPokemon *boxMon, s32 field, u8 *data)
         }
         break;
     }
-    case MON_DATA_LANGUAGE:
-        retVal = boxMon->language;
+    case MON_DATA_LANGUAGE_AND_NATURE:
+        retVal = boxMon->languageAndNature;
         break;
     case MON_DATA_SANITY_IS_BAD_EGG:
         retVal = boxMon->isBadEgg;
@@ -3548,8 +3553,8 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
             boxMon->nickname[i] = data[i];
         break;
     }
-    case MON_DATA_LANGUAGE:
-        SET8(boxMon->language);
+    case MON_DATA_LANGUAGE_AND_NATURE:
+        SET8(boxMon->languageAndNature);
         break;
     case MON_DATA_SANITY_IS_BAD_EGG:
         SET8(boxMon->isBadEgg);
@@ -4023,6 +4028,7 @@ static void CopyPlayerPartyMonToBattleData(u8 battlerId, u8 partyIndex)
 
     gBattleMons[battlerId].species = GetMonData(&gPlayerParty[partyIndex], MON_DATA_SPECIES, NULL);
     gBattleMons[battlerId].item = GetMonData(&gPlayerParty[partyIndex], MON_DATA_HELD_ITEM, NULL);
+    gBattleMons[battlerId].nature = GetNature(&gPlayerParty[partyIndex]);
 
     for (i = 0; i < 4; i++)
     {
@@ -5044,7 +5050,28 @@ const u8 *Battle_PrintStatBoosterEffectMessage(u16 itemId)
 
 u8 GetNature(struct Pokemon *mon)
 {
-    return GetMonData(mon, MON_DATA_PERSONALITY, NULL) % 25;
+    u8 languageAndNature = GetMonData(mon, MON_DATA_LANGUAGE_AND_NATURE, NULL);
+    return (languageAndNature & MON_DATA_NATURE_MASK) >> 3;
+}
+
+u8 GetBoxMonNature(struct BoxPokemon *mon)
+{
+    u8 languageAndNature = GetBoxMonData(mon, MON_DATA_LANGUAGE_AND_NATURE, NULL);
+    return (languageAndNature & MON_DATA_NATURE_MASK) >> 3;
+}
+
+void SetNature(struct Pokemon *mon, u8 *nature)
+{
+    u8 languageAndNature = GetMonData(mon, MON_DATA_LANGUAGE_AND_NATURE, NULL);
+    languageAndNature |= (*nature << 3);
+    SetMonData(mon, MON_DATA_LANGUAGE_AND_NATURE, &languageAndNature);
+}
+
+void SetBoxMonNature(struct BoxPokemon *mon, u8 *nature)
+{
+    u8 languageAndNature = GetBoxMonData(mon, MON_DATA_LANGUAGE_AND_NATURE, NULL);
+    languageAndNature |= (*nature << 3);
+    SetBoxMonData(mon, MON_DATA_LANGUAGE_AND_NATURE, &languageAndNature);
 }
 
 static u8 GetNatureFromPersonality(u32 personality)
@@ -5328,7 +5355,7 @@ void EvolutionRenameMon(struct Pokemon *mon, u16 oldSpecies, u16 newSpecies)
 {
     u8 language;
     GetMonData(mon, MON_DATA_NICKNAME, gStringVar1);
-    language = GetMonData(mon, MON_DATA_LANGUAGE, &language);
+    language = GetLanguage(mon);
     if (language == GAME_LANGUAGE && !StringCompare(gSpeciesNames[oldSpecies], gStringVar1))
         SetMonData(mon, MON_DATA_NICKNAME, gSpeciesNames[newSpecies]);
 }
@@ -5997,9 +6024,8 @@ static s8 GetMonFlavorRelation(struct Pokemon *mon, u8 flavor)
     return sPokeblockFlavorCompatibilityTable[nature * 5 + flavor];
 }
 
-s8 GetFlavorRelationByPersonality(u32 personality, u8 flavor)
+s8 GetFlavorRelationByNature(u8 nature, u8 flavor)
 {
-    u8 nature = GetNatureFromPersonality(personality);
     return sPokeblockFlavorCompatibilityTable[nature * 5 + flavor];
 }
 
@@ -6521,4 +6547,30 @@ u8 GetPlayerPartyMaxLevel(void) {
     }
     
     return maxLevel;
+}
+
+u8 GetLanguage(struct Pokemon *mon)
+{
+    u8 languageAndNature = GetMonData(mon, MON_DATA_LANGUAGE_AND_NATURE, NULL);
+    return (languageAndNature & MON_DATA_LANGUAGE_MASK);
+}
+
+u8 GetBoxMonLanguage(struct BoxPokemon *mon)
+{
+    u8 languageAndNature = GetBoxMonData(mon, MON_DATA_LANGUAGE_AND_NATURE, NULL);
+    return (languageAndNature & MON_DATA_LANGUAGE_MASK);
+}
+
+void SetLanguage(struct Pokemon *mon, u8 *language)
+{
+    u8 languageAndNature = GetMonData(mon, MON_DATA_LANGUAGE_AND_NATURE, NULL);
+    languageAndNature |= *language;
+    SetMonData(mon, MON_DATA_LANGUAGE_AND_NATURE, &languageAndNature);
+}
+
+void SetBoxMonLanguage(struct BoxPokemon *mon, u8 *language)
+{
+    u8 languageAndNature = GetBoxMonData(mon, MON_DATA_LANGUAGE_AND_NATURE, NULL);
+    languageAndNature |= *language;
+    SetBoxMonData(mon, MON_DATA_LANGUAGE_AND_NATURE, &languageAndNature);
 }
