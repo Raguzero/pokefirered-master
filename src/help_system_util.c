@@ -38,7 +38,7 @@ static const u16 sTiles[] = INCBIN_U16("graphics/help_system/bg_tiles.4bpp");
 static const u16 sPals[] = INCBIN_U16("graphics/help_system/bg_tiles.gbapal");
 
 u8 RunHelpSystemCallback(void)
-{
+{/*
     s32 i;
 
     switch (sVideoState.state)
@@ -133,7 +133,7 @@ u8 RunHelpSystemCallback(void)
         sVideoState.state = 0;
         break;
     }
-    return sVideoState.state;
+    return sVideoState.state;*/
 }
 
 void SaveCallbacks(void)
