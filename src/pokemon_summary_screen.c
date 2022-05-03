@@ -2418,6 +2418,15 @@ static void BufferMonMoveI(u8 i)
     }
 
     sMonSummaryScreen->numMoves++;
+
+    if (sMonSummaryScreen->moveIds[i] == MOVE_HIDDEN_POWER)
+    {
+        struct Pokemon *mon = &sMonSummaryScreen->currentMon;
+        u8 type = mon->box.hpType;
+
+        sMonSummaryScreen->moveTypes[i] = type;
+    }
+    else
 	sMonSummaryScreen->moveTypes[i] = gBattleMoves[sMonSummaryScreen->moveIds[i]].type;
 
     StringCopy(sMonSummaryScreen->summary.moveNameStrBufs[i], gMoveNames[sMonSummaryScreen->moveIds[i]]);
@@ -2648,7 +2657,7 @@ static void PrintInfoPage(void)
 
 static void PrintSkillsPage(u8 option)
 {
-    u8 nature, colorAtk, colorDef, colorSpA, colorSpD, colorSpe, typeBits, type;
+    u8 nature, colorAtk, colorDef, colorSpA, colorSpD, colorSpe, type;
     int hpIVEV, atkIVEV, defIVEV, spaIVEV, spdIVEV, speIVEV;
     u8 strHpIVEV[3], strAtkIVEV[3], strDefIVEV[3], strSpaIVEV[3], strSpdIVEV[3], strSpeIVEV[3];
     u8 strIV[] = _("IV");
@@ -2690,16 +2699,7 @@ static void PrintSkillsPage(u8 option)
         spaIVEV = GetMonData(mon, MON_DATA_SPATK_IV);
         spdIVEV = GetMonData(mon, MON_DATA_SPDEF_IV);
 
-        typeBits = ((hpIVEV  & 1) << 0)
-                 | ((atkIVEV & 1) << 1)
-                 | ((defIVEV & 1) << 2)
-                 | ((speIVEV & 1) << 3)
-                 | ((spaIVEV & 1) << 4)
-                 | ((spdIVEV & 1) << 5);
-
-        type = (15 * typeBits) / 63 + 1;
-        if (type >= TYPE_MYSTERY)
-            type++;
+        type = mon->box.hpType;
 
         BlitMoveInfoIcon(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], type+1, 9, 49);
 
