@@ -70,6 +70,7 @@
 #define MULTICHOICE_JOIN_OR_LEAD                               63
 #define MULTICHOICE_TRAINER_TOWER_MODE                         64
 #define MULTICHOICE_PKMN_CENTER_MOVE_TUTOR    65
+#define MULTICHOICE_MIDELE_HIDDEN_POWER_TYPES    66
 
 #define LISTMENU_BADGES                    0
 #define LISTMENU_SILPHCO_FLOORS            1

@@ -495,6 +495,28 @@ static const struct MenuAction sScriptMultiChoiceMenu_PKMNCentreMovetutor[] = {
     {gText_Exit},
 };
 
+static const struct MenuAction sScriptMultiChoiceMenu_MideleHiddenPowerTypes[] =
+{
+    {gText_NormalType},
+    {gText_FightingType},
+    {gText_FlyingType},
+    {gText_PoisonType},
+    {gText_GroundType},
+    {gText_RockType},
+    {gText_BugType},
+    {gText_GhostType},
+    {gText_SteelType},
+    {gText_FireType},
+    {gText_WaterType},
+    {gText_GrassType},
+    {gText_ElectricType},
+    {gText_PsychicType},
+    {gText_IceType},
+    {gText_DragonType},
+    {gText_DarkType},
+    {gText_FairyType},
+};
+
 static const struct MenuAction sScriptMultiChoiceMenu_Exit[] = {
     { gOtherText_Exit }
 };
@@ -565,7 +587,8 @@ const struct MultichoiceListStruct gScriptMultiChoiceMenus[] = {
     { sScriptMultiChoiceMenu_62, NELEMS(sScriptMultiChoiceMenu_62) },
     { sScriptMultiChoiceMenu_JoinOrLead, NELEMS(sScriptMultiChoiceMenu_JoinOrLead) },
     { sScriptMultiChoiceMenu_TrainerTowerMode, NELEMS(sScriptMultiChoiceMenu_TrainerTowerMode) },
-    { sScriptMultiChoiceMenu_PKMNCentreMovetutor, NELEMS(sScriptMultiChoiceMenu_PKMNCentreMovetutor) }
+    { sScriptMultiChoiceMenu_PKMNCentreMovetutor, NELEMS(sScriptMultiChoiceMenu_PKMNCentreMovetutor) },
+    { sScriptMultiChoiceMenu_MideleHiddenPowerTypes, NELEMS(sScriptMultiChoiceMenu_MideleHiddenPowerTypes) }
 };
 
 // From Cool to Berries goes unused

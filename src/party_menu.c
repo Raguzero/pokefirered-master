@@ -6464,3 +6464,10 @@ void ItemUseCB_AbilityCapsule(u8 taskId, TaskFunc func)
     SetWordTaskArg(taskId, tOldFunc, (uintptr_t)(gTasks[taskId].func));
     gTasks[taskId].func = Task_AbilityCapsule;
 }
+
+// NUEVO: Menú hidden power
+// Change selected mon hidden power type
+void MideleChangeSelectedMonHiddenPowerType(void) {
+    u8 type = gSpecialVar_0x8005;
+    (&gPlayerParty[gSpecialVar_0x8004])->box.hpType = type;
+}

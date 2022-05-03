@@ -1583,5 +1583,24 @@ extern const u8 gText_RememberAMove[];
 extern const u8 gText_ForgetAMove[];
 extern const u8 gText_RateANickname[];
 
+// NUEVO: nombres de tipos (para NPC Hidden Power)
+extern const u8 gText_NormalType[];
+extern const u8 gText_FightingType[];
+extern const u8 gText_FlyingType[];
+extern const u8 gText_PoisonType[];
+extern const u8 gText_GroundType[];
+extern const u8 gText_RockType[];
+extern const u8 gText_BugType[];
+extern const u8 gText_GhostType[];
+extern const u8 gText_SteelType[];
+extern const u8 gText_FireType[];
+extern const u8 gText_WaterType[];
+extern const u8 gText_GrassType[];
+extern const u8 gText_ElectricType[];
+extern const u8 gText_PsychicType[];
+extern const u8 gText_IceType[];
+extern const u8 gText_DragonType[];
+extern const u8 gText_DarkType[];
+extern const u8 gText_FairyType[];
 
 #endif //GUARD_STRINGS_H
