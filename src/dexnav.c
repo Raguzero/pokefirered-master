@@ -741,7 +741,7 @@ static bool8 TryStartHiddenMonFieldEffect(u8 environment, u8 xSize, u8 ySize, bo
                     fldEffId = FLDEFF_SHAKING_GRASS;
                 else if (MetatileBehavior_IsLongGrass(metatileBehaviour)) //Really tall grass
                     fldEffId = FLDEFF_SHAKING_LONG_GRASS;
-                else if (MetatileBehavior_IsSandOrDeepSand(metatileBehaviour)) // Before (MetatileBehavior_IsSandOrDeepSand(metatileBehaviour))
+                else if (MetatileBehavior_IsSandOrDeepSand(metatileBehaviour)) //
                     fldEffId = FLDEFF_SAND_HOLE;
                 else
                     fldEffId = FLDEFF_CAVE_DUST;
@@ -1147,6 +1147,7 @@ static void Task_DexNavSearch(u8 taskId)
         return;
     }
 
+	/* // Ahora solo necesita meterse una vez en el polvo para encontrar Pokémon en ENCOUNTER_TYPE_WATER y MAP_TYPE_UNDERGROUND
     //Caves and water the pokemon moves around
     if ((sDexNavSearchDataPtr->environment == ENCOUNTER_TYPE_WATER || GetCurrentMapType() == MAP_TYPE_UNDERGROUND)
         && sDexNavSearchDataPtr->proximity < GetMovementProximityBySearchLevel() && sDexNavSearchDataPtr->movementCount < 2
@@ -1161,7 +1162,7 @@ static void Task_DexNavSearch(u8 taskId)
         }
         
         sDexNavSearchDataPtr->movementCount++;
-    }
+    }*/
 
     DexNavProximityUpdate();
     if (task->tProximity != sDexNavSearchDataPtr->proximity)
