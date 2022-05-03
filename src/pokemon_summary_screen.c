@@ -35,6 +35,8 @@
 #include "pokemon_storage_system.h"
 #include "graphics.h"
 
+static EWRAM_DATA u8 pressedButton = 0;
+
 // needs conflicting header to match (curIndex is s8 in the function, but has to be defined as u8 here)
 extern s16 SeekToNextMonInBox(struct BoxPokemon * boxMons, u8 curIndex, u8 maxIndex, u8 flags);
 
@@ -107,7 +109,7 @@ static void PokeSum_CreateMonPicSprite(void);
 static void Task_InputHandler_SelectOrForgetMove(u8 taskId);
 static void CB2_RunPokemonSummaryScreen(void);
 static void PrintInfoPage(void);
-static void PrintSkillsPage(void);
+static void PrintSkillsPage(u8 option);
 static void PrintMovesPage(void);
 static void PokeSum_PrintMoveName(u8 i);
 static void PokeSum_PrintTrainerMemo(void);
@@ -1221,15 +1223,9 @@ bool32 IsPageFlipInput(u8 direction)
         if (JOY_NEW(DPAD_RIGHT))
             return TRUE;
 
-        if (gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_LR && JOY_NEW(R_BUTTON))
-            return TRUE;
-
         break;
     case 0:
         if (JOY_NEW(DPAD_LEFT))
-            return TRUE;
-
-        if (gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_LR && JOY_NEW(L_BUTTON))
             return TRUE;
 
         break;
@@ -1335,6 +1331,19 @@ static void Task_InputHandler_Info(u8 taskId)
             else if (JOY_NEW(B_BUTTON))
             {
                 sMonSummaryScreen->state3270 = PSS_STATE3270_ATEXIT_FADEOUT;
+            }
+            else if (sMonSummaryScreen->curPageIndex == PSS_PAGE_SKILLS)
+            {
+                if (JOY_NEW(L_BUTTON))      // IV
+                {
+                    pressedButton = (pressedButton != 1) ? 1 : 0;
+                }
+                else if (JOY_NEW(R_BUTTON)) // EV
+                {
+                    pressedButton = (pressedButton != 2) ? 2 : 0;
+                }
+                PokeSum_PrintRightPaneText();
+                CopyWindowToVram(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2);
             }
         }
         break;
@@ -2592,7 +2601,7 @@ static void PokeSum_PrintRightPaneText(void)
         PrintInfoPage();
         break;
     case PSS_PAGE_SKILLS:
-        PrintSkillsPage();
+        PrintSkillsPage(pressedButton);
         break;
     case PSS_PAGE_MOVES:
     case PSS_PAGE_MOVES_INFO:
@@ -2637,33 +2646,113 @@ static void PrintInfoPage(void)
     }
 }
 
-static void PrintSkillsPage(void)
+static void PrintSkillsPage(u8 option)
 {
-    u8 nature;
-    u8 colorAtk, colorDef, colorSpA, colorSpD, colorSpe;
+    u8 nature, colorAtk, colorDef, colorSpA, colorSpD, colorSpe, typeBits, type;
+    int hpIVEV, atkIVEV, defIVEV, spaIVEV, spdIVEV, speIVEV;
+    u8 strHpIVEV[3], strAtkIVEV[3], strDefIVEV[3], strSpaIVEV[3], strSpdIVEV[3], strSpeIVEV[3];
+    u8 strIV[] = _("IV");
+    u8 strEV[] = _("EV");
+    struct Pokemon *mon = &sMonSummaryScreen->currentMon;
+    struct SpriteTemplate *hiddenType;
 
-    nature = GetNature(&sMonSummaryScreen->currentMon);
+    switch (option)
+    {
+    case 0: // No button
+        nature = GetNature(mon);
 
-    // Natured Stat Up Conditions
-    colorAtk = (nature >= 1 && nature <= 4) ? 7 : 0;
-    colorDef = (nature != 6 && nature >= 5 && nature <= 9) ? 7 : 0;
-    colorSpe = (nature != 12 && nature >= 10 && nature <= 14) ? 7 : 0;
-    colorSpA = (nature != 18 && nature >= 15 && nature <= 19) ? 7 : 0;
-    colorSpD = (nature >= 20 && nature <= 23) ? 7 : 0;
+        // Natured Stat Up Conditions
+        colorAtk = (nature >= 1 && nature <= 4) ? 7 : 0;
+        colorDef = (nature != 6 && nature >= 5 && nature <= 9) ? 7 : 0;
+        colorSpe = (nature != 12 && nature >= 10 && nature <= 14) ? 7 : 0;
+        colorSpA = (nature != 18 && nature >= 15 && nature <= 19) ? 7 : 0;
+        colorSpD = (nature >= 20 && nature <= 23) ? 7 : 0;
 
-    // Natured Stat Down Conditions
-    colorAtk = (nature == 5 || nature == 10 || nature == 15 || nature == 20) ? 6 : colorAtk;
-    colorDef = (nature == 1 || nature == 11 || nature == 16 || nature == 21) ? 6 : colorDef;
-    colorSpe = (nature == 2 || nature == 7  || nature == 17 || nature == 22) ? 6 : colorSpe;
-    colorSpA = (nature == 3 || nature == 8  || nature == 13 || nature == 23) ? 6 : colorSpA;
-    colorSpD = (nature == 4 || nature == 9  || nature == 14 || nature == 19) ? 6 : colorSpD;
-	
-    AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 14 + sMonSkillsPrinterXpos->curHpStr, 4, sLevelNickTextColors[0], TEXT_SPEED_FF, sMonSummaryScreen->summary.curHpStrBuf);
-    AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 50 + sMonSkillsPrinterXpos->atkStr, 22, sLevelNickTextColors[colorAtk], TEXT_SPEED_FF, sMonSummaryScreen->summary.statValueStrBufs[PSS_STAT_ATK]);
-    AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 50 + sMonSkillsPrinterXpos->defStr, 35, sLevelNickTextColors[colorDef], TEXT_SPEED_FF, sMonSummaryScreen->summary.statValueStrBufs[PSS_STAT_DEF]);
-    AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 50 + sMonSkillsPrinterXpos->spAStr, 48, sLevelNickTextColors[colorSpA], TEXT_SPEED_FF, sMonSummaryScreen->summary.statValueStrBufs[PSS_STAT_SPA]);
-    AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 50 + sMonSkillsPrinterXpos->spDStr, 61, sLevelNickTextColors[colorSpD], TEXT_SPEED_FF, sMonSummaryScreen->summary.statValueStrBufs[PSS_STAT_SPD]);
-    AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 50 + sMonSkillsPrinterXpos->speStr, 74, sLevelNickTextColors[colorSpe], TEXT_SPEED_FF, sMonSummaryScreen->summary.statValueStrBufs[PSS_STAT_SPE]);
+        // Natured Stat Down Conditions
+        colorAtk = (nature == 5 || nature == 10 || nature == 15 || nature == 20) ? 6 : colorAtk;
+        colorDef = (nature == 1 || nature == 11 || nature == 16 || nature == 21) ? 6 : colorDef;
+        colorSpe = (nature == 2 || nature == 7  || nature == 17 || nature == 22) ? 6 : colorSpe;
+        colorSpA = (nature == 3 || nature == 8  || nature == 13 || nature == 23) ? 6 : colorSpA;
+        colorSpD = (nature == 4 || nature == 9  || nature == 14 || nature == 19) ? 6 : colorSpD;
+
+        AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 14 + sMonSkillsPrinterXpos->curHpStr, 4, sLevelNickTextColors[0], TEXT_SPEED_FF, sMonSummaryScreen->summary.curHpStrBuf);
+        AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 50 + sMonSkillsPrinterXpos->atkStr, 22, sLevelNickTextColors[colorAtk], TEXT_SPEED_FF, sMonSummaryScreen->summary.statValueStrBufs[PSS_STAT_ATK]);
+        AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 50 + sMonSkillsPrinterXpos->defStr, 35, sLevelNickTextColors[colorDef], TEXT_SPEED_FF, sMonSummaryScreen->summary.statValueStrBufs[PSS_STAT_DEF]);
+        AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 50 + sMonSkillsPrinterXpos->spAStr, 48, sLevelNickTextColors[colorSpA], TEXT_SPEED_FF, sMonSummaryScreen->summary.statValueStrBufs[PSS_STAT_SPA]);
+        AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 50 + sMonSkillsPrinterXpos->spDStr, 61, sLevelNickTextColors[colorSpD], TEXT_SPEED_FF, sMonSummaryScreen->summary.statValueStrBufs[PSS_STAT_SPD]);
+        AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 50 + sMonSkillsPrinterXpos->speStr, 74, sLevelNickTextColors[colorSpe], TEXT_SPEED_FF, sMonSummaryScreen->summary.statValueStrBufs[PSS_STAT_SPE]);
+        break;
+    case 1: // L Button
+        hpIVEV =  GetMonData(mon, MON_DATA_HP_IV);
+        atkIVEV = GetMonData(mon, MON_DATA_ATK_IV);
+        defIVEV = GetMonData(mon, MON_DATA_DEF_IV);
+        speIVEV = GetMonData(mon, MON_DATA_SPEED_IV);
+        spaIVEV = GetMonData(mon, MON_DATA_SPATK_IV);
+        spdIVEV = GetMonData(mon, MON_DATA_SPDEF_IV);
+
+        typeBits = ((hpIVEV  & 1) << 0)
+                 | ((atkIVEV & 1) << 1)
+                 | ((defIVEV & 1) << 2)
+                 | ((speIVEV & 1) << 3)
+                 | ((spaIVEV & 1) << 4)
+                 | ((spdIVEV & 1) << 5);
+
+        type = (15 * typeBits) / 63 + 1;
+        if (type >= TYPE_MYSTERY)
+            type++;
+
+        BlitMoveInfoIcon(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], type+1, 9, 49);
+
+        AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 11 + 33,  4, sLevelNickTextColors[7], TEXT_SPEED_FF, strIV);
+        AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 29 + 15, 22, sLevelNickTextColors[7], TEXT_SPEED_FF, strIV);
+        AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 29 + 15, 35, sLevelNickTextColors[7], TEXT_SPEED_FF, strIV);
+        AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 29 + 15, 48, sLevelNickTextColors[7], TEXT_SPEED_FF, strIV);
+        AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 29 + 15, 61, sLevelNickTextColors[7], TEXT_SPEED_FF, strIV);
+        AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 29 + 15, 74, sLevelNickTextColors[7], TEXT_SPEED_FF, strIV);
+
+        ConvertIntToDecimalStringN(strHpIVEV,  hpIVEV,  STR_CONV_MODE_RIGHT_ALIGN, 2);
+        AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 33 + 33,  4, sLevelNickTextColors[0], TEXT_SPEED_FF, strHpIVEV);
+        ConvertIntToDecimalStringN(strAtkIVEV, atkIVEV, STR_CONV_MODE_RIGHT_ALIGN, 2);
+        AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 51 + 15, 22, sLevelNickTextColors[0], TEXT_SPEED_FF, strAtkIVEV);
+        ConvertIntToDecimalStringN(strDefIVEV, defIVEV, STR_CONV_MODE_RIGHT_ALIGN, 2);
+        AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 51 + 15, 35, sLevelNickTextColors[0], TEXT_SPEED_FF, strDefIVEV);
+        ConvertIntToDecimalStringN(strSpaIVEV, spaIVEV, STR_CONV_MODE_RIGHT_ALIGN, 2);
+        AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 51 + 15, 48, sLevelNickTextColors[0], TEXT_SPEED_FF, strSpaIVEV);
+        ConvertIntToDecimalStringN(strSpdIVEV, spdIVEV, STR_CONV_MODE_RIGHT_ALIGN, 2);
+        AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 51 + 15, 61, sLevelNickTextColors[0], TEXT_SPEED_FF, strSpdIVEV);
+        ConvertIntToDecimalStringN(strSpeIVEV, speIVEV, STR_CONV_MODE_RIGHT_ALIGN, 2);
+        AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 51 + 15, 74, sLevelNickTextColors[0], TEXT_SPEED_FF, strSpeIVEV);
+
+        break;
+    case 2: // R Button
+        hpIVEV =  GetMonData(mon, MON_DATA_HP_EV);
+        atkIVEV = GetMonData(mon, MON_DATA_ATK_EV);
+        defIVEV = GetMonData(mon, MON_DATA_DEF_EV);
+        speIVEV = GetMonData(mon, MON_DATA_SPEED_EV);
+        spaIVEV = GetMonData(mon, MON_DATA_SPATK_EV);
+        spdIVEV = GetMonData(mon, MON_DATA_SPDEF_EV);
+
+        AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 11 + 33,  4, sLevelNickTextColors[6], TEXT_SPEED_FF, strEV);
+        AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 29 + 15, 22, sLevelNickTextColors[6], TEXT_SPEED_FF, strEV);
+        AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 29 + 15, 35, sLevelNickTextColors[6], TEXT_SPEED_FF, strEV);
+        AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 29 + 15, 48, sLevelNickTextColors[6], TEXT_SPEED_FF, strEV);
+        AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 29 + 15, 61, sLevelNickTextColors[6], TEXT_SPEED_FF, strEV);
+        AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 29 + 15, 74, sLevelNickTextColors[6], TEXT_SPEED_FF, strEV);
+
+        ConvertIntToDecimalStringN(strHpIVEV,  hpIVEV,  STR_CONV_MODE_RIGHT_ALIGN, 3);
+        AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 27 + 33,  4, sLevelNickTextColors[0], TEXT_SPEED_FF, strHpIVEV);
+        ConvertIntToDecimalStringN(strAtkIVEV, atkIVEV, STR_CONV_MODE_RIGHT_ALIGN, 3);
+        AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 45 + 15, 22, sLevelNickTextColors[0], TEXT_SPEED_FF, strAtkIVEV);
+        ConvertIntToDecimalStringN(strDefIVEV, defIVEV, STR_CONV_MODE_RIGHT_ALIGN, 3);
+        AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 45 + 15, 35, sLevelNickTextColors[0], TEXT_SPEED_FF, strDefIVEV);
+        ConvertIntToDecimalStringN(strSpaIVEV, spaIVEV, STR_CONV_MODE_RIGHT_ALIGN, 3);
+        AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 45 + 15, 48, sLevelNickTextColors[0], TEXT_SPEED_FF, strSpaIVEV);
+        ConvertIntToDecimalStringN(strSpdIVEV, spdIVEV, STR_CONV_MODE_RIGHT_ALIGN, 3);
+        AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 45 + 15, 61, sLevelNickTextColors[0], TEXT_SPEED_FF, strSpdIVEV);
+        ConvertIntToDecimalStringN(strSpeIVEV, speIVEV, STR_CONV_MODE_RIGHT_ALIGN, 3);
+        AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 45 + 15, 74, sLevelNickTextColors[0], TEXT_SPEED_FF, strSpeIVEV);
+        break;
+    }
     AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 15 + sMonSkillsPrinterXpos->expStr, 87, sLevelNickTextColors[0], TEXT_SPEED_FF, sMonSummaryScreen->summary.expPointsStrBuf);
     AddTextPrinterParameterized3(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], 2, 15 + sMonSkillsPrinterXpos->toNextLevel, 100, sLevelNickTextColors[0], TEXT_SPEED_FF, sMonSummaryScreen->summary.expToNextLevelStrBuf);
 }
@@ -3527,7 +3616,7 @@ static void PokeSum_PrintMonTypeIcons(void)
             BlitMoveInfoIcon(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], sMonSummaryScreen->monTypes[0] + 1, 47, 35);
 
             if (sMonSummaryScreen->monTypes[0] != sMonSummaryScreen->monTypes[1])
-                BlitMoveInfoIcon(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], sMonSummaryScreen->monTypes[1] + 1, 83, 35);
+			     BlitMoveInfoIcon(sMonSummaryScreen->windowIds[POKESUM_WIN_MOVES_5], sMonSummaryScreen->monTypes[1] + 1, 83, 35);
         }
         break;
     case PSS_PAGE_SKILLS:
