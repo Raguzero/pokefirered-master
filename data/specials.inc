@@ -453,4 +453,5 @@ gSpecials:: @ 815FD60
 	def_special LoopWingFlapSound
 	def_special CreateEventLegalEnemyMon
 	def_special MideleChangeSelectedMonHiddenPowerType
+	def_special MideleChangeSelectedMonNature
 gSpecialsEnd::

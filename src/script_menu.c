@@ -517,6 +517,41 @@ static const struct MenuAction sScriptMultiChoiceMenu_MideleHiddenPowerTypes[] =
     {gText_FairyType},
 };
 
+static const struct MenuAction sScriptMultiChoiceMenu_MideleNatures1[] =
+{
+    {gText_HardyNature},
+    {gText_LonelyNature},
+    {gText_BraveNature},
+    {gText_AdamantNature},
+    {gText_NaughtyNature},
+    {gText_BoldNature},
+    {gText_DocileNature},
+    {gText_RelaxedNature},
+    {gText_ImpishNature},
+    {gText_LaxNature},
+    {gText_TimidNature},
+    {gText_HastyNature},
+    {gText_SeriousNature},
+    {gText_JollyNature},
+    {gText_NaiveNature},
+    {gText_ModestNature},
+    {gText_MildNature},
+    {gText_Exit}
+};
+
+static const struct MenuAction sScriptMultiChoiceMenu_MideleNatures2[] =
+{
+    {gText_QuietNature},
+    {gText_BashfulNature},
+    {gText_RashNature},
+    {gText_CalmNature},
+    {gText_GentleNature},
+    {gText_SassyNature},
+    {gText_CarefulNature},
+    {gText_QuirkyNature},
+    {gText_Exit}
+};
+
 static const struct MenuAction sScriptMultiChoiceMenu_Exit[] = {
     { gOtherText_Exit }
 };
@@ -588,7 +623,9 @@ const struct MultichoiceListStruct gScriptMultiChoiceMenus[] = {
     { sScriptMultiChoiceMenu_JoinOrLead, NELEMS(sScriptMultiChoiceMenu_JoinOrLead) },
     { sScriptMultiChoiceMenu_TrainerTowerMode, NELEMS(sScriptMultiChoiceMenu_TrainerTowerMode) },
     { sScriptMultiChoiceMenu_PKMNCentreMovetutor, NELEMS(sScriptMultiChoiceMenu_PKMNCentreMovetutor) },
-    { sScriptMultiChoiceMenu_MideleHiddenPowerTypes, NELEMS(sScriptMultiChoiceMenu_MideleHiddenPowerTypes) }
+    { sScriptMultiChoiceMenu_MideleHiddenPowerTypes, NELEMS(sScriptMultiChoiceMenu_MideleHiddenPowerTypes) },
+    { sScriptMultiChoiceMenu_MideleNatures1, NELEMS(sScriptMultiChoiceMenu_MideleNatures1) },
+    { sScriptMultiChoiceMenu_MideleNatures2, NELEMS(sScriptMultiChoiceMenu_MideleNatures2) }
 };
 
 // From Cool to Berries goes unused

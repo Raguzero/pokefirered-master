@@ -90,5 +90,6 @@ void ShowPartyMenuToShowcaseMultiBattleParty(void);
 void ChooseMonForDaycare(void);
 void ChoosePartyMonByMenuType(u8 menuType);
 void MideleChangeSelectedMonHiddenPowerType(void);
+void MideleChangeSelectedMonNature(void);
 
 #endif // GUARD_PARTY_MENU_H
