@@ -454,4 +454,5 @@ gSpecials:: @ 815FD60
 	def_special CreateEventLegalEnemyMon
 	def_special MideleChangeSelectedMonHiddenPowerType
 	def_special MideleChangeSelectedMonNature
+	def_special MideleResetSelectedMonEVs
 gSpecialsEnd::

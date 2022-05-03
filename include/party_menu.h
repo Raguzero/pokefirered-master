@@ -91,5 +91,6 @@ void ChooseMonForDaycare(void);
 void ChoosePartyMonByMenuType(u8 menuType);
 void MideleChangeSelectedMonHiddenPowerType(void);
 void MideleChangeSelectedMonNature(void);
+void MideleResetSelectedMonEVs(void);
 
 #endif // GUARD_PARTY_MENU_H
