@@ -25,6 +25,15 @@ struct BattleTowerPokemonTemplate
     u8 nature;
 };
 
+struct FacilityMon
+{
+    u16 species;
+    u16 moves[MAX_MON_MOVES];
+    u8 itemTableId;
+    u8 evSpread;
+    u8 nature;
+};
+
 extern const u16 gBattleTowerBannedSpecies[];
 
 u16 sub_8164FCC(u8, u8);
@@ -36,5 +45,8 @@ void CopyEReaderTrainerName5(u8 *dest);
 void GetBattleTowerTrainerName(u8 *text);
 u8 GetEreaderTrainerClassId(void);
 u8 GetBattleTowerTrainerClassNameId(void);
+void SetMonMoveAvoidReturn(struct Pokemon *mon, u16 moveArg, u8 moveSlot);
+extern const struct FacilityMon gBattleFrontierMons[];
+extern const struct FacilityMon *gFacilityTrainerMons;
 
 #endif //GUARD_BATTLE_TOWER_H

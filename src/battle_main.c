@@ -9,6 +9,7 @@
 #include "battle_message.h"
 #include "battle_scripts.h"
 #include "battle_setup.h"
+#include "battle_tower.h"
 #include "battle_string_ids.h"
 #include "berry.h"
 #include "daycare.h"
@@ -45,6 +46,7 @@
 #include "constants/pokemon.h"
 #include "constants/songs.h"
 #include "constants/trainer_classes.h"
+#include "constants/battle_frontier_mons.h"
 
 static void SpriteCB_UnusedDebugSprite(struct Sprite *sprite);
 static void HandleAction_UseMove(void);
@@ -1618,6 +1620,25 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
             {
                 const struct TrainerMonCustomMidele *partyData = gTrainers[trainerNum].party.ItemCustomMidele;
                 u8 mideleLevel;
+				
+		// NUEVO RANDOM BATTLE
+                if (FlagGet(FLAG_RYU_RANDOMBATTLE) == 1)
+                {
+                    u8 playerPartyMaxLevel = GetPlayerPartyMaxLevel();
+					u8 minLevel = 60;
+					u8 level = max(playerPartyMaxLevel, minLevel);
+				  const struct FacilityMon * pokeenemy  = &gBattleFrontierMons[Random() % NUM_FRONTIER_MONS];
+				CreateMonWithEVSpreadNatureOTID(&gEnemyParty[i], pokeenemy -> species, level, pokeenemy -> nature, 31, pokeenemy -> evSpread, 0);
+                for (j = 0; j < MAX_MON_MOVES; j++)
+        {
+            SetMonMoveAvoidReturn(&gEnemyParty[i], pokeenemy -> moves[j], j);
+        }
+
+        SetMonData(&gEnemyParty[i], MON_DATA_FRIENDSHIP, 0);
+        //SetMonData(&gEnemyParty[i], MON_DATA_HELD_ITEM, &sBattleTowerHeldItems[pokeenemy -> itemTableId]);
+					break;
+                }
+		// NUEVO RANDOM BATTLE
 				
                 fixedIV = partyData[i].iv;
               /*  if (FlagGet(FLAG_CIBERCAFE_RANDOM) == 1)

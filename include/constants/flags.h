@@ -523,7 +523,7 @@
 
 // Unused?
 #define FLAG_0x1FF               0x1FF
-#define FLAG_0x200               0x200
+#define FLAG_RYU_RANDOMBATTLE    0x200 // RANDOM BATTLE
 #define FLAG_0x201               0x201
 #define FLAG_0x202               0x202
 #define FLAG_0x203               0x203

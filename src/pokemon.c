@@ -2088,6 +2088,40 @@ void CreateBattleTowerMon(struct Pokemon *mon, struct BattleTowerPokemon *src)
     CalculateMonStats(mon);
 }
 
+void CreateMonWithEVSpreadNatureOTID(struct Pokemon *mon, u16 species, u8 level, u8 nature, u8 fixedIV, u8 evSpread, u32 otId)
+{
+    s32 i;
+    s32 statCount = 0;
+    u8 evsBits;
+    u16 evAmount;
+
+    // i is reused as personality value
+    do
+    {
+        i = Random32();
+    } while (nature != GetNatureFromPersonality(i));
+
+    CreateMon(mon, species, level, fixedIV, TRUE, i, OT_ID_PRESET, otId);
+    evsBits = evSpread;
+    for (i = 0; i < NUM_STATS; i++)
+    {
+        if (evsBits & 1)
+            statCount++;
+        evsBits >>= 1;
+    }
+
+    evAmount = MAX_TOTAL_EVS / statCount;
+    evsBits = 1;
+    for (i = 0; i < NUM_STATS; i++)
+    {
+        if (evSpread & evsBits)
+            SetMonData(mon, MON_DATA_HP_EV + i, &evAmount);
+        evsBits <<= 1;
+    }
+
+    CalculateMonStats(mon);
+}
+
 static void CreateEventLegalMon(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 hasFixedPersonality, u32 fixedPersonality, u8 otIdType, u32 fixedOtId)
 {
     bool32 isEventLegal = TRUE;

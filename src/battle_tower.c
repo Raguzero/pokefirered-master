@@ -23,8 +23,10 @@
 #include "constants/moves.h"
 #include "constants/pokemon.h"
 #include "constants/event_objects.h"
+#include "constants/battle_frontier_mons.h"
 
 static EWRAM_DATA u16 sSpecialVar_0x8004_Copy = 0;
+EWRAM_DATA const struct FacilityMon *gFacilityTrainerMons = NULL;
 
 #define TakeBravoTrainerBattleTowerOffTheAir()
 #define ewram160FB (*((u8 *)&gBattleStruct->field_DA))
@@ -114,11 +116,31 @@ static const u16 sBattleTowerHeldItems[] = {
     ITEM_METAL_POWDER,
     ITEM_PETAYA_BERRY,
     ITEM_LUCKY_PUNCH,
-    ITEM_GANLON_BERRY
+    ITEM_GANLON_BERRY,
+    ITEM_CHOICE_SCARF,
+    ITEM_CHOICE_SPECS,
+    ITEM_POWER_HERB,
+    ITEM_FOCUS_SASH,
+    ITEM_HEART_SCALE,
+    ITEM_TINY_MUSHROOM,
+    ITEM_BIG_MUSHROOM,
+    ITEM_EVERSTONE,
+    ITEM_YELLOW_FLUTE,
+    ITEM_BLUE_FLUTE,
+    ITEM_RED_FLUTE,
+    ITEM_NUGGET,
+    ITEM_POKE_DOLL,
+    ITEM_FLUFFY_TAIL,
+    ITEM_SMOKE_BALL,
+    ITEM_CLEANSE_TAG,
+    ITEM_SOOTHE_BELL,
+    ITEM_PINK_PETAL,
+    ITEM_NANAB_BERRY
 };
 
 #include "data/battle_tower/level_50_mons.h"
 #include "data/battle_tower/level_100_mons.h"
+#include "data/battle_tower/battle_frontier_mons.h"
 
 static const u8 sMaleTrainerClasses[] =
 {
@@ -1418,4 +1440,136 @@ void Dummy_TryEnableBravoTrainerBattleTower(void)
         if (gSaveBlock2Ptr->battleTower.var_4AE[i] == 1)
             TakeBravoTrainerBattleTowerOffTheAir();
     }
+}
+
+static void FillTrainerParty(u16 trainerId, u8 firstMonId, u8 monCount)
+{
+    s32 i, j;
+    //u16 chosenMonIndices[4];
+    u8 friendship = 255;
+    u8 level = 100;
+    u8 fixedIV = 0;
+    u8 bfMonCount;
+    const u16 *monSet = NULL;
+    u32 otID = 0;
+
+    /*if (trainerId < FRONTIER_TRAINERS_COUNT)
+    {
+        // Normal battle frontier trainer.
+        fixedIV = GetFrontierTrainerFixedIvs(trainerId);
+        monSet = gFacilityTrainers[gTrainerBattleOpponent_A].monSet;
+    }
+    else if (trainerId == TRAINER_EREADER)
+    {
+        #ifndef FREE_BATTLE_TOWER_E_READER
+        for (i = firstMonId; i < firstMonId + 3; i++)
+            CreateBattleTowerMon(&gEnemyParty[i], &gSaveBlock2Ptr->frontier.ereaderTrainer.party[i - firstMonId]);
+        #endif
+        return;
+    }
+    else if (trainerId == TRAINER_FRONTIER_BRAIN)
+    {
+        CreateFrontierBrainPokemon();
+        return;
+    }
+    else if (trainerId < TRAINER_RECORD_MIXING_APPRENTICE)
+    {
+        // Record mixed player.
+        for (j = 0, i = firstMonId; i < firstMonId + monCount; j++, i++)
+        {
+            if (gSaveBlock2Ptr->frontier.towerRecords[trainerId - TRAINER_RECORD_MIXING_FRIEND].party[j].species != 0
+                && gSaveBlock2Ptr->frontier.towerRecords[trainerId - TRAINER_RECORD_MIXING_FRIEND].party[j].level <= level)
+            {
+                CreateBattleTowerMon2(&gEnemyParty[i], &gSaveBlock2Ptr->frontier.towerRecords[trainerId - TRAINER_RECORD_MIXING_FRIEND].party[j], FALSE);
+            }
+        }
+        return;
+    }
+    else
+    {
+        // Apprentice.
+        for (i = firstMonId; i < firstMonId + 3; i++)
+            CreateApprenticeMon(&gEnemyParty[i], &gSaveBlock2Ptr->apprentices[trainerId - TRAINER_RECORD_MIXING_APPRENTICE], i - firstMonId);
+        return;
+    }
+
+    // Regular battle frontier trainer.
+    // Attempt to fill the trainer's party with random Pokemon until 3 have been
+    // successfully chosen. The trainer's party may not have duplicate pokemon species
+    // or duplicate held items.
+    for (bfMonCount = 0; monSet[bfMonCount] != 0xFFFF; bfMonCount++)
+        ;
+    i = 0;
+    otID = Random32();
+    while (i != monCount)
+    {*/
+        u16 battleMonIndex = monSet[Random() % bfMonCount];
+        /*if ((level == 50 || level == 20) && monId > FRONTIER_MONS_HIGH_TIER)
+            continue;
+		
+        // Ensure this pokemon species isn't a duplicate.
+        for (j = 0; j < i + firstMonId; j++)
+        {
+            if (GetMonData(&gEnemyParty[j], MON_DATA_SPECIES, NULL) == gFacilityTrainerMons[monId].species)
+                break;
+        }
+        if (j != i + firstMonId)
+            continue;
+
+        // Ensure this Pokemon's held item isn't a duplicate.
+        for (j = 0; j < i + firstMonId; j++)
+        {
+            if (GetMonData(&gEnemyParty[j], MON_DATA_HELD_ITEM, NULL) != 0
+             && GetMonData(&gEnemyParty[j], MON_DATA_HELD_ITEM, NULL) == gBattleFrontierHeldItems[gFacilityTrainerMons[monId].itemTableId])
+                break;
+        }
+        if (j != i + firstMonId)
+            continue;
+
+        // Ensure this exact pokemon index isn't a duplicate. This check doesn't seem necessary
+        // because the species and held items were already checked directly above.
+        for (j = 0; j < i; j++)
+        {
+            if (chosenMonIndices[j] == monId)
+                break;
+        }
+        if (j != i)
+            continue;
+
+        chosenMonIndices[i] = monId;
+        */
+        // Place the chosen pokemon into the trainer's party.
+        CreateMonWithEVSpreadNatureOTID(&gEnemyParty[i + firstMonId],
+                                             gFacilityTrainerMons[battleMonIndex].species,
+                                             level,
+                                             gFacilityTrainerMons[battleMonIndex].nature,
+                                             fixedIV,
+                                             gFacilityTrainerMons[battleMonIndex].evSpread,
+                                             otID);
+
+        friendship = 255;
+        // Give the chosen pokemon its specified moves.
+        for (j = 0; j < MAX_MON_MOVES; j++)
+        {
+            SetMonMoveSlot(&gEnemyParty[i + firstMonId], gFacilityTrainerMons[battleMonIndex].moves[j], j);
+            if (gFacilityTrainerMons[battleMonIndex].moves[j] == MOVE_FRUSTRATION)
+                friendship = 0;  // Frustration is more powerful the lower the pokemon's friendship is.
+        }
+
+        SetMonData(&gEnemyParty[i + firstMonId], MON_DATA_FRIENDSHIP, &friendship);
+        SetMonData(&gEnemyParty[i + firstMonId], MON_DATA_HELD_ITEM, &sBattleTowerHeldItems[gFacilityTrainerMons[battleMonIndex].itemTableId]);
+
+        // The pokemon was successfully added to the trainer's party, so it's safe to move on to
+        // the next party slot.
+        i++;
+    //}
+}
+
+
+void SetMonMoveAvoidReturn(struct Pokemon *mon, u16 moveArg, u8 moveSlot)
+{
+    u16 move = moveArg;
+    if (moveArg == MOVE_RETURN)
+        move = MOVE_FRUSTRATION;
+    SetMonMoveSlot(mon, move, moveSlot);
 }
