@@ -9,6 +9,8 @@
 #define MOVE_LIMITATION_TORMENTED               (1 << 3)
 #define MOVE_LIMITATION_TAUNT                   (1 << 4)
 #define MOVE_LIMITATION_IMPRISON                (1 << 5)
+#define MOVE_LIMITATION_ENCORE                  (1 << 6)
+#define MOVE_LIMITATION_CHOICE                  (1 << 7)
 
 #define ABILITYEFFECT_ON_SWITCHIN                0x0
 #define ABILITYEFFECT_ENDTURN                    0x1
@@ -88,5 +90,6 @@ void ClearFuryCutterDestinyBondGrudge(u8 battlerId);
 void HandleAction_RunBattleScript(void);
 u8 GetMoveTarget(u16 move, u8 setTarget);
 u8 IsMonDisobedient(void);
+bool32 IsBattlerAlive(u8 battlerId);
 
 #endif // GUARD_BATTLE_UTIL_H

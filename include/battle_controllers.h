@@ -181,6 +181,8 @@ enum
 
 extern struct UnusedControllerStruct gUnknown_2022870;
 
+// Movida aquí para poder evaluar si un jugador es la IA
+void OpponentBufferRunCommand(void);
 // general functions
 void HandleLinkBattleSetup(void);
 void SetUpBattleVars(void);

@@ -294,6 +294,7 @@ struct AI_ThinkingStruct
     u8 aiLogicId;
     u8 filler12[6];
     u8 simulatedRNG[4];
+	bool8 switchMon; // Because all available moves have no/little effect.
 };
 
 extern u8 gActiveBattler;
@@ -308,13 +309,24 @@ struct UsedMoves
     u16 unknown[MAX_BATTLERS_COUNT];
 };
 
+struct AI_MemoryStruct
+{
+    u8 lastMoveIndex:2;
+    u8 secondLastMoveIndex:2;
+    u8 opponentChanged:1;
+    u8 enoughPointsDifference:1;
+    u8 switchesDetected:1;
+    u8 triedToPredictSwitches:1;
+};
+
 struct BattleHistory
 {
-    /*0x00*/ u16 usedMoves[2][8]; // 0xFFFF means move not used (confuse self hit, etc)
-    /*0x20*/ u8 abilities[MAX_BATTLERS_COUNT / 2];
-    /*0x22*/ u8 itemEffects[MAX_BATTLERS_COUNT / 2];
-    /*0x24*/ u16 trainerItems[MAX_BATTLERS_COUNT];
-    /*0x2C*/ u8 itemsNo;
+    struct UsedMoves _usedMoves[2 * PARTY_SIZE];
+    u8 _abilities[2 * PARTY_SIZE];
+    u8 _itemEffects[2 * PARTY_SIZE];
+    u16 trainerItems[MAX_BATTLERS_COUNT];
+    u8 itemsNo;
+    struct AI_MemoryStruct switchMemory[2];
 };
 
 struct BattleScriptsStack
@@ -437,7 +449,7 @@ struct BattleStruct
     u8 expGetterBattlerId;
     u8 field_90; // unused
     u8 absentBattlerFlags;
-    u8 AI_monToSwitchIntoId[2];
+    u8 AI_monToSwitchIntoId[2]; // ¿Debería ser [MAX_BATTLERS_COUNT] como en emerald?
     u8 simulatedInputState[4];  // used by Oak/Old Man/Pokedude controllers
     u8 lastTakenMove[MAX_BATTLERS_COUNT * 2 * 2]; // ask gamefreak why they declared it that way
     u16 hpOnSwitchout[2];

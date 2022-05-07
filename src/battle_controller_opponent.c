@@ -78,7 +78,6 @@ static void OpponentHandleResetActionMoveSelection(void);
 static void OpponentHandleCmd55(void);
 static void OpponentCmdEnd(void);
 
-static void OpponentBufferRunCommand(void);
 static u32 GetOpponentMonData(u8 monId, u8 *dst);
 static void SetOpponentMonData(u8 monId);
 static void DoSwitchOutAnimation(void);
@@ -162,7 +161,7 @@ void SetControllerToOpponent(void)
     gBattlerControllerFuncs[gActiveBattler] = OpponentBufferRunCommand;
 }
 
-static void OpponentBufferRunCommand(void)
+void OpponentBufferRunCommand(void)
 {
     if (gBattleControllerExecFlags & gBitTable[gActiveBattler])
     {
@@ -1365,6 +1364,9 @@ static void OpponentHandleChooseMove(void)
         case AI_CHOICE_FLEE:
             BtlController_EmitTwoReturnValues(1, B_ACTION_RUN, 0);
             break;
+		case AI_CHOICE_SWITCH:
+            BtlController_EmitTwoReturnValues(1, 10, 0xFFFF);
+            break;
         default:
             if (gBattleMoves[moveInfo->moves[chosenMoveId]].target & (MOVE_TARGET_USER_OR_SELECTED | MOVE_TARGET_USER))
                 gBattlerTarget = gActiveBattler;
@@ -1412,7 +1414,7 @@ static void OpponentHandleChoosePokemon(void)
 
     if (*(gBattleStruct->AI_monToSwitchIntoId + (GetBattlerPosition(gActiveBattler) >> 1)) == PARTY_SIZE)
     {
-        chosenMonId = GetMostSuitableMonToSwitchInto();
+        chosenMonId = GetMostSuitableMonToSwitchInto_NotChangingIsImpossible();
 
         if (chosenMonId == PARTY_SIZE)
         {

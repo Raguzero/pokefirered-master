@@ -2,6 +2,9 @@
 #include "battle.h"
 #include "battle_anim.h"
 #include "battle_controllers.h"
+#include "battle_ai_script_commands.h"
+#include "event_data.h"
+#include "pokemon.h"
 #include "random.h"
 #include "util.h"
 #include "constants/abilities.h"
@@ -9,10 +12,39 @@
 #include "constants/items.h"
 #include "constants/moves.h"
 #include "constants/pokemon.h"
+#include "constants/battle_move_effects.h"
+#include "constants/species.h"
 
 static bool8 HasSuperEffectiveMoveAgainstOpponents(bool8 noRng);
 static bool8 FindMonWithFlagsAndSuperEffective(u8 flags, u8 moduloPercent);
 static bool8 ShouldUseItem(void);
+
+static bool8 ShouldSwitchIfAllBadMoves(void)
+{
+    if (gBattleResources->ai->switchMon)
+    {
+        gBattleResources->ai->switchMon = 0;
+        *(gBattleStruct->AI_monToSwitchIntoId + gActiveBattler) = PARTY_SIZE;
+        BtlController_EmitTwoReturnValues(1, B_ACTION_SWITCH, 0);
+        return TRUE;
+    }
+    else
+    {
+        return FALSE;
+    }
+}
+
+static bool8 ShouldSwitchIfForcedToUseStruggle(void)
+{
+    if (CheckMoveLimitations(gActiveBattler, 0, 0xFF) == 0xF // no hay movimientos disponibles (es lo que se usa en AreAllMovesUnusable en battle_util.c)
+        && gBattleMons[GetBattlerAtPosition(BATTLE_OPPOSITE(GetBattlerPosition(gActiveBattler)))].hp > 1)
+    {
+        *(gBattleStruct->AI_monToSwitchIntoId + gActiveBattler) = PARTY_SIZE;
+        BtlController_EmitTwoReturnValues(1, B_ACTION_SWITCH, 0);
+        return TRUE;
+    }
+    return FALSE;
+}
 
 static bool8 ShouldSwitchIfPerishSong(void)
 {
@@ -29,68 +61,184 @@ static bool8 ShouldSwitchIfPerishSong(void)
     }
 }
 
+static bool8 NonDamagingMoveIsGoodAgainstWonderGuardOpponent(u16 move, u8 opposingBattler)
+{
+        switch(gBattleMoves[move].effect) {
+            case EFFECT_TOXIC:
+                return gBattleMons[opposingBattler].species == SPECIES_SHEDINJA && !(gBattleMons[opposingBattler].status1 & STATUS1_ANY);
+            case EFFECT_WILL_O_WISP:
+            case EFFECT_POISON:
+                if ((gBattleMons[opposingBattler].status1 & STATUS1_ANY)) break;
+                // fall through
+            case EFFECT_SANDSTORM:
+            case EFFECT_HAIL:
+            case EFFECT_LEECH_SEED:
+            case EFFECT_CONFUSE:
+            case EFFECT_TEETER_DANCE:
+            case EFFECT_SWAGGER:
+            case EFFECT_FLATTER:
+                return gBattleMons[opposingBattler].species == SPECIES_SHEDINJA && gBattleMons[opposingBattler].hp == 1;
+        }
+    return FALSE;
+}
+
 static bool8 ShouldSwitchIfWonderGuard(void)
 {
+    u8 opposingPosition;
     u8 opposingBattler;
     u8 moveFlags;
     s32 i, j;
+    s32 firstId;
+    s32 lastId; // + 1
+    struct Pokemon *party = NULL;
     u16 move;
 
     if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
         return FALSE;
-    if (gBattleMons[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)].ability == ABILITY_WONDER_GUARD)
+
+    opposingPosition = BATTLE_OPPOSITE(GetBattlerPosition(gActiveBattler));
+
+    if (gBattleMons[GetBattlerAtPosition(opposingPosition)].ability != ABILITY_WONDER_GUARD)
+        return FALSE;
+
+    if (CheckMoveLimitations(gActiveBattler, 0, 0xFF) == 0xF && gBattleMons[GetBattlerAtPosition(opposingPosition)].hp == 1)
+        return FALSE; // va a caer por Struggle
+
+    // Check if Pokemon has a super effective move.
+    for (opposingBattler = GetBattlerAtPosition(opposingPosition), i = 0; i < MAX_MON_MOVES; i++)
     {
-        // Check if Pokemon has a super effective move.
-        for (opposingBattler = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT), i = 0; i < MAX_MON_MOVES; ++i)
+        move = gBattleMons[gActiveBattler].moves[i];
+        if (move == MOVE_NONE)
+            continue;
+
+       if (NonDamagingMoveIsGoodAgainstWonderGuardOpponent(move, opposingBattler))
+           return FALSE;
+
+        moveFlags = AI_TypeCalc(move, gBattleMons[opposingBattler].species, gBattleMons[opposingBattler].ability);
+        if (moveFlags & MOVE_RESULT_SUPER_EFFECTIVE)
+            return FALSE;
+    }
+
+    // Get party information.
+    if (gBattleTypeFlags & BATTLE_TYPE_x800000) // no existe BATTLE_TYPE_TWO_OPPONENTS en firered
+    {
+        if ((gActiveBattler & BIT_FLANK) == B_FLANK_LEFT)
+            firstId = 0, lastId = 3;
+        else
+            firstId = 3, lastId = 6;
+    }
+    else
+    {
+        firstId = 0, lastId = 6;
+    }
+
+    if (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER)
+        party = gPlayerParty;
+    else
+        party = gEnemyParty;
+
+    // Si lo hay, mete un poke que meta clima para eliminar al Shedinja rival
+    if (gBattleMons[GetBattlerAtPosition(opposingPosition)].species == SPECIES_SHEDINJA)
+        for (i = firstId; i < lastId; i++)
         {
-            move = gBattleMons[gActiveBattler].moves[i];
+            u16 species;
+            u8 monAbility;
+            if (GetMonData(&party[i], MON_DATA_HP) == 0)
+                continue;
+            if (GetMonData(&party[i], MON_DATA_SPECIES2) == SPECIES_NONE)
+                continue;
+            if (GetMonData(&party[i], MON_DATA_SPECIES2) == SPECIES_EGG)
+                continue;
+            if (i == gBattlerPartyIndexes[gActiveBattler])
+                continue;
+
+            species = GetMonData(&party[i], MON_DATA_SPECIES);
+            if (GetMonData(&party[i], MON_DATA_ABILITY_NUM) != 0)
+                monAbility = gBaseStats[species].abilities[1];
+            else
+                monAbility = gBaseStats[species].abilities[0];
+            if (monAbility == ABILITY_SAND_STREAM || monAbility == ABILITY_SNOW_WARNING)
+            {
+                *(gBattleStruct->AI_monToSwitchIntoId + gActiveBattler) = i;
+                BtlController_EmitTwoReturnValues(1, B_ACTION_SWITCH, 0);
+                return TRUE;
+            }
+        }
+
+    // Find a Pokemon in the party that has a super effective move.
+    for (i = firstId; i < lastId; i++)
+    {
+        if (GetMonData(&party[i], MON_DATA_HP) == 0)
+            continue;
+        if (GetMonData(&party[i], MON_DATA_SPECIES2) == SPECIES_NONE)
+            continue;
+        if (GetMonData(&party[i], MON_DATA_SPECIES2) == SPECIES_EGG)
+            continue;
+        if (i == gBattlerPartyIndexes[gActiveBattler])
+            continue;
+
+        GetMonData(&party[i], MON_DATA_SPECIES); // Unused return value.
+        GetMonData(&party[i], MON_DATA_ABILITY_NUM); // Unused return value.
+
+        for (opposingBattler = GetBattlerAtPosition(opposingPosition), j = 0; j < MAX_MON_MOVES; j++)
+        {
+			bool8 usefulMove = FALSE;
+            move = GetMonData(&party[i], MON_DATA_MOVE1 + j);
             if (move == MOVE_NONE)
                 continue;
-            moveFlags = AI_TypeCalc(move, gBattleMons[opposingBattler].species, gBattleMons[opposingBattler].ability);
-            if (moveFlags & MOVE_RESULT_SUPER_EFFECTIVE)
-                return FALSE;
-        }
-        // Find a Pokemon in the party that has a super effective move.
-        for (i = 0; i < PARTY_SIZE; ++i)
-        {
-            if (GetMonData(&gEnemyParty[i], MON_DATA_HP) == 0
-             || GetMonData(&gEnemyParty[i], MON_DATA_SPECIES2) == SPECIES_NONE
-             || GetMonData(&gEnemyParty[i], MON_DATA_SPECIES2) == SPECIES_EGG
-             || i == gBattlerPartyIndexes[gActiveBattler])
-                continue;
-            GetMonData(&gEnemyParty[i], MON_DATA_SPECIES); // Unused return value.
-            GetMonData(&gEnemyParty[i], MON_DATA_ABILITY_NUM); // Unused return value.        
-            for (opposingBattler = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT), j = 0; j < MAX_MON_MOVES; ++j)
+		
+       if (NonDamagingMoveIsGoodAgainstWonderGuardOpponent(move, opposingBattler))
+           usefulMove = TRUE;
+
+            if (!usefulMove && gBattleMoves[move].power > 0)
             {
-                move = GetMonData(&gEnemyParty[i], MON_DATA_MOVE1 + j);
-                if (move == MOVE_NONE)
-                    continue;
-                moveFlags = AI_TypeCalc(move, gBattleMons[opposingBattler].species, gBattleMons[opposingBattler].ability);
-                if (moveFlags & MOVE_RESULT_SUPER_EFFECTIVE && Random() % 3 < 2)
-                {
-                    // We found a mon.
-                    *(gBattleStruct->AI_monToSwitchIntoId + (GetBattlerPosition(gActiveBattler) >> 1)) = i;
-                    BtlController_EmitTwoReturnValues(1, B_ACTION_SWITCH, 0);
-                    return TRUE;
-                }
+
+            moveFlags = AI_TypeCalc(move, gBattleMons[opposingBattler].species, gBattleMons[opposingBattler].ability);
+				if ((moveFlags & MOVE_RESULT_SUPER_EFFECTIVE) && !(moveFlags & MOVE_RESULT_DOESNT_AFFECT_FOE))
+                    usefulMove = TRUE;
+            }
+
+            if (usefulMove && Random() % 3 < 2)
+            {
+                // We found a mon.
+                *(gBattleStruct->AI_monToSwitchIntoId + gActiveBattler) = i;
+                BtlController_EmitTwoReturnValues(1, B_ACTION_SWITCH, 0);
+                return TRUE;
             }
         }
     }
+
     return FALSE; // There is not a single Pokemon in the party that has a super effective move against a mon with Wonder Guard.
+}
+
+static bool8 HasMove(u16 move)
+{
+    s32 i;
+    for (i = 0; i < MAX_MON_MOVES; i++)
+        if (move == gBattleMons[gActiveBattler].moves[i])
+            return TRUE;
+
+    return FALSE;
 }
 
 static bool8 FindMonThatAbsorbsOpponentsMove(void)
 {
     u8 battlerIn1, battlerIn2;
-    u8 absorbingTypeAbility;
+	u8 moveType;
+    s32 firstId;
+    s32 lastId; // + 1
+    struct Pokemon *party;
     s32 i;
 
-    if ((HasSuperEffectiveMoveAgainstOpponents(TRUE) && Random() % 3) 
-    || (gLastLandedMoves[gActiveBattler] == MOVE_NONE))
+    if (HasSuperEffectiveMoveAgainstOpponents(TRUE) && Random() % 3 != 0)
         return FALSE;
-    if (gLastLandedMoves[gActiveBattler] == 0xFFFF
-     || gBattleMoves[gLastLandedMoves[gActiveBattler]].power == 0)
+    if (gLastLandedMoves[gActiveBattler] == 0)
         return FALSE;
+    if (gLastLandedMoves[gActiveBattler] == 0xFFFF)
+        return FALSE;
+    if (gBattleMoves[gLastLandedMoves[gActiveBattler]].power == 0)
+        return FALSE;
+
     if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
     {
         battlerIn1 = gActiveBattler;
@@ -104,42 +252,99 @@ static bool8 FindMonThatAbsorbsOpponentsMove(void)
         battlerIn1 = gActiveBattler;
         battlerIn2 = gActiveBattler;
     }
-    if (gBattleMoves[gLastLandedMoves[gActiveBattler]].type == TYPE_FIRE)
-        absorbingTypeAbility = ABILITY_FLASH_FIRE;
-    else if (gBattleMoves[gLastLandedMoves[gActiveBattler]].type == TYPE_WATER)
-        absorbingTypeAbility = ABILITY_WATER_ABSORB;
-    else if (gBattleMoves[gLastLandedMoves[gActiveBattler]].type == TYPE_ELECTRIC)
-        absorbingTypeAbility = ABILITY_VOLT_ABSORB;
+
+	moveType = gBattleMoves[gLastLandedMoves[gActiveBattler]].type;
+
+    // Comprueba que el tipo del movimiento no es ya absorbido por el poke actual
+    switch(moveType)
+    {
+        case TYPE_FIRE:
+            if (gBattleMons[gActiveBattler].ability == ABILITY_FLASH_FIRE)
+                return FALSE;
+            break;
+        case TYPE_WATER:
+            if (gBattleMons[gActiveBattler].ability == ABILITY_WATER_ABSORB || gBattleMons[gActiveBattler].ability == ABILITY_DRY_SKIN)
+                return FALSE;
+            break;
+        case TYPE_ELECTRIC:
+            if (gBattleMons[gActiveBattler].ability == ABILITY_MOTOR_DRIVE || gBattleMons[gActiveBattler].ability == ABILITY_VOLT_ABSORB || gBattleMons[gActiveBattler].ability == ABILITY_LIGHTNING_ROD)
+                return FALSE;
+            break;
+        default:
+            return FALSE; // no hay habilidad que absorba este tipo
+    }
+
+    if (gBattleTypeFlags & BATTLE_TYPE_x800000) // No existe BATTLE_TYPE_TWO_OPPONENTS en firered
+    {
+        if ((gActiveBattler & BIT_FLANK) == B_FLANK_LEFT)
+            firstId = 0, lastId = 3;
+        else
+            firstId = 3, lastId = 6;
+    }
     else
-        return FALSE;
-    if (gBattleMons[gActiveBattler].ability == absorbingTypeAbility)
-        return FALSE;
-    for (i = 0; i < PARTY_SIZE; ++i)
+    {
+        firstId = 0, lastId = 6;
+    }
+
+    if (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER)
+        party = gPlayerParty;
+    else
+        party = gEnemyParty;
+
+    for (i = firstId; i < lastId; i++)
     {
         u16 species;
         u8 monAbility;
 
-        if ((GetMonData(&gEnemyParty[i], MON_DATA_HP) == 0)
-         || (GetMonData(&gEnemyParty[i], MON_DATA_SPECIES2) == SPECIES_NONE)
-         || (GetMonData(&gEnemyParty[i], MON_DATA_SPECIES2) == SPECIES_EGG)
-         || (i == gBattlerPartyIndexes[battlerIn1])
-         || (i == gBattlerPartyIndexes[battlerIn2])
-         || (i == *(gBattleStruct->monToSwitchIntoId + battlerIn1))
-         || (i == *(gBattleStruct->monToSwitchIntoId + battlerIn2)))
+        if (GetMonData(&party[i], MON_DATA_HP) == 0)
             continue;
-        species = GetMonData(&gEnemyParty[i], MON_DATA_SPECIES);
-        if (GetMonData(&gEnemyParty[i], MON_DATA_ABILITY_NUM) != ABILITY_NONE)
+        if (GetMonData(&party[i], MON_DATA_SPECIES2) == SPECIES_NONE)
+            continue;
+        if (GetMonData(&party[i], MON_DATA_SPECIES2) == SPECIES_EGG)
+            continue;
+        if (i == gBattlerPartyIndexes[battlerIn1])
+            continue;
+        if (i == gBattlerPartyIndexes[battlerIn2])
+            continue;
+        if (i == *(gBattleStruct->monToSwitchIntoId + battlerIn1))
+            continue;
+        if (i == *(gBattleStruct->monToSwitchIntoId + battlerIn2))
+            continue;
+
+        species = GetMonData(&party[i], MON_DATA_SPECIES);
+        if (GetMonData(&party[i], MON_DATA_ABILITY_NUM) != 0)
             monAbility = gBaseStats[species].abilities[1];
         else
             monAbility = gBaseStats[species].abilities[0];
-        if (absorbingTypeAbility == monAbility && Random() & 1)
+
+        if (Random() & 1)
         {
-            // we found a mon
-            *(gBattleStruct->AI_monToSwitchIntoId + (GetBattlerPosition(gActiveBattler) >> 1)) = i;
-            BtlController_EmitTwoReturnValues(1, B_ACTION_SWITCH, 0);
-            return TRUE;
+            bool8 found = FALSE;
+            switch(moveType)
+            {
+                case TYPE_FIRE:
+                    if (monAbility == ABILITY_FLASH_FIRE)
+                        found = TRUE;
+                    break;
+                case TYPE_WATER:
+                    if (monAbility == ABILITY_WATER_ABSORB || monAbility == ABILITY_DRY_SKIN)
+                        found = TRUE;
+                    break;
+                case TYPE_ELECTRIC:
+                    if (monAbility == ABILITY_MOTOR_DRIVE || monAbility == ABILITY_VOLT_ABSORB || monAbility == ABILITY_LIGHTNING_ROD)
+                        found = TRUE;
+                    break;
+            };
+            if (found)
+            {
+                // we found a mon.
+                *(gBattleStruct->AI_monToSwitchIntoId + gActiveBattler) = i;
+                BtlController_EmitTwoReturnValues(1, B_ACTION_SWITCH, 0);
+                return TRUE;
+            }
         }
     }
+
     return FALSE;
 }
 
@@ -233,19 +438,63 @@ static bool8 AreStatsRaised(void)
     return (buffedStatsValue > 3);
 }
 
+// AI should switch if it's become setup fodder and has something better to switch to
+bool8 AreAttackingStatsLowered(u8 category)
+{
+    // Considera cambiar si elige un ataque físico y tiene -2 o menos de Ataque,
+    // o si elige un ataque especial y tiene -2 o menos de Ataque Especial
+    // En el resto de casos, descarta el cambio por bajada de stats
+    // (se asume que solo se llama a esta función si el ataque es de daño directo)
+    if ((category == 0 && gBattleMons[gActiveBattler].statStages[MON_DATA_ATK - MON_DATA_MAX_HP] >= 6 - 1)
+     || (category == 1 && gBattleMons[gActiveBattler].statStages[MON_DATA_SPATK - MON_DATA_MAX_HP] >= 6 - 1))
+        return FALSE;
+
+    if (FindMonWithFlagsAndSuperEffective(MOVE_RESULT_DOESNT_AFFECT_FOE, 1))
+        return TRUE;
+    if (FindMonWithFlagsAndSuperEffective(MOVE_RESULT_NOT_VERY_EFFECTIVE, 1))
+        return TRUE;
+
+    *(gBattleStruct->AI_monToSwitchIntoId + gActiveBattler) = PARTY_SIZE;
+    BtlController_EmitTwoReturnValues(1, B_ACTION_SWITCH, 0);
+    return TRUE;
+}
+
+// AI should switch if it's become blind and has something better to switch to
+bool8 IsAccuracyLowered(s8 threshold)
+{
+    // Considera cambiar si su precisión es, al menos, la indicada en threshold
+    if (gBattleMons[gActiveBattler].statStages[STAT_ACC] > 6 + threshold)
+        return FALSE;
+
+    if (FindMonWithFlagsAndSuperEffective(MOVE_RESULT_DOESNT_AFFECT_FOE, 1))
+        return TRUE;
+    if (FindMonWithFlagsAndSuperEffective(MOVE_RESULT_NOT_VERY_EFFECTIVE, 1))
+        return TRUE;
+
+    *(gBattleStruct->AI_monToSwitchIntoId + gActiveBattler) = PARTY_SIZE;
+    BtlController_EmitTwoReturnValues(1, B_ACTION_SWITCH, 0);
+    return TRUE;
+}
+
 static bool8 FindMonWithFlagsAndSuperEffective(u8 flags, u8 moduloPercent)
 {
     u8 battlerIn1, battlerIn2;
+    s32 firstId;
+    s32 lastId; // + 1
+    struct Pokemon *party;
     s32 i, j;
     u16 move;
     u8 moveFlags;
 
     if (gLastLandedMoves[gActiveBattler] == 0)
         return FALSE;
-    if ((gLastLandedMoves[gActiveBattler] == 0xFFFF)
-     || (gLastHitBy[gActiveBattler] == 0xFF)
-     || (gBattleMoves[gLastLandedMoves[gActiveBattler]].power == 0))
+    if (gLastLandedMoves[gActiveBattler] == 0xFFFF)
         return FALSE;
+    if (gLastHitBy[gActiveBattler] == 0xFF)
+        return FALSE;
+    if (gBattleMoves[gLastLandedMoves[gActiveBattler]].power == 0)
+        return FALSE;
+
     if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
     {
         battlerIn1 = gActiveBattler;
@@ -259,138 +508,266 @@ static bool8 FindMonWithFlagsAndSuperEffective(u8 flags, u8 moduloPercent)
         battlerIn1 = gActiveBattler;
         battlerIn2 = gActiveBattler;
     }
-    for (i = 0; i < PARTY_SIZE; ++i)
+
+    if (gBattleTypeFlags & BATTLE_TYPE_x800000) //BATTLE_TYPE_TWO_OPPONENTS no existe en firered
+    {
+        if ((gActiveBattler & BIT_FLANK) == 0)
+            firstId = 0, lastId = 3;
+        else
+            firstId = 3, lastId = 6;
+    }
+    else
+    {
+        firstId = 0, lastId = 6;
+    }
+
+    if (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER)
+        party = gPlayerParty;
+    else
+        party = gEnemyParty;
+
+    for (i = firstId; i < lastId; i++)
     {
         u16 species;
         u8 monAbility;
 
-        if ((GetMonData(&gEnemyParty[i], MON_DATA_HP) == 0)
-         || (GetMonData(&gEnemyParty[i], MON_DATA_SPECIES2) == SPECIES_NONE)
-         || (GetMonData(&gEnemyParty[i], MON_DATA_SPECIES2) == SPECIES_EGG)
-         || (i == gBattlerPartyIndexes[battlerIn1])
-         || (i == gBattlerPartyIndexes[battlerIn2])
-         || (i == *(gBattleStruct->monToSwitchIntoId + battlerIn1))
-         || (i == *(gBattleStruct->monToSwitchIntoId + battlerIn2)))
+        if (GetMonData(&party[i], MON_DATA_HP) == 0)
             continue;
-        species = GetMonData(&gEnemyParty[i], MON_DATA_SPECIES);
-        if (GetMonData(&gEnemyParty[i], MON_DATA_ABILITY_NUM) != ABILITY_NONE)
+        if (GetMonData(&party[i], MON_DATA_SPECIES2) == SPECIES_NONE)
+            continue;
+        if (GetMonData(&party[i], MON_DATA_SPECIES2) == SPECIES_EGG)
+            continue;
+        if (i == gBattlerPartyIndexes[battlerIn1])
+            continue;
+        if (i == gBattlerPartyIndexes[battlerIn2])
+            continue;
+        if (i == *(gBattleStruct->monToSwitchIntoId + battlerIn1))
+            continue;
+        if (i == *(gBattleStruct->monToSwitchIntoId + battlerIn2))
+            continue;
+
+        species = GetMonData(&party[i], MON_DATA_SPECIES);
+        if (GetMonData(&party[i], MON_DATA_ABILITY_NUM) != 0)
             monAbility = gBaseStats[species].abilities[1];
         else
             monAbility = gBaseStats[species].abilities[0];
+
         moveFlags = AI_TypeCalc(gLastLandedMoves[gActiveBattler], species, monAbility);
         if (moveFlags & flags)
         {
             battlerIn1 = gLastHitBy[gActiveBattler];
-            for (j = 0; j < MAX_MON_MOVES; ++j)
+
+            for (j = 0; j < MAX_MON_MOVES; j++)
             {
-                move = GetMonData(&gEnemyParty[i], MON_DATA_MOVE1 + j);
-                if (move == MOVE_NONE)
+                move = GetMonData(&party[i], MON_DATA_MOVE1 + j);
+                if (move == 0)
                     continue;
+
                 moveFlags = AI_TypeCalc(move, gBattleMons[battlerIn1].species, gBattleMons[battlerIn1].ability);
                 if (moveFlags & MOVE_RESULT_SUPER_EFFECTIVE && Random() % moduloPercent == 0)
                 {
-                    *(gBattleStruct->AI_monToSwitchIntoId + (GetBattlerPosition(gActiveBattler) >> 1)) = i;
+                    *(gBattleStruct->AI_monToSwitchIntoId + gActiveBattler) = i;
                     BtlController_EmitTwoReturnValues(1, B_ACTION_SWITCH, 0);
                     return TRUE;
                 }
             }
         }
     }
+
     return FALSE;
 }
 
 static bool8 ShouldSwitch(void)
 {
     u8 battlerIn1, battlerIn2;
+    u8 *activeBattlerPtr; // Needed to match.
+    s32 firstId;
+    s32 lastId; // + 1
+    struct Pokemon *party;
     s32 i;
     s32 availableToSwitch;
 
-    if ((gBattleMons[gActiveBattler].status2 & (STATUS2_WRAPPED | STATUS2_ESCAPE_PREVENTION))
-     || (gStatuses3[gActiveBattler] & STATUS3_ROOTED)
-     || AbilityBattleEffects(ABILITYEFFECT_CHECK_OTHER_SIDE, gActiveBattler, ABILITY_SHADOW_TAG, 0, 0)
-     || AbilityBattleEffects(ABILITYEFFECT_CHECK_OTHER_SIDE, gActiveBattler, ABILITY_ARENA_TRAP, 0, 0))
-        return FALSE; // misses the flying or levitate check
-    if (AbilityBattleEffects(ABILITYEFFECT_FIELD_SPORT, 0, ABILITY_MAGNET_PULL, 0, 0))
-        if ((gBattleMons[gActiveBattler].type1 == TYPE_STEEL) || (gBattleMons[gActiveBattler].type2 == TYPE_STEEL))
+    if (gBattleMons[*(activeBattlerPtr = &gActiveBattler)].status2 & (STATUS2_WRAPPED | STATUS2_ESCAPE_PREVENTION))
+	{
+		if ((gBattleMons[gActiveBattler].type1 != TYPE_GHOST) && (gBattleMons[gActiveBattler].type2 != TYPE_GHOST))
+			return FALSE;
+	}
+    if (gStatuses3[gActiveBattler] & STATUS3_ROOTED)
+	{
+		if ((gBattleMons[gActiveBattler].type1 != TYPE_GHOST) && (gBattleMons[gActiveBattler].type2 != TYPE_GHOST))
+        return FALSE;
+	}
+    if (ABILITY_ON_OPPOSING_FIELD(gActiveBattler, ABILITY_SHADOW_TAG))
+    {
+        if ((gBattleMons[gActiveBattler].type1 != TYPE_GHOST) && (gBattleMons[gActiveBattler].type2 != TYPE_GHOST) && (gBattleMons[gActiveBattler].ability != ABILITY_SHADOW_TAG))
             return FALSE;
+    }
+    if (ABILITY_ON_OPPOSING_FIELD(gActiveBattler, ABILITY_ARENA_TRAP))
+    {
+        if ((gBattleMons[gActiveBattler].type1 != TYPE_FLYING) && (gBattleMons[gActiveBattler].type2 != TYPE_FLYING) && (gBattleMons[gActiveBattler].type1 != TYPE_GHOST) && (gBattleMons[gActiveBattler].type2 != TYPE_GHOST) && (gBattleMons[gActiveBattler].ability != ABILITY_LEVITATE))
+			return FALSE;
+    }
+    if (ABILITY_ON_FIELD2(ABILITY_MAGNET_PULL))
+    {
+        if (gBattleMons[gActiveBattler].type1 == TYPE_STEEL)
+            return FALSE;
+        if (gBattleMons[gActiveBattler].type2 == TYPE_STEEL)
+            return FALSE;
+    }
+	/*
+    if (gBattleTypeFlags & BATTLE_TYPE_ARENA)
+        return FALSE; */  // Battle arena no existe en firered
+
+   /* if (FlagGet(FLAG_RYU_RANDOMBATTLECCMETRO) == 1)
+        return FALSE; */  // Esta flag no existe aun
+
     availableToSwitch = 0;
     if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
     {
-        battlerIn1 = gActiveBattler;
-        if (gAbsentBattlerFlags & gBitTable[GetBattlerAtPosition(GetBattlerPosition(gActiveBattler) ^ BIT_FLANK)])
-            battlerIn2 = gActiveBattler;
+        battlerIn1 = *activeBattlerPtr;
+        if (gAbsentBattlerFlags & gBitTable[GetBattlerAtPosition(GetBattlerPosition(*activeBattlerPtr) ^ BIT_FLANK)])
+            battlerIn2 = *activeBattlerPtr;
         else
-            battlerIn2 = GetBattlerAtPosition(GetBattlerPosition(gActiveBattler) ^ BIT_FLANK);
+            battlerIn2 = GetBattlerAtPosition(GetBattlerPosition(*activeBattlerPtr) ^ BIT_FLANK);
     }
     else
     {
-        battlerIn2 = gActiveBattler;
-        battlerIn1 = gActiveBattler;
+        battlerIn1 = *activeBattlerPtr;
+        battlerIn2 = *activeBattlerPtr;
     }
-    for (i = 0; i < PARTY_SIZE; ++i)
+
+    if (gBattleTypeFlags & BATTLE_TYPE_x800000) // BATTLE_TYPE_TWO_OPPONENTS no existe en firered
     {
-        if ((GetMonData(&gEnemyParty[i], MON_DATA_HP) == 0)
-         || (GetMonData(&gEnemyParty[i], MON_DATA_SPECIES2) == SPECIES_NONE)
-         || (GetMonData(&gEnemyParty[i], MON_DATA_SPECIES2) == SPECIES_EGG)
-         || (i == gBattlerPartyIndexes[battlerIn1])
-         || (i == gBattlerPartyIndexes[battlerIn2])
-         || (i == *(gBattleStruct->monToSwitchIntoId + battlerIn1))
-         || (i == *(gBattleStruct->monToSwitchIntoId + battlerIn2)))
-            continue;
-        ++availableToSwitch;
+        if ((gActiveBattler & BIT_FLANK) == B_FLANK_LEFT)
+            firstId = 0, lastId = 3;
+        else
+            firstId = 3, lastId = 6;
     }
-    if (!availableToSwitch)
+    else
+    {
+        firstId = 0, lastId = 6;
+    }
+
+    if (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER)
+        party = gPlayerParty;
+    else
+        party = gEnemyParty;
+
+    for (i = firstId; i < lastId; i++)
+    {
+        if (GetMonData(&party[i], MON_DATA_HP) == 0)
+            continue;
+        if (GetMonData(&party[i], MON_DATA_SPECIES2) == SPECIES_NONE)
+            continue;
+        if (GetMonData(&party[i], MON_DATA_SPECIES2) == SPECIES_EGG)
+            continue;
+        if (i == gBattlerPartyIndexes[battlerIn1])
+            continue;
+        if (i == gBattlerPartyIndexes[battlerIn2])
+            continue;
+        if (i == *(gBattleStruct->monToSwitchIntoId + battlerIn1))
+            continue;
+        if (i == *(gBattleStruct->monToSwitchIntoId + battlerIn2))
+            continue;
+
+        availableToSwitch++;
+    }
+
+    if (availableToSwitch == 0)
         return FALSE;
-    if (ShouldSwitchIfPerishSong()
-     || ShouldSwitchIfWonderGuard()
-     || FindMonThatAbsorbsOpponentsMove()
-     || ShouldSwitchIfNaturalCure())
+	 if (ShouldSwitchIfAllBadMoves())
         return TRUE;
-    if (HasSuperEffectiveMoveAgainstOpponents(FALSE)
-     || AreStatsRaised())
+    if (ShouldSwitchIfPerishSong())
+        return TRUE;
+	if (HasMove(MOVE_BATON_PASS))
+        return FALSE; // los supuestos de cambio a continuación aplican igual con Baton Pass, por lo que el cambio es mejor con Baton Pass
+    if (ShouldSwitchIfWonderGuard())
+        return TRUE;
+    if (ShouldSwitchIfForcedToUseStruggle())
+        return TRUE;
+/*    if (FindMonThatAbsorbsOpponentsMove())
+        return TRUE; */
+    if (ShouldSwitchIfNaturalCure())
+        return TRUE;
+/*	if (gBattleMons[gActiveBattler].species == SPECIES_REGIGIGAS)
+		return FALSE;
+    if (HasSuperEffectiveMoveAgainstOpponents(FALSE))
+        return FALSE;
+    if (AreStatsRaised())
         return FALSE;
     if (FindMonWithFlagsAndSuperEffective(MOVE_RESULT_DOESNT_AFFECT_FOE, 2)
-     || FindMonWithFlagsAndSuperEffective(MOVE_RESULT_NOT_VERY_EFFECTIVE, 3))
-        return TRUE;
+        || FindMonWithFlagsAndSuperEffective(MOVE_RESULT_NOT_VERY_EFFECTIVE, 3))
+        return TRUE; */
+
     return FALSE;
 }
 
 void AI_TrySwitchOrUseItem(void)
 {
+    struct Pokemon *party;
     u8 battlerIn1, battlerIn2;
+    s32 firstId;
+    s32 lastId; // + 1
+    u8 battlerIdentity = GetBattlerPosition(gActiveBattler);
+
+    if (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER)
+        party = gPlayerParty;
+    else
+        party = gEnemyParty;
 
     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
     {
         if (ShouldSwitch())
         {
-            if (*(gBattleStruct->AI_monToSwitchIntoId + (GetBattlerPosition(gActiveBattler) >> 1)) == 6)
+            if (*(gBattleStruct->AI_monToSwitchIntoId + gActiveBattler) == PARTY_SIZE)
             {
-                s32 monToSwitchId = GetMostSuitableMonToSwitchInto();
-                if (monToSwitchId == 6)
+                s32 monToSwitchId = GetMostSuitableMonToSwitchInto_NotChangingIsUnacceptable();
+                if (monToSwitchId == PARTY_SIZE)
                 {
                     if (!(gBattleTypeFlags & BATTLE_TYPE_DOUBLE))
                     {
-                        battlerIn1 = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
+                        battlerIn1 = GetBattlerAtPosition(battlerIdentity);
                         battlerIn2 = battlerIn1;
                     }
                     else
                     {
-                        battlerIn1 = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
-                        battlerIn2 = GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT);
+                        battlerIn1 = GetBattlerAtPosition(battlerIdentity);
+                        battlerIn2 = GetBattlerAtPosition(battlerIdentity ^ BIT_FLANK);
                     }
-                    for (monToSwitchId = 0; monToSwitchId < PARTY_SIZE; ++monToSwitchId)
+
+                    if (gBattleTypeFlags & BATTLE_TYPE_x800000) // / BATTLE_TYPE_TWO_OPPONENTS no existe en firered
                     {
-                        if ((!GetMonData(&gEnemyParty[monToSwitchId], MON_DATA_HP) == 0)
-                         && (monToSwitchId != gBattlerPartyIndexes[battlerIn1])
-                         && (monToSwitchId != gBattlerPartyIndexes[battlerIn2])
-                         && (monToSwitchId != *(gBattleStruct->monToSwitchIntoId + battlerIn1))
-                         && (monToSwitchId != *(gBattleStruct->monToSwitchIntoId + battlerIn2)))
-                            break;
+                        if ((gActiveBattler & BIT_FLANK) == B_FLANK_LEFT)
+                            firstId = 0, lastId = 3;
+                        else
+                            firstId = 3, lastId = 6;
+                    }
+                    else
+                    {
+                        firstId = 0, lastId = 6;
+                    }
+
+                    for (monToSwitchId = firstId; monToSwitchId < lastId; monToSwitchId++)
+                    {
+                        if (GetMonData(&party[monToSwitchId], MON_DATA_HP) == 0)
+                            continue;
+                        if (monToSwitchId == gBattlerPartyIndexes[battlerIn1])
+                            continue;
+                        if (monToSwitchId == gBattlerPartyIndexes[battlerIn2])
+                            continue;
+                        if (monToSwitchId == *(gBattleStruct->monToSwitchIntoId + battlerIn1))
+                            continue;
+                        if (monToSwitchId == *(gBattleStruct->monToSwitchIntoId + battlerIn2))
+                            continue;
+
+                        break;
                     }
                 }
-                *(gBattleStruct->AI_monToSwitchIntoId + (GetBattlerPosition(gActiveBattler) >> 1)) = monToSwitchId;
+
+                *(gBattleStruct->AI_monToSwitchIntoId + gActiveBattler) = monToSwitchId;
             }
-            *(gBattleStruct->monToSwitchIntoId + gActiveBattler) = *(gBattleStruct->AI_monToSwitchIntoId + (GetBattlerPosition(gActiveBattler) >> 1));
+
+            *(gBattleStruct->monToSwitchIntoId + gActiveBattler) = *(gBattleStruct->AI_monToSwitchIntoId + gActiveBattler);
             return;
         }
         else if (ShouldUseItem())
@@ -398,6 +775,7 @@ void AI_TrySwitchOrUseItem(void)
             return;
         }
     }
+
     BtlController_EmitTwoReturnValues(1, B_ACTION_USE_MOVE, (gActiveBattler ^ BIT_SIDE) << 8);
 }
 
@@ -425,58 +803,123 @@ static void ModulateByTypeEffectiveness(u8 atkType, u8 defType1, u8 defType2, u8
     }
 }
 
-u8 GetMostSuitableMonToSwitchInto(void)
+static u32 GetBestMonDefensive(struct Pokemon *party, s32 firstId, s32 lastId, u8 invalidMons, u32 opposingBattler)
 {
-    u8 opposingBattler;
-    u8 bestDmg; // Note : should be changed to u32 for obvious reasons.
+    s32 i, bits = 0;
+    u16 chosenSpecies;
+
+    while (bits != 0x3F) // All mons were checked.
+    {
+        u8 bestDmg = 255;
+        s32 bestMonId = PARTY_SIZE;
+        // Find the mon whose type is the most suitable defensively.
+        for (i = firstId; i < lastId; i++)
+        {
+            if (!(gBitTable[i] & invalidMons) && !(gBitTable[i] & bits))
+            {
+                u16 species = GetMonData(&party[i], MON_DATA_SPECIES);
+                u8 typeDmg  = 20;
+                u8 typeDmg2 = 20;
+
+                u8 defType1 = gBaseStats[species].type1;
+                u8 defType2 = gBaseStats[species].type2;
+                u8 atkType1 = gBattleMons[opposingBattler].type1;
+                u8 atkType2 = gBattleMons[opposingBattler].type2;
+
+                ModulateByTypeEffectiveness(atkType1, defType1, defType2, &typeDmg);
+
+                if (atkType2 != atkType1)
+                {
+                    ModulateByTypeEffectiveness(atkType2, defType1, defType2, &typeDmg2);
+                    if (typeDmg < typeDmg2)
+                        typeDmg = typeDmg2;
+                }
+                if (bestDmg > typeDmg)
+                {
+                    bestDmg = typeDmg;
+                    bestMonId = i;
+                }
+            }
+        }
+
+        // Make sure player's last attack won't be SE, as they're probably going to use it again.
+		if (bestMonId != PARTY_SIZE)
+        {
+            u16 move = gLastLandedMoves[gActiveBattler];
+            chosenSpecies = GetMonData(&party[bestMonId], MON_DATA_SPECIES);
+
+            if (move != MOVE_NONE && gBattleMoves[move].power != 0)
+            {
+                u8 monAbility;
+                if (GetMonData(&party[bestMonId], MON_DATA_ABILITY_NUM) != 0)
+                    monAbility = gBaseStats[chosenSpecies].abilities[1];
+                else
+                    monAbility = gBaseStats[chosenSpecies].abilities[0];
+
+                if (AI_TypeCalc(move, chosenSpecies, monAbility) & MOVE_RESULT_SUPER_EFFECTIVE)
+                {
+                    bits |= gBitTable[bestMonId];
+                }
+            }
+        }
+
+        // Ok, we know the mon has the right typing but does it have at least one super effective move?
+        if (bestMonId != PARTY_SIZE && bits != gBitTable[bestMonId])
+        {
+            for (i = 0; i < MAX_MON_MOVES; i++)
+            {
+                u16 move = GetMonData(&party[bestMonId], MON_DATA_MOVE1 + i);
+				if (move != MOVE_NONE && gBattleMoves[move].power != 0 && AI_TypeCalc(move, gBattleMons[opposingBattler].species, gBattleMons[opposingBattler].ability) & MOVE_RESULT_SUPER_EFFECTIVE)
+                    break;
+            }
+
+            if (i != MAX_MON_MOVES)
+                return bestMonId; // Has both the typing and at least one super effective move.
+
+            bits |= gBitTable[bestMonId]; // Sorry buddy, we want something better.
+        }
+        else
+        {
+            bits = 0x3F; // No viable mon to switch.
+        }
+    }
+
+    return PARTY_SIZE;
+}
+
+static u32 GetBestMonOffensive(struct Pokemon *party, s32 firstId, s32 lastId, u8 invalidMons, u32 opposingBattler)
+{
+    s32 i = 0;
     u8 bestMonId;
-    u8 battlerIn1, battlerIn2;
-    s32 i, j;
-    u8 invalidMons;
+	u8 bestDmg;
     u16 move;
 
-    if (*(gBattleStruct->monToSwitchIntoId + gActiveBattler) != PARTY_SIZE)
-        return *(gBattleStruct->monToSwitchIntoId + gActiveBattler);
-    if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
-    {
-        battlerIn1 = gActiveBattler;
-        if (gAbsentBattlerFlags & gBitTable[GetBattlerAtPosition(GetBattlerPosition(gActiveBattler) ^ BIT_FLANK)])
-            battlerIn2 = gActiveBattler;
-        else
-            battlerIn2 = GetBattlerAtPosition(GetBattlerPosition(gActiveBattler) ^ BIT_FLANK);
-        // UB: It considers the opponent only player's side even though it can battle alongside player.
-        opposingBattler = Random() & BIT_FLANK;
-        if (gAbsentBattlerFlags & gBitTable[opposingBattler])
-            opposingBattler ^= BIT_FLANK;
-    }
-    else
-    {
-        opposingBattler = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
-        battlerIn1 = gActiveBattler;
-        battlerIn2 = gActiveBattler;
-    }
-    invalidMons = 0;
-    while (invalidMons != 0x3F) // All mons are invalid.
+	while (invalidMons != 0x3F) // All mons are invalid.
     {
         bestDmg = 0;
         bestMonId = 6;
         // Find the mon whose type is the most suitable offensively.
-        for (i = 0; i < PARTY_SIZE; ++i)
+        for (i = firstId; i < lastId; i++)
         {
-            u16 species = GetMonData(&gEnemyParty[i], MON_DATA_SPECIES);
-            if (species != SPECIES_NONE
-                && GetMonData(&gEnemyParty[i], MON_DATA_HP) != 0
-                && !(gBitTable[i] & invalidMons)
-                && gBattlerPartyIndexes[battlerIn1] != i
-                && gBattlerPartyIndexes[battlerIn2] != i
-                && i != *(gBattleStruct->monToSwitchIntoId + battlerIn1)
-                && i != *(gBattleStruct->monToSwitchIntoId + battlerIn2))
+            u16 species = GetMonData(&party[i], MON_DATA_SPECIES);
+            if (!(gBitTable[i] & invalidMons))
             {
-                u8 type1 = gBaseStats[species].type1;
-                u8 type2 = gBaseStats[species].type2;
-                u8 typeDmg = 10;
-                ModulateByTypeEffectiveness(gBattleMons[opposingBattler].type1, type1, type2, &typeDmg);
-                ModulateByTypeEffectiveness(gBattleMons[opposingBattler].type2, type1, type2, &typeDmg);
+                u8 typeDmg  = 20;
+                u8 typeDmg2 = 20;
+
+                u8 atkType1 = gBaseStats[species].type1;
+                u8 atkType2 = gBaseStats[species].type2;
+                u8 defType1 = gBattleMons[opposingBattler].type1;
+                u8 defType2 = gBattleMons[opposingBattler].type2;
+
+                ModulateByTypeEffectiveness(atkType1, defType1, defType2, &typeDmg);
+
+                if (atkType2 != atkType1)
+                {
+                    ModulateByTypeEffectiveness(atkType2, defType1, defType2, &typeDmg2);
+                    if (typeDmg < typeDmg2)
+                        typeDmg = typeDmg2;
+                }
                 if (bestDmg < typeDmg)
                 {
                     bestDmg = typeDmg;
@@ -488,15 +931,17 @@ u8 GetMostSuitableMonToSwitchInto(void)
                 invalidMons |= gBitTable[i];
             }
         }
+
         // Ok, we know the mon has the right typing but does it have at least one super effective move?
         if (bestMonId != PARTY_SIZE)
         {
-            for (i = 0; i < MAX_MON_MOVES; ++i)
+            for (i = 0; i < MAX_MON_MOVES; i++)
             {
-                move = GetMonData(&gEnemyParty[bestMonId], MON_DATA_MOVE1 + i);
-                if (move != MOVE_NONE && TypeCalc(move, gActiveBattler, opposingBattler) & MOVE_RESULT_SUPER_EFFECTIVE)
+                move = GetMonData(&party[bestMonId], MON_DATA_MOVE1 + i);
+				if (move != MOVE_NONE && gBattleMoves[move].power != 0 && AI_TypeCalc(move, gBattleMons[opposingBattler].species, gBattleMons[opposingBattler].ability) & MOVE_RESULT_SUPER_EFFECTIVE)
                     break;
             }
+
             if (i != MAX_MON_MOVES)
                 return bestMonId; // Has both the typing and at least one super effective move.
 
@@ -507,39 +952,963 @@ u8 GetMostSuitableMonToSwitchInto(void)
             invalidMons = 0x3F; // No viable mon to switch.
         }
     }
-    gDynamicBasePower = 0;
-    gBattleStruct->dynamicMoveType = 0;
-    gBattleScripting.dmgMultiplier = 1;
-    gMoveResultFlags = 0;
-    gCritMultiplier = 1;
-    bestDmg = 0;
-    bestMonId = 6;
-    // If we couldn't find the best mon in terms of typing, find the one that deals most damage.
-    for (i = 0; i < PARTY_SIZE; ++i)
+    return PARTY_SIZE;
+}
+
+void PrepareDisableStructForSwitchIn(u32 battler, const struct DisableStruct * disableStructCopy)
+{
+    s32 i;
+    u8 * ptr;
+
+    ptr = (u8 *)&gDisableStructs[battler];
+    for (i = 0; i < sizeof(struct DisableStruct); i++)
+        ptr[i] = 0;
+
+    if (gBattleMoves[gCurrentMove].effect == EFFECT_BATON_PASS)
     {
-        if (((u16)(GetMonData(&gEnemyParty[i], MON_DATA_SPECIES)) == SPECIES_NONE)
-         || (GetMonData(&gEnemyParty[i], MON_DATA_HP) == 0)
-         || (gBattlerPartyIndexes[battlerIn1] == i)
-         || (gBattlerPartyIndexes[battlerIn2] == i)
-         || (i == *(gBattleStruct->monToSwitchIntoId + battlerIn1))
-         || (i == *(gBattleStruct->monToSwitchIntoId + battlerIn2)))
-            continue;
-        for (j = 0; j < MAX_MON_MOVES; ++j)
+        gDisableStructs[battler].substituteHP = disableStructCopy->substituteHP;
+        gDisableStructs[battler].battlerWithSureHit = disableStructCopy->battlerWithSureHit;
+        gDisableStructs[battler].perishSongTimer = disableStructCopy->perishSongTimer;
+        gDisableStructs[battler].perishSongTimerStartValue = disableStructCopy->perishSongTimerStartValue;
+        gDisableStructs[battler].battlerPreventingEscape = disableStructCopy->battlerPreventingEscape;
+    }
+
+    gDisableStructs[battler].isFirstTurn = 0; // 0 en lugar de 2 (que se pone para que al turno siguiente baje a 1) para que la IA no asuma que puede tirar alegremente Sorpresa
+}
+
+// Evalúa si quedan pokes sin filtrar
+u8 MonsLeft(u8 bits)
+{
+    return bits != 0x3F;
+}
+// Evalúa si quedó un solo poke sin filtrar
+u8 OnlyOneMonLeft(u8 bits)
+{
+    u32 b = (~bits) & 0x3F;
+    // Esencialmente, mira rápido si el número es una potencia de 2
+    // La única posibilidad de que un número binario sea potencia de 2
+    // es que al restarle 1 su dígito líder pase de 1 a 0
+	return b && !(b & (b-1));
+}
+
+// Devuelve el único poke que no ha sido filtrado.
+// Asume que un solo poke quedó sin filtrar (véase OnlyOneMonLeft)
+s32 GetUnfilteredMon(u8 bits)
+{
+    s32 i;
+
+    for (i = 0; i < PARTY_SIZE; i++)
+        if (bits == ((~gBitTable[i]) & 0x3F))
+            return i;
+
+    return PARTY_SIZE; // no debería suceder
+}
+
+bool8 HasYetToAttack(u32 battler)
+{  // No compilaba por no saber que es field_91, podría ser algo del battle frontier que no existe en firered
+	// Debe investigarse, por ahora solo se comentan esas líneas
+    s32 i;
+
+   /* if (*(&gBattleStruct->field_91) & gBitTable[battler])
+        return FALSE;*/
+
+    if (gBattleCommunication[gActiveBattler] == 3 || gBattleCommunication[gActiveBattler] == 2)
+        return TRUE; // La IA todavía está pendiente de escoger acción
+
+    if (!(gBattleTypeFlags & BATTLE_TYPE_DOUBLE) && gBattleMons[gActiveBattler].hp == 0)
+        return FALSE; // En individual, el turno se acaba si hay un KO
+
+    for (i = gCurrentTurnActionNumber + 1; i < gBattlersCount; i++)
+		
+	if (gBattlerByTurnOrder[i] == battler && gActionsByTurnOrder[i] != B_ACTION_CANCEL_PARTNER && gActionsByTurnOrder[i] != B_ACTION_TRY_FINISH) // B_ACTION_CANCEL_PARTNER es igual a B_ACTION_FINISHED
+            return TRUE;
+
+    return FALSE;
+}
+
+void TransformIfImposter(u32 battler, u32 opposingBattler)
+{
+    s32 i;
+    u8 *battleMonAttacker, *battleMonTarget;
+
+    if (gBattleMons[battler].ability != ABILITY_IMPOSTER
+      || gBattleMons[opposingBattler].hp == 0
+      || (gBattleMons[opposingBattler].status2 & (STATUS2_TRANSFORMED | STATUS2_SUBSTITUTE))
+      || (gStatuses3[opposingBattler] & STATUS3_SEMI_INVULNERABLE)
+    )
+        return; // no hay transformación
+
+    gBattleMons[battler].status2 |= STATUS2_TRANSFORMED;
+    gDisableStructs[battler].transformedMonPersonality = gBattleMons[opposingBattler].personality;
+
+    battleMonAttacker = (u8*)(&gBattleMons[battler]);
+    battleMonTarget = (u8*)(&gBattleMons[opposingBattler]);
+
+    for (i = 0; i < offsetof(struct BattlePokemon, pp); i++)
+        battleMonAttacker[i] = battleMonTarget[i];
+
+    for (i = 0; i < MAX_MON_MOVES; i++)
+    {
+		u16 known_move = gBattleResources->battleHistory->_usedMoves[(GetBattlerSide(opposingBattler) == B_SIDE_PLAYER ? 0 : PARTY_SIZE) + gBattlerPartyIndexes[opposingBattler]].moves[i];
+        gBattleMons[battler].moves[i] = known_move; // puede ser MOVE_NONE cuando no conozca los movimientos
+    }
+
+    for (i = 0; i < MAX_MON_MOVES; i++)
+    {
+        if (gBattleMoves[gBattleMons[battler].moves[i]].pp < 5)
+            gBattleMons[battler].pp[i] = gBattleMoves[gBattleMons[battler].moves[i]].pp;
+        else
+            gBattleMons[battler].pp[i] = 5;
+    }
+}
+
+// Determina si un poke es vulnerable a Intimidate
+bool8 VulnerableToIntimidate(u32 battler)
+{
+    if (gBattleMons[battler].statStages[STAT_ATK] == 0)
+        return FALSE; // no puede bajar de -6
+
+    if (gBattleMons[battler].status2 & STATUS2_SUBSTITUTE)
+        return FALSE; // sub
+
+    if (gSideTimers[GET_BATTLER_SIDE(battler)].mistTimer)
+        return FALSE; // Neblina
+
+    switch(gBattleMons[battler].ability) {
+        case ABILITY_CLEAR_BODY:
+        case ABILITY_HYPER_CUTTER:
+        case ABILITY_WHITE_SMOKE:
+        case ABILITY_SCRAPPY:
+        case ABILITY_INNER_FOCUS:
+        case ABILITY_OBLIVIOUS:
+        case ABILITY_OWN_TEMPO:
+            return FALSE;
+    }
+    return TRUE;
+}
+// No compila por error  structure has no member named `_usedMoves'
+bool8 KnowsSomeRecoveryMove(u32 opposingBattler)
+{  
+    u16 * move_history = gBattleResources->battleHistory->_usedMoves[(GetBattlerSide(opposingBattler) == B_SIDE_PLAYER ? 0 : PARTY_SIZE) + gBattlerPartyIndexes[opposingBattler]].moves;
+    u8 moveLimitations = CheckMoveLimitations(opposingBattler, 0, MOVE_LIMITATION_CHOICE-1);
+    u16 move;
+    s32 i, j;
+
+    for (i = 0; i < MAX_MON_MOVES; i++)
+    {
+        move = gBattleMons[opposingBattler].moves[i];
+        if (move && !(gBitTable[i] & moveLimitations) &&
+           (
+            gBattleMoves[move].effect == EFFECT_RESTORE_HP
+         || gBattleMoves[move].effect == EFFECT_SOFTBOILED
+         || gBattleMoves[move].effect == EFFECT_MORNING_SUN
+         || gBattleMoves[move].effect == EFFECT_MOONLIGHT
+         || gBattleMoves[move].effect == EFFECT_SHORE_UP
+         || gBattleMoves[move].effect == EFFECT_SYNTHESIS
+         || gBattleMoves[move].effect == EFFECT_REST
+           ))
+            for (j = 0; j < MAX_MON_MOVES; j++)
+                if (move_history[j] == move)
+                    return TRUE;
+    }
+    return FALSE;
+	
+}
+
+
+// Prepara una tabla con tres entradas para cada poke del equipo:
+// si es más rápido que el rival, qué nHKO le hace al rival, qué nHKO espera
+// recibir del rival y si le quita un 56.25% de los PS con algún ataque
+void PrepareNHKOTable(struct Pokemon *party, s32 firstId, s32 lastId, u8 filteredMons, u32 opposingBattler, u8 nhko[][4])
+{ 
+    if (MonsLeft(filteredMons))
+    {
+        s32 i;
+        struct BattlePokemon currentMon = gBattleMons[gActiveBattler];
+		struct DisableStruct disableStructCopy = gDisableStructs[gActiveBattler];
+        u16 partyIndex = gBattlerPartyIndexes[gActiveBattler];
+
+        for (i = firstId; i < lastId; i++)
+            if (!(gBitTable[i] & filteredMons))
+            {
+                bool8 intimidateApplies;
+
+                PokemonToBattleMon(&party[i], &gBattleMons[gActiveBattler], gCurrentMove == MOVE_BATON_PASS);
+                gBattlerPartyIndexes[gActiveBattler] = i;
+                intimidateApplies = gBattleMons[gActiveBattler].ability == ABILITY_INTIMIDATE && VulnerableToIntimidate(opposingBattler);
+                if (intimidateApplies)
+                gBattleMons[opposingBattler].statStages[STAT_ATK] -= 1;
+				PrepareDisableStructForSwitchIn(gActiveBattler, &disableStructCopy);
+				TransformIfImposter(gActiveBattler, opposingBattler);
+
+                // Guarda en la primera posición un 1 si es más rápido que el rival
+                if (GetWhoStrikesFirst(gActiveBattler, opposingBattler, TRUE) == 0)
+                    nhko[i][0] = 1;
+                else
+                    nhko[i][0] = 0;
+
+                // Guarda en la segunda posición el nHKO que le hace al rival,
+                // y en la tercera el que espera recibir del rival
+                nhko[i][1] = CalculateNHKO(gActiveBattler, opposingBattler, TRUE, MOVE_NONE, FALSE, TRUE);
+                nhko[i][2] = CalculateNHKO(opposingBattler, gActiveBattler, FALSE, MOVE_NONE, FALSE, TRUE);
+
+                {
+                    u16 current_opponent_hp = gBattleMons[opposingBattler].hp;
+                    gBattleMons[opposingBattler].hp = (gBattleMons[opposingBattler].maxHP * 9) / 16 + 1;
+                    nhko[i][3] = CalculateNHKO(gActiveBattler, opposingBattler, TRUE, MOVE_NONE, FALSE, TRUE) == 1 ? 1 : 0;
+                    gBattleMons[opposingBattler].hp = current_opponent_hp;
+                }
+
+			   if (intimidateApplies)
+               gBattleMons[opposingBattler].statStages[STAT_ATK] += 1;
+			}
+        
+        gBattleMons[gActiveBattler] = currentMon;
+		gDisableStructs[gActiveBattler] = disableStructCopy;
+        gBattlerPartyIndexes[gActiveBattler] = partyIndex;
+    }
+}
+
+// Evita meter un poke antes de que ataque el rival cuando puede recibir KO
+// en el cambio simplemente repitiendo el último ataque que lanzó al actual poke de la IA
+// (si es que este estaba presente cuando se eligió tal ataque)
+u8 FilterSwitchInsThatMightGetKOedBeforeEndOfTurn(struct Pokemon *party, s32 firstId, s32 lastId, u8 filteredMons, u32 opposingBattler, u8 a[][4])
+{
+    u16 move = gLastMoves[opposingBattler];
+    u8 moveLimitations;
+    s32 i;
+
+    if (!HasYetToAttack(opposingBattler) || move == MOVE_NONE || gBattleMoves[move].power == 0 || gDisableStructs[gActiveBattler].isFirstTurn != 0)
+        return filteredMons;
+
+    // Comprueba que el rival seguir usando el movimiento
+    moveLimitations = CheckMoveLimitations(opposingBattler, 0, MOVE_LIMITATION_CHOICE-1);
+    for (i = 0; i < MAX_MON_MOVES; i++)
+        if (gBattleMons[opposingBattler].moves[i] == move && !(gBitTable[i] & moveLimitations))
+            break;
+
+    if (i != MAX_MON_MOVES)
+    {
+        u8 nhko;
+        struct BattlePokemon currentMon = gBattleMons[gActiveBattler];
+        struct DisableStruct disableStructCopy = gDisableStructs[gActiveBattler];
+        u16 partyIndex = gBattlerPartyIndexes[gActiveBattler];
+
+        for (i = firstId; i < lastId; i++)
+            if (!(gBitTable[i] & filteredMons))
+            {
+                bool8 intimidateApplies;
+
+                PokemonToBattleMon(&party[i], &gBattleMons[gActiveBattler], gCurrentMove == MOVE_BATON_PASS);
+                gBattlerPartyIndexes[gActiveBattler] = i;
+                intimidateApplies = gBattleMons[gActiveBattler].ability == ABILITY_INTIMIDATE && VulnerableToIntimidate(opposingBattler);
+                if (intimidateApplies)
+                    gBattleMons[opposingBattler].statStages[STAT_ATK] -= 1;
+
+                PrepareDisableStructForSwitchIn(gActiveBattler, &disableStructCopy);
+                TransformIfImposter(gActiveBattler, opposingBattler);
+
+                nhko = CalculateNHKO(opposingBattler, gActiveBattler, FALSE, move, FALSE, FALSE);
+				
+		// si recibe OHKO o, siendo más lento, 2HKO, queda descartado
+                if (nhko == 1 || (nhko == 2 && GetWhoStrikesFirst(gActiveBattler, opposingBattler, TRUE) != 0))
+                    filteredMons |= gBitTable[i];
+
+                if (intimidateApplies)
+                    gBattleMons[opposingBattler].statStages[STAT_ATK] += 1;
+            }
+
+        gBattleMons[gActiveBattler] = currentMon;
+        gDisableStructs[gActiveBattler] = disableStructCopy;
+        gBattlerPartyIndexes[gActiveBattler] = partyIndex;
+    }
+
+    return filteredMons;
+}
+
+// Evita meter un poke si recibe un OHKO de algún movimiento de prioridad del rival,
+// salvo si puede hacerle OHKO antes con otro movimiento de prioridad
+u8 FilterFragileMonsAgainstPriority(struct Pokemon *party, s32 firstId, s32 lastId, u8 filteredMons, u32 opposingBattler, u8 a[][4])
+{ 
+    u16 move;
+    u16 opponent_priority_moves[4] = {0, 0, 0, 0};
+    u8 moveLimitations_ai, moveLimitations_opponent = CheckMoveLimitations(opposingBattler, 0, MOVE_LIMITATION_CHOICE-1);
+    s32 i, move_i, move_j;
+    bool8 skipMon;
+
+    // Anota los movimientos de prioridad que conoce del rival y que el rival puede usar
+    for (move_i = 0; move_i < MAX_MON_MOVES; move_i++)
+    {
+        move = gBattleMons[opposingBattler].moves[move_i];
+        if (move && gBattleMoves[move].effect == EFFECT_QUICK_ATTACK && !(gBitTable[move_i] & moveLimitations_opponent))
+            for (move_j = 0; move_j < MAX_MON_MOVES; move_j++)
+                if (gBattleResources->battleHistory->_usedMoves[(GetBattlerSide(opposingBattler) == B_SIDE_PLAYER ? 0 : PARTY_SIZE) + gBattlerPartyIndexes[opposingBattler]].moves[move_j] == move)
+                {
+                    opponent_priority_moves[move_i] = move;
+                    break;
+                }
+    }
+
+    // Solo procede si conoce algún movimiento de prioridad del rival
+    if (opponent_priority_moves[0] != 0 || opponent_priority_moves[1] != 0 || opponent_priority_moves[2] != 0 || opponent_priority_moves[3] != 0)
+    {
+        struct BattlePokemon currentMon = gBattleMons[gActiveBattler];
+        struct DisableStruct disableStructCopy = gDisableStructs[gActiveBattler];
+        u16 partyIndex = gBattlerPartyIndexes[gActiveBattler];
+
+        for (i = firstId; i < lastId; i++)
+            if (!(gBitTable[i] & filteredMons))
+            {
+                bool8 intimidateApplies;
+
+                PokemonToBattleMon(&party[i], &gBattleMons[gActiveBattler], gCurrentMove == MOVE_BATON_PASS);
+                gBattlerPartyIndexes[gActiveBattler] = i;
+                intimidateApplies = gBattleMons[gActiveBattler].ability == ABILITY_INTIMIDATE && VulnerableToIntimidate(opposingBattler);
+                if (intimidateApplies)
+                    gBattleMons[opposingBattler].statStages[STAT_ATK] -= 1;
+
+                PrepareDisableStructForSwitchIn(gActiveBattler, &disableStructCopy);
+                TransformIfImposter(gActiveBattler, opposingBattler);
+
+                skipMon = FALSE;
+
+                // Primero, comprueba que no le pueda meter KO al rival con prioridad antes
+				moveLimitations_ai = CheckMoveLimitations(gActiveBattler, 0, 0xFF);
+                for (move_i = 0; move_i < MAX_MON_MOVES && !skipMon; move_i++)
+                {
+                    move = gBattleMons[gActiveBattler].moves[move_i];
+                    if (move && !(gBitTable[move_i] & moveLimitations_ai) && (
+                        (gBattleMoves[move].effect == EFFECT_QUICK_ATTACK && GetWhoStrikesFirst(gActiveBattler, opposingBattler, TRUE) == 0) // es más rápido y tiene prioridad
+                        || gBattleMoves[move].effect == EFFECT_FAKE_OUT // o tiene Fake Out
+                      ) && CalculateNHKO(gActiveBattler, opposingBattler, TRUE, move, FALSE, FALSE) == 1)
+                        skipMon = TRUE;
+                }
+
+                // Si recibe OHKO con un mov de prioridad, queda descartado
+                if (!skipMon)
+                    for (move_i = 0; move_i < MAX_MON_MOVES; move_i++)
+                    {
+                        move = opponent_priority_moves[move_i];
+                        if (move && CalculateNHKO(opposingBattler, gActiveBattler, FALSE, move, FALSE, FALSE) == 1)
+                        {
+                            filteredMons |= gBitTable[i];
+                            break;
+                        }
+                    }
+
+                if (intimidateApplies)
+                    gBattleMons[opposingBattler].statStages[STAT_ATK] += 1;
+            }
+
+        gBattleMons[gActiveBattler] = currentMon;
+        gDisableStructs[gActiveBattler] = disableStructCopy;
+        gBattlerPartyIndexes[gActiveBattler] = partyIndex;
+    }
+
+    return filteredMons;
+}
+
+// Excluye los pokes con Imposter si, en caso de entrar, no se van a transformar
+u8 FilterImposterIfUseless(struct Pokemon *party, s32 firstId, s32 lastId, u8 filteredMons, u32 opposingBattler, u8 a[][4])
+{
+    s32 i;
+    // Imposter falla si el objetivo está debilitado, transformado,
+    // con sustituto o en estado semiinvulnerable (por Dig, Fly, etc)
+    if ((gBattleMons[opposingBattler].hp == 0
+      || (gBattleMons[opposingBattler].status2 & (STATUS2_TRANSFORMED | STATUS2_SUBSTITUTE))
+      || (gStatuses3[opposingBattler] & STATUS3_SEMI_INVULNERABLE)
+    ))
+        for (i = firstId; i < lastId; i++)
         {
-            move = GetMonData(&gEnemyParty[i], MON_DATA_MOVE1 + j);
-            gBattleMoveDamage = 0;
-            if (move != MOVE_NONE && gBattleMoves[move].power != 1)
-            {
-                AI_CalcDmg(gActiveBattler, opposingBattler);
-                TypeCalc(move, gActiveBattler, opposingBattler);
-            }
-            if (bestDmg < gBattleMoveDamage)
-            {
-                bestDmg = gBattleMoveDamage;
-                bestMonId = i;
-            }
+            u16 species = GetMonData(&party[i], MON_DATA_SPECIES);
+            u8 ability;
+
+            if (GetMonData(&party[i], MON_DATA_ABILITY_NUM) != 0)
+                ability = gBaseStats[species].abilities[1];
+            else
+                ability = gBaseStats[species].abilities[0];
+
+            if (ability == ABILITY_IMPOSTER)
+                filteredMons |= gBitTable[i];
+        }
+
+    return filteredMons;
+}
+
+// Excluye los pokes con Truant si no pueden tocar al rival
+u8 FilterTruantIfUseless(struct Pokemon *party, s32 firstId, s32 lastId, u8 filteredMons, u32 opposingBattler, u8 a[][4])
+{ 
+    u8 truantMons = 0, vulnerableTruantMons = 0;
+    u16 species;
+    u8 ability;
+    s32 i;
+
+    for (i = firstId; i < lastId; i++)
+        if (!(gBitTable[i] & filteredMons))
+        {
+            species = GetMonData(&party[i], MON_DATA_SPECIES);
+            if (GetMonData(&party[i], MON_DATA_ABILITY_NUM) != 0)
+                ability = gBaseStats[species].abilities[1];
+            else
+                ability = gBaseStats[species].abilities[0];
+
+            if (ability == ABILITY_TRUANT)
+                truantMons |= gBitTable[i];
+        }
+    if (truantMons)
+    {
+        if (!HasYetToAttack(opposingBattler))
+        {
+            struct BattlePokemon currentMon = gBattleMons[gActiveBattler];
+			struct DisableStruct disableStructCopy = gDisableStructs[gActiveBattler];
+            u16 partyIndex = gBattlerPartyIndexes[gActiveBattler];
+			for (i = firstId; i < lastId; i++)
+                if ((gBitTable[i] & truantMons))
+                {
+                    PokemonToBattleMon(&party[i], &gBattleMons[gActiveBattler], gCurrentMove == MOVE_BATON_PASS);
+                    gBattlerPartyIndexes[gActiveBattler] = i;
+					PrepareDisableStructForSwitchIn(gActiveBattler, &disableStructCopy);
+
+                    if (IsTruantMonVulnerable(gActiveBattler, opposingBattler))
+                        vulnerableTruantMons |= gBitTable[i];
+                }
+            
+            gBattleMons[gActiveBattler] = currentMon;
+			gDisableStructs[gActiveBattler] = disableStructCopy;
+            gBattlerPartyIndexes[gActiveBattler] = partyIndex;
+        }
+        else // Si el rival no ha atacado, podría anticiparse aunque sea más lento
+        {
+            u16 currentSpeed = gBattleMons[gActiveBattler].speed;
+            gBattleMons[gActiveBattler].speed = 0;
+
+            if (IsTruantMonVulnerable(gActiveBattler, opposingBattler))
+                vulnerableTruantMons = truantMons;
+            
+            gBattleMons[gActiveBattler].speed = currentSpeed;
         }
     }
+    return (filteredMons | vulnerableTruantMons);
+}
+
+// Excluye los Shedinja que corran peligro
+u8 FilterShedinjaIfVulnerable(struct Pokemon *party, s32 firstId, s32 lastId, u8 filteredMons, u32 opposingBattler, u8 a[][4])
+{ 
+    u8 sheds = 0, vulnerableSheds = 0;
+    u16 species;
+    s32 i;
+
+    for (i = firstId; i < lastId; i++)
+        if (!(gBitTable[i] & filteredMons))
+        {
+            species = GetMonData(&party[i], MON_DATA_SPECIES);
+            if (species == SPECIES_SHEDINJA)
+                sheds |= gBitTable[i];
+        }
+    if (sheds && ((gBattleWeather & WEATHER_SANDSTORM_ANY) || (gBattleWeather & WEATHER_HAIL_ANY)) && !(!(gBattleWeather & WEATHER_SANDSTORM_PERMANENT) && gWishFutureKnock.weatherDuration == 1)) // si hay arena o granizo y no está a punto de acabar
+        vulnerableSheds = sheds; // entonces todos los Shedinja son vulnerables
+    else if (sheds)
+    {
+        struct BattlePokemon currentMon = gBattleMons[gActiveBattler];
+		struct DisableStruct disableStructCopy = gDisableStructs[gActiveBattler];
+        u16 partyIndex = gBattlerPartyIndexes[gActiveBattler];
+				u16 savedCurrentMove = gCurrentMove;
+
+        for (i = firstId; i < lastId; i++)
+            if ((gBitTable[i] & sheds))
+            {
+                // Evita sacar a cada Shedinja si es vulnerable al rival,
+                // excepto cuando puede darle KO (lo cual requiere que ya haya atacado)
+                bool8 vulnerable = TRUE;
+                s32 move_i;
+                u16 move;
+                PokemonToBattleMon(&party[i], &gBattleMons[gActiveBattler], gCurrentMove == MOVE_BATON_PASS);
+                gBattlerPartyIndexes[gActiveBattler] = i;
+				PrepareDisableStructForSwitchIn(gActiveBattler, &disableStructCopy);
+
+	if (HasYetToAttack(opposingBattler))
+                    gBattleMons[gActiveBattler].speed = 0; // Si el rival no ha atacado, da igual la velocidad de Shedinja (salvo predicción)
+
+                for (move_i = 0; vulnerable && move_i < MAX_MON_MOVES; move_i++) {
+                    move = GetMonData(&party[i], MON_DATA_MOVE1 + move_i);
+                    if (move != MOVE_NONE && gBattleMoves[move].effect != EFFECT_PROTECT && !OurShedinjaIsVulnerable(gActiveBattler, opposingBattler, move))
+                        vulnerable = FALSE;
+                }
+
+                if (vulnerable)
+                    vulnerableSheds |= gBitTable[i];
+            }
+        gCurrentMove = savedCurrentMove;
+        gBattleMons[gActiveBattler] = currentMon;
+		gDisableStructs[gActiveBattler] = disableStructCopy;
+        gBattlerPartyIndexes[gActiveBattler] = partyIndex;
+    }
+    return (filteredMons | vulnerableSheds);
+}
+
+u8 FilterChoiceMonsWayTooWeak(struct Pokemon *party, s32 firstId, s32 lastId, u8 filteredMons, u32 opposingBattler, u8 nhko[][4])
+{
+    s32 i, j;
+    u16 item, move;
+
+    for (i = firstId; i < lastId; i++)
+        if (!(gBitTable[i] & filteredMons))
+        {
+            item = GetMonData(&party[i], MON_DATA_HELD_ITEM);
+
+            if (item == ITEM_CHOICE_BAND || item == ITEM_CHOICE_SPECS || item == ITEM_CHOICE_SCARF)
+            {
+                bool8 hasOHKOmove = FALSE;
+
+                for (j = 0; !hasOHKOmove && j < MAX_MON_MOVES; j++)
+                {
+                    move = GetMonData(&party[i], MON_DATA_MOVE1 + j);
+                    if (move != MOVE_NONE && gBattleMoves[move].effect == EFFECT_OHKO)
+                        hasOHKOmove = TRUE;
+                }
+
+                // Excluye al candidato en caso de 5HKO o peor, o de 4HKO siendo más lento
+                if (!hasOHKOmove && nhko[i][1] >= 4 && (nhko[i][1] > 4 || !nhko[i][0]))
+                    filteredMons |= gBitTable[i];
+            }
+        }
+
+    return filteredMons;
+}
+
+u8 FilterChoiceMonsNotPowerfulEnough(struct Pokemon *party, s32 firstId, s32 lastId, u8 filteredMons, u32 opposingBattler, u8 nhko[][4])
+{
+    s32 i, j;
+    u16 item, move;
+
+    for (i = firstId; i < lastId; i++)
+        if (!(gBitTable[i] & filteredMons))
+        {
+            item = GetMonData(&party[i], MON_DATA_HELD_ITEM);
+
+            if (item == ITEM_CHOICE_BAND || item == ITEM_CHOICE_SPECS || item == ITEM_CHOICE_SCARF)
+            {
+                bool8 hasOHKOmove = FALSE;
+
+                for (j = 0; !hasOHKOmove && j < MAX_MON_MOVES; j++)
+                {
+                    move = GetMonData(&party[i], MON_DATA_MOVE1 + j);
+                    if (move != MOVE_NONE && gBattleMoves[move].effect == EFFECT_OHKO)
+                        hasOHKOmove = TRUE;
+                }
+
+                if (!hasOHKOmove && nhko[i][1] > 2)
+                    filteredMons |= gBitTable[i];
+            }
+        }
+
+    return filteredMons;
+}
+
+u8 FilterOpponentCanBeTrappedAndDefeated(struct Pokemon *party, s32 firstId, s32 lastId, u8 filteredMons, u32 opposingBattler, u8 nhko[][4])
+{ 
+    s32 i;
+    u8 min_opponent_attacks = HasYetToAttack(opposingBattler) ? 1 : 0;
+    bool8 opponentIsGhost = IS_BATTLER_OF_TYPE(opposingBattler, TYPE_GHOST),
+          opponentIsGrounded = !IS_BATTLER_OF_TYPE(opposingBattler, TYPE_FLYING) && gBattleMons[opposingBattler].ability != ABILITY_LEVITATE,
+          opponentIsSteel = IS_BATTLER_OF_TYPE(opposingBattler, TYPE_STEEL);
+    bool8 opponentHasPhazingMoves = FALSE;
+    u16 * opponentHistory = gBattleResources->battleHistory->_usedMoves[(GetBattlerSide(opposingBattler) == B_SIDE_PLAYER ? 0 : PARTY_SIZE) + gBattlerPartyIndexes[opposingBattler]].moves;
+    if (((gStatuses3[opposingBattler] & STATUS3_ROOTED) && !opponentIsGhost))
+		// Before also  || (gBattleTypeFlags & (BATTLE_TYPE_ARENA | BATTLE_TYPE_PALACE))   no existen en firered
+        return filteredMons; // El rival ya está atrapado, no hace falta atraparlo
+
+    for (i = 0; i < MAX_MON_MOVES && !opponentHasPhazingMoves; i++)
+        if (opponentHistory[i] != MOVE_NONE && gBattleMoves[opponentHistory[i]].effect == EFFECT_ROAR)
+            opponentHasPhazingMoves = TRUE;
+
+    for (i = firstId; i < lastId; i++)
+        if (!(gBitTable[i] & filteredMons))
+        {
+            u8 num_attacks_taken_until_KO = nhko[i][1] - nhko[i][0] + min_opponent_attacks;
+			u8 nhko_taken = nhko[i][2];
+
+            // Tiene que dar revenge kill, o hacer KO de sobra antes de recibirlo
+            if (num_attacks_taken_until_KO > 0
+             && !(num_attacks_taken_until_KO == 1 && nhko_taken >= 3 && !opponentHasPhazingMoves)
+             && !(num_attacks_taken_until_KO == 2 && nhko_taken >= 5 && !opponentHasPhazingMoves))
+                filteredMons |= gBitTable[i];
+            else
+            {
+                u16 species = GetMonData(&party[i], MON_DATA_SPECIES);
+                u8 ability;
+
+                if (GetMonData(&party[i], MON_DATA_ABILITY_NUM) != 0)
+                    ability = gBaseStats[species].abilities[1];
+                else
+                    ability = gBaseStats[species].abilities[0];
+
+                // Tiene que atrapar al rival
+                if (!(ability == ABILITY_SHADOW_TAG && !opponentIsGhost && gBattleMons[opposingBattler].ability != ABILITY_SHADOW_TAG)
+                 && !(ability == ABILITY_ARENA_TRAP && !opponentIsGhost && opponentIsGrounded)
+                 && !(ability == ABILITY_MAGNET_PULL && opponentIsSteel))
+                {
+                    // También considera que el rival será atrapado si le da OHKO con Pursuit
+                    bool8 canKOwithPursuit = FALSE;
+
+				if (nhko[i][1] == 1 && (GetMonData(&party[i], MON_DATA_MOVE1) == MOVE_PURSUIT || GetMonData(&party[i], MON_DATA_MOVE2) == MOVE_PURSUIT || GetMonData(&party[i], MON_DATA_MOVE3) == MOVE_PURSUIT || GetMonData(&party[i], MON_DATA_MOVE4) == MOVE_PURSUIT))
+                    {
+                        u8 moveLimitations;
+                        s32 move_i;
+                        struct BattlePokemon currentMon = gBattleMons[gActiveBattler];
+                        struct DisableStruct disableStructCopy = gDisableStructs[gActiveBattler];
+                        u16 partyIndex = gBattlerPartyIndexes[gActiveBattler];
+
+                        PokemonToBattleMon(&party[i], &gBattleMons[gActiveBattler], gCurrentMove == MOVE_BATON_PASS);
+                        gBattlerPartyIndexes[gActiveBattler] = i;
+                        PrepareDisableStructForSwitchIn(gActiveBattler, &disableStructCopy);
+
+                        moveLimitations = CheckMoveLimitations(gActiveBattler, 0, 0xFF);
+                        if (CalculateNHKO(gActiveBattler, opposingBattler, TRUE, MOVE_PURSUIT, FALSE, FALSE) == 1)
+                            for (move_i = 0; move_i < MAX_MON_MOVES && !canKOwithPursuit; move_i++)
+                                if (gBattleMons[gActiveBattler].moves[move_i] == MOVE_PURSUIT && !(gBitTable[move_i] & moveLimitations))
+                                    canKOwithPursuit = TRUE; // hace KO con Persecución y puede usarlo
+
+                        gBattleMons[gActiveBattler] = currentMon;
+                        gDisableStructs[gActiveBattler] = disableStructCopy;
+                        gBattlerPartyIndexes[gActiveBattler] = partyIndex;
+                    }
+                    if (!canKOwithPursuit)
+                        filteredMons |= gBitTable[i];
+                }
+             }
+        }
+
+    return filteredMons;
+}
+
+u8 FilterRevengeKill(struct Pokemon *party, s32 firstId, s32 lastId, u8 filteredMons, u32 opposingBattler, u8 nhko[][4])
+{
+    s32 i;
+
+    if (!HasYetToAttack(opposingBattler)) // si el rival tiene que atacar, poco revenge kill se puede hacer
+        for (i = firstId; i < lastId; i++)
+            if (!(gBitTable[i] & filteredMons)
+             && !(
+                   nhko[i][0]      // tiene que ser más rápido
+                && nhko[i][1] == 1 // y dar OHKO
+             ))
+                filteredMons |= gBitTable[i];
+
+    return filteredMons;
+}
+
+u8 FilterKOTaking1Hit(struct Pokemon *party, s32 firstId, s32 lastId, u8 filteredMons, u32 opposingBattler, u8 nhko[][4])
+{
+    s32 i;
+    u8 min_opponent_attacks = HasYetToAttack(opposingBattler) ? 1 : 0;
+
+    for (i = firstId; i < lastId; i++)
+        if (!(gBitTable[i] & filteredMons))
+        {
+            // El número de ataques que va a recibir antes de hacer KO al rival es
+            // el nHKO que le hace al rival, menos 1 si es más rápido,
+            // más 1 si el rival todavía tiene que atacar
+            u8 num_attacks_taken_until_KO = nhko[i][1] - nhko[i][0] + min_opponent_attacks;
+		
+	u8 nhko_taken = nhko[i][2];
+            
+            if (num_attacks_taken_until_KO > 0 && (num_attacks_taken_until_KO > 1 || nhko_taken < 3 || (!nhko[i][3] && KnowsSomeRecoveryMove(opposingBattler))))
+                filteredMons |= gBitTable[i];
+        }
+
+    return filteredMons;
+}
+
+u8 FilterKOTaking2Hits(struct Pokemon *party, s32 firstId, s32 lastId, u8 filteredMons, u32 opposingBattler, u8 nhko[][4])
+{
+    s32 i;
+    u8 min_opponent_attacks = HasYetToAttack(opposingBattler) ? 1 : 0;
+
+    for (i = firstId; i < lastId; i++)
+        if (!(gBitTable[i] & filteredMons))
+        {
+            // El número de ataques que va a recibir antes de hacer KO al rival es
+            // el nHKO que le hace al rival, menos 1 si es más rápido,
+            // más 1 si el rival todavía tiene que atacar
+            u8 num_attacks_taken_until_KO = nhko[i][1] - nhko[i][0] + min_opponent_attacks;
+            u8 nhko_taken = nhko[i][2];
+            
+            if (num_attacks_taken_until_KO > 0 && ((!(num_attacks_taken_until_KO <= 1 && nhko_taken >= 3) && (num_attacks_taken_until_KO > 2 || nhko_taken < 5)) || (!nhko[i][3] && KnowsSomeRecoveryMove(opposingBattler))))
+                filteredMons |= gBitTable[i];
+        }
+
+    return filteredMons;
+}
+
+u8 FilterCanAttackWonderGuardOpponent(struct Pokemon *party, s32 firstId, s32 lastId, u8 filteredMons, u32 opposingBattler, u8 nhko[][4])
+{
+    s32 i;
+    u8 monsWithoutDamagingWeather = 0;
+    bool8 someMonHasDamagingWeather = FALSE;
+
+    if (gBattleMons[opposingBattler].ability == ABILITY_WONDER_GUARD)
+        for (i = firstId; i < lastId; i++)
+            if (!(gBitTable[i] & filteredMons))
+            {
+                bool8 hasANonDamagingUsefulMove = FALSE;
+                s32 j;
+                u16 move;
+
+                // Mira si puede meter un clima que dañe al rival
+                if (gBattleMons[opposingBattler].hp == 1)
+                {
+                    u16 species = GetMonData(&party[i], MON_DATA_SPECIES);
+                    u8 monAbility;
+
+                    if (GetMonData(&party[i], MON_DATA_ABILITY_NUM) != 0)
+                        monAbility = gBaseStats[species].abilities[1];
+                    else
+                        monAbility = gBaseStats[species].abilities[0];
+
+                    if (monAbility == ABILITY_SAND_STREAM || monAbility == ABILITY_SNOW_WARNING)
+                    {
+                        someMonHasDamagingWeather = TRUE;
+                        continue;
+                    }
+                    monsWithoutDamagingWeather |= gBitTable[i];
+                }
+
+                // Mira si le hace algo mejor que 5HKO (y por tanto le hace algo)
+                if (nhko[i][1] < 5)
+                    continue;
+
+                // Mira si puede dañar con algún movimiento que no sea de daño directo
+                for (j = 0; !hasANonDamagingUsefulMove && j < MAX_MON_MOVES; j++)
+                {
+                    move = GetMonData(&party[i], MON_DATA_MOVE1 + j);
+                    if (NonDamagingMoveIsGoodAgainstWonderGuardOpponent(move, opposingBattler))
+                        hasANonDamagingUsefulMove = TRUE;
+                }
+
+                // Si ha llegado hasta aquí, es que no puede atacar salvo a lo sumo con movs que no sean de daño
+                if (!hasANonDamagingUsefulMove)
+                    filteredMons |= gBitTable[i];
+            }
+
+    // Si algún poke convoca clima y, si entra, causaría daño ese mismo turno, prefiere meter uno de esos
+    if (someMonHasDamagingWeather && (gBattleMainFunc != BattleTurnPassed || gBattleStruct->turnCountersTracker < 7))
+	// 7 es ENDTURN_SANDSTORM
+        return filteredMons | monsWithoutDamagingWeather;
+
+    return filteredMons;
+}
+
+u8 FilterTakesMostHits(struct Pokemon *party, s32 firstId, s32 lastId, u8 filteredMons, u32 opposingBattler, u8 nhko[][4])
+{
+    u8 max_hits_taken = 1;
+    s32 i;
+
+    // Calcula el nHKO menos malo que algún poke de la IA recibe del rival
+    for (i = firstId; i < lastId; i++)
+        if (!(gBitTable[i] & filteredMons) && nhko[i][2] > max_hits_taken)
+            max_hits_taken = nhko[i][2];
+
+    // Filtra los pokes que tienen un nHKO peor que el menos malo
+    for (i = firstId; i < lastId; i++)
+        if (!(gBitTable[i] & filteredMons) && nhko[i][2] < max_hits_taken)
+            filteredMons |= gBitTable[i];
+
+    return filteredMons;
+}
+
+u8 FilterKOsInLessHits(struct Pokemon *party, s32 firstId, s32 lastId, u8 filteredMons, u32 opposingBattler, u8 nhko[][4])
+{
+    u8 min_hits_given = 5;
+    s32 i;
+	
+	// Calcula el mejor nHKO que algún poke de la IA da al rival
+    // Se resta 1 si el poke de la IA es más rápido (se evalúa igual dar 2HKO siendo más lento que 3HKO siendo más rápido)
+    for (i = firstId; i < lastId; i++)
+        if (!(gBitTable[i] & filteredMons) && (nhko[i][1] - nhko[i][0]) < min_hits_given)
+            min_hits_given = nhko[i][1];
+
+    // Filtra los pokes que tienen un nHKO peor
+    for (i = firstId; i < lastId; i++)
+        if (!(gBitTable[i] & filteredMons) && (nhko[i][1] - nhko[i][0]) > min_hits_given)
+            filteredMons |= gBitTable[i];
+
+    return filteredMons;
+}
+
+u8 GetMostSuitableMonToSwitchInto_NotChangingIsImpossible(void)
+{
+    return GetMostSuitableMonToSwitchInto(FALSE, FALSE);
+}
+
+u8 GetMostSuitableMonToSwitchInto_NotChangingIsUnacceptable(void)
+{
+    return GetMostSuitableMonToSwitchInto(TRUE, FALSE);
+}
+
+u8 GetMostSuitableMonToSwitchInto_NotChangingIsAcceptable(void)
+{
+    return GetMostSuitableMonToSwitchInto(TRUE, TRUE);
+}
+
+u8 GetMostSuitableMonToSwitchInto(bool8 notChangingIsPossible, bool8 notChangingIsAcceptable)
+{
+    u8 opposingBattler;
+	s32 bestDmg;
+    u8 bestMonId;
+    u8 battlerIn1, battlerIn2;
+    s32 firstId;
+    s32 lastId; // + 1
+    struct Pokemon *party;
+    s32 i, j;
+    u8 invalidMons;
+    u8 filteredMons, newFilteredMons;
+    u16 move;
+
+    if (*(gBattleStruct->monToSwitchIntoId + gActiveBattler) != PARTY_SIZE)
+        return *(gBattleStruct->monToSwitchIntoId + gActiveBattler);
+    //if (gBattleTypeFlags & BATTLE_TYPE_ARENA)  // No existe en firered
+      //  return gBattlerPartyIndexes[gActiveBattler] + 1;
+
+    if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
+    {
+        battlerIn1 = gActiveBattler;
+        if (gAbsentBattlerFlags & gBitTable[GetBattlerAtPosition(GetBattlerPosition(gActiveBattler) ^ BIT_FLANK)])
+            battlerIn2 = gActiveBattler;
+        else
+            battlerIn2 = GetBattlerAtPosition(GetBattlerPosition(gActiveBattler) ^ BIT_FLANK);
+
+        opposingBattler = gActiveBattler ^ BIT_SIDE ^ (Random() & BIT_FLANK);
+        if (gAbsentBattlerFlags & gBitTable[opposingBattler])
+            opposingBattler ^= BIT_FLANK;
+    }
+    else
+    {
+        opposingBattler = GetBattlerAtPosition(GetBattlerPosition(gActiveBattler) ^ BIT_SIDE);
+        battlerIn1 = gActiveBattler;
+        battlerIn2 = gActiveBattler;
+    }
+
+    if (gBattleTypeFlags & BATTLE_TYPE_x800000) // BATTLE_TYPE_TWO_OPPONENTS no existe en firered
+    {
+        if ((gActiveBattler & BIT_FLANK) == B_FLANK_LEFT)
+            firstId = 0, lastId = 3;
+        else
+            firstId = 3, lastId = 6;
+    }
+    else
+    {
+        firstId = 0, lastId = 6;
+    }
+
+    if (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER)
+        party = gPlayerParty;
+    else
+        party = gEnemyParty;
+
+    invalidMons = 0;
+	
+	// Get invalid slots ids.
+    for (i = firstId; i < lastId; i++)
+    {
+        if (GetMonData(&party[i], MON_DATA_SPECIES) == SPECIES_NONE
+             || GetMonData(&party[i], MON_DATA_HP) == 0
+             || gBattlerPartyIndexes[battlerIn1] == i
+             || gBattlerPartyIndexes[battlerIn2] == i
+             || i == *(gBattleStruct->monToSwitchIntoId + battlerIn1)
+             || i == *(gBattleStruct->monToSwitchIntoId + battlerIn2))
+            invalidMons |= gBitTable[i];
+    }
+	
+    if (firstId == 3)
+        invalidMons |= 0x7;
+    if (lastId == 3)
+        invalidMons |= 0x38;
+    {
+        // Anota el último movimiento usado por el rival para actuar en consecuencia
+        u8 gbt = gBattlerTarget;
+        gBattlerTarget = opposingBattler;
+        RecordLastUsedMoveByTarget();
+        gBattlerTarget = gbt;
+    }
+    {
+        u8 nhko[PARTY_SIZE][4];
+
+        // Se aplican sucesivos filtros para excluir pokes que no conviene meter en este momento
+        // Si un criterio elimina todos los pokes, entonces ese criterio se ignora (y por tanto deciden los criterios posteriores)
+        filteredMons = invalidMons;
+		
+		// Aplica un criterio de filtrado.
+        // No se permite que elimine todos los pokes a no ser que se pase una variable TRUE.
+        #define APPLY_FILTER(filter, condition) {                                                          \
+                if (MonsLeft(filteredMons) && (!OnlyOneMonLeft(filteredMons) || (condition))) {            \
+                    newFilteredMons = filter(party, firstId, lastId, filteredMons, opposingBattler, nhko); \
+                    if (MonsLeft(newFilteredMons) || (condition))                                          \
+                        filteredMons = newFilteredMons;                                                    \
+                }                                                                                          \
+            }
+
+        // Excluye a pokémon con Impostor si no se van a transformar, a Shedinja en
+        // situación vulnerable y a pokémon con Truant cuando el rival los puede parar.
+        // No se permitirá que esto deje sin opciones, excepto si se puede cambiar
+        APPLY_FILTER(FilterImposterIfUseless, notChangingIsPossible);
+        APPLY_FILTER(FilterShedinjaIfVulnerable, notChangingIsPossible);
+        APPLY_FILTER(FilterTruantIfUseless, notChangingIsPossible);
+		APPLY_FILTER(FilterSwitchInsThatMightGetKOedBeforeEndOfTurn, notChangingIsPossible);
+        APPLY_FILTER(FilterFragileMonsAgainstPriority, notChangingIsAcceptable);
+
+        // Calcula el nHKO que cada poke disponible hace y recibe del oponente
+        // También almacena si cada poke es más rápido que el oponente
+        PrepareNHKOTable(party, firstId, lastId, filteredMons, opposingBattler, nhko);
+
+        APPLY_FILTER(FilterChoiceMonsWayTooWeak, notChangingIsPossible);
+        APPLY_FILTER(FilterChoiceMonsNotPowerfulEnough, notChangingIsAcceptable);
+        // Si los filtros eliminaron todas las opciones posibles o no se podía cambiar, no se cambia
+        if (!MonsLeft(filteredMons))
+            return PARTY_SIZE;
+		
+		// Este es el criterio nuclear para elegir al poke que sale:
+        //  1.- Si hay pokes que pueden dar revenge kill, se saca uno de esos.
+        //  2.- Si hay pokes que puedan eliminar al rival recibiendo un golpe
+        //      que le quite menos de 1/3 de sus PS actuales, se saca uno de esos.
+        //  3.- Si hay pokes que puedan eliminar al rival recibiendo dos golpes
+        //      que le quiten menos de 1/5 de sus PS actuales, se saca uno de esos.
+        //  4.- Se elige entre los pokes que más golpes aguanten.
+        //  5.- Se elige entre los pokes que menos golpes requieran para eliminar al rival.
+        // Si alguno de los tres primeros criterios filtra pokes y alguno de ellos
+        // puede atrapar al rival, se elige entre aquellos que atrapen al rival
+        APPLY_FILTER(FilterOpponentCanBeTrappedAndDefeated, FALSE);
+		APPLY_FILTER(FilterRevengeKill, FALSE);
+        APPLY_FILTER(FilterKOTaking1Hit, FALSE);
+        APPLY_FILTER(FilterKOTaking2Hits, notChangingIsAcceptable);
+        APPLY_FILTER(FilterCanAttackWonderGuardOpponent, FALSE);
+        APPLY_FILTER(FilterTakesMostHits, FALSE);
+        APPLY_FILTER(FilterKOsInLessHits, FALSE);
+    }
+	
+    if (OnlyOneMonLeft(filteredMons))
+    {
+        bestMonId = GetUnfilteredMon(filteredMons);
+        if (bestMonId != PARTY_SIZE && !(gBitTable[bestMonId] & filteredMons)) // no debería pasar, pero por si acaso
+             return bestMonId;
+    }
+	
+    bestMonId = GetBestMonDefensive(party, firstId, lastId, filteredMons, opposingBattler);
+    if (bestMonId != PARTY_SIZE)
+        return bestMonId;
+	
+    bestMonId = GetBestMonOffensive(party, firstId, lastId, filteredMons, opposingBattler);
+    if (bestMonId != PARTY_SIZE)
+        return bestMonId;
+
+    if (MonsLeft(filteredMons))
+    {
+        // Si los criterios anteriores no han permitido seleccionar un solo poke,
+        // se escoge al azar entre los que pasaron todos los filtros
+        while (bestMonId == PARTY_SIZE || (gBitTable[bestMonId] & filteredMons))
+            bestMonId = (Random() % (lastId - firstId)) + firstId;
+    }
+
     return bestMonId;
 }
 

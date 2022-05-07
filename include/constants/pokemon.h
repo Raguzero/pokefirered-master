@@ -93,6 +93,7 @@
 #define MON_DATA_SPDEF2            88
 
 // Pokemon types
+#define TYPE_NONE   255 // Hay que hacer algo mas con esto?
 #define TYPE_NORMAL   0x00
 #define TYPE_FIGHTING 0x01
 #define TYPE_FLYING   0x02

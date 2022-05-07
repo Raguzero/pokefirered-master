@@ -522,6 +522,7 @@ static void atkF4_subattackerhpbydmg(void);
 static void atkF5_removeattackerstatus1(void);
 static void atkF6_finishaction(void);
 static void atkF7_finishturn(void);
+static void atkF8_jumpifholdeffect(void);
 
 void (* const gBattleScriptingCommandsTable[])(void) =
 {
@@ -773,15 +774,10 @@ void (* const gBattleScriptingCommandsTable[])(void) =
     atkF5_removeattackerstatus1,
     atkF6_finishaction,
     atkF7_finishturn,
+	atkF8_jumpifholdeffect
 };
 
-struct StatFractions
-{
-    u8 dividend;
-    u8 divisor;
-};
-
-static const struct StatFractions sAccuracyStageRatios[] =
+const struct StatFractions sAccuracyStageRatios[] =
 {
     {  33, 100 }, // -6
     {  36, 100 }, // -5
@@ -1462,20 +1458,176 @@ static void atk05_damagecalc(void)
     ++gBattlescriptCurrInstr;
 }
 
+u16 CalculateWeightDamagePower(u8 battler)
+{
+    s32 i;
+    s32 weight = GetPokedexHeightWeight(SpeciesToNationalPokedexNum(gBattleMons[battler].species), 1);
+
+   if (gBattleMons[battler].ability == ABILITY_LIGHT_METAL)
+        weight /= 2;
+
+    for (i = 0; sWeightToDamageTable[i] != 0xFFFF; i += 2)
+        if (sWeightToDamageTable[i] > weight)
+            break;
+
+    if (sWeightToDamageTable[i] != 0xFFFF)
+        return sWeightToDamageTable[i + 1];
+
+    return 120;
+}
+
+u16 CalculateFlailPower(u8 battler)
+{
+    s32 i;
+    s32 hpFraction = GetScaledHPFraction(gBattleMons[battler].hp, gBattleMons[battler].maxHP, 48);
+
+    for (i = 0; i < (s32) sizeof(sFlailHpScaleToPowerTable); i += 2)
+    {
+        if (hpFraction <= sFlailHpScaleToPowerTable[i])
+            break;
+    }
+
+    return sFlailHpScaleToPowerTable[i + 1];
+}
+
+// Ajusta el tipo y la potencia del movimiento para que AI_CalcDmg estime correctamente el daño
+// (el tipo lo reconoce bien sin esto, pero no la categoría del movimiento, e.g. sin esto Hidden Power siempre lo lee físico)
+void PrepareDynamicMoveTypeAndDamageForAI_CalcDmg(u8 attacker, u8 defender)
+{
+    u8 *dynamicMoveType = &gBattleStruct->dynamicMoveType;
+
+    if (gBattleMons[attacker].species == SPECIES_PERSIAN && gBattleMons[attacker].item == ITEM_NUGGET)
+        gCritMultiplier = 2;
+
+	if (gBattleMoves[gCurrentMove].effect == EFFECT_HIDDEN_POWER) {
+        struct Pokemon *monAttacker;
+        if (GetBattlerSide(attacker) == B_SIDE_PLAYER)
+            monAttacker = &gPlayerParty[gBattlerPartyIndexes[attacker]];
+        else
+            monAttacker = &gEnemyParty[gBattlerPartyIndexes[attacker]];
+
+        *dynamicMoveType = monAttacker->box.hpType;
+		if (gCurrentMove == MOVE_HIDDEN_POWER && gBattleMons[attacker].ability == ABILITY_TECHNICIAN)
+        gDynamicBasePower = 60;
+    }
+    else if (gCurrentMove == MOVE_WEATHER_BALL)
+    {
+        if (WEATHER_HAS_EFFECT)
+        {
+            if (gBattleWeather & WEATHER_ANY)
+                gBattleScripting.dmgMultiplier = 2;
+
+            if (gBattleWeather & WEATHER_RAIN_ANY)
+                *dynamicMoveType = TYPE_WATER | 0x80;
+            else if (gBattleWeather & WEATHER_SANDSTORM_ANY)
+                *dynamicMoveType = TYPE_ROCK | 0x80;
+            else if (gBattleWeather & WEATHER_SUN_ANY)
+                *dynamicMoveType = TYPE_FIRE | 0x80;
+            else if (gBattleWeather & WEATHER_HAIL_ANY)
+                *dynamicMoveType = TYPE_ICE | 0x80;
+            // cuando es normal no hace falta tocar nada
+        }
+    }
+    else if (gBattleMoves[gCurrentMove].effect == EFFECT_ERUPTION)
+    {
+        u8 power = gBattleMoves[gCurrentMove].power;
+        gDynamicBasePower = gBattleMons[attacker].hp * power / gBattleMons[attacker].maxHP;
+        if (gDynamicBasePower == 0)
+            gDynamicBasePower = 1;
+    }
+    else if (gCurrentMove == MOVE_FACADE)
+    {
+        if (gBattleMons[attacker].status1 & (STATUS1_POISON | STATUS1_BURN | STATUS1_PARALYSIS | STATUS1_TOXIC_POISON))
+            gBattleScripting.dmgMultiplier = 2;
+    }
+	else if (gCurrentMove == MOVE_LOW_KICK)
+        gDynamicBasePower = CalculateWeightDamagePower(defender);
+    else if (gCurrentMove == MOVE_RETURN)
+        gDynamicBasePower = 10 * (gBattleMons[attacker].friendship) / 25;
+    else if (gCurrentMove == MOVE_FRUSTRATION)
+        gDynamicBasePower = 10 * (255 - gBattleMons[attacker].friendship) / 25;
+    else if (gBattleMoves[gCurrentMove].effect == EFFECT_FLAIL)
+        gDynamicBasePower = CalculateFlailPower(attacker);
+    else if (gCurrentMove == MOVE_PRESENT)
+        gDynamicBasePower = 60;   // potencia mediana, sin tener en cuenta que puede no hacer daño
+    else if (gCurrentMove == MOVE_MAGNITUDE)
+        gDynamicBasePower = 71;   // potencia promedio de Magnitud
+}
+
 void AI_CalcDmg(u8 attacker, u8 defender)
 {
     u16 sideStatus = gSideStatuses[GET_BATTLER_SIDE(defender)];
+	u8 flags;
+	PrepareDynamicMoveTypeAndDamageForAI_CalcDmg(attacker, defender);
+	if (gBattleMons[defender].ability == ABILITY_BATTLE_ARMOR || gBattleMons[defender].ability == ABILITY_SHELL_ARMOR || (gStatuses3[attacker] & STATUS3_CANT_SCORE_A_CRIT))
+        gCritMultiplier = 1;
 
-    gBattleMoveDamage = CalculateBaseDamage(&gBattleMons[attacker],
-                                            &gBattleMons[defender],
-                                            gCurrentMove,
-                                            sideStatus,
-                                            gDynamicBasePower,
-                                            gBattleStruct->dynamicMoveType,
-                                            attacker,
-                                            defender);
+	gBattleMoveDamage = CalculateBaseDamage(&gBattleMons[attacker], &gBattleMons[defender], gCurrentMove,
+                                            sideStatus, gDynamicBasePower,
+                                            gBattleStruct->dynamicMoveType, attacker, defender);
     gDynamicBasePower = 0;
+    flags = TypeCalc(gCurrentMove, attacker, defender);
+    if (flags & (MOVE_RESULT_MISSED | MOVE_RESULT_DOESNT_AFFECT_FOE)) {
+        gBattleMoveDamage = 0;
+        return;
+    }
+	
+ // Tiene en cuenta inmunidades por habilidades que no se evalúan en TypeCalc (a diferencia de las de Levitate y Wonder Guard)
+    // Lo siguiente puede adivinar la habilidad del objetivo, pero en general por el diseño de la IA esto no afecta a las decisiones de la IA
+    {
+        u16 ability = gBattleMons[defender].ability;
+        u8 type = gBattleStruct->dynamicMoveType & 0x80;
+        if (type == 0)
+            type = gBattleMoves[gCurrentMove].type;
+        if ((type == TYPE_ELECTRIC && (ability == ABILITY_VOLT_ABSORB || ability == ABILITY_LIGHTNING_ROD || ability == ABILITY_MOTOR_DRIVE))
+         || (type == TYPE_WATER && (ability == ABILITY_WATER_ABSORB || ability == ABILITY_DRY_SKIN))
+         || (type == TYPE_FIRE && ability == ABILITY_FLASH_FIRE)
+         || (ability == ABILITY_SOUNDPROOF && (gCurrentMove == MOVE_SNORE || gCurrentMove == MOVE_UPROAR || gCurrentMove == MOVE_HYPER_VOICE || gCurrentMove == MOVE_OVERDRIVE || gCurrentMove == MOVE_BOOMBURST))) 
+		 {
+            gBattleMoveDamage = 0;
+            return;
+        }
+    }
+	if (gBattleMoveDamage == 0)
+        gBattleMoveDamage = 1; // Salvo inmunidad, el daño siempre es al menos 1
+// Account for moves with special damage calculations
+    switch (gBattleMoves[gCurrentMove].effect)
+    {
+    case EFFECT_LEVEL_DAMAGE:
+        gBattleMoveDamage = gBattleMons[attacker].level;
+        break;
+    case EFFECT_DRAGON_RAGE:
+        gBattleMoveDamage = 40;
+        break;
+    case EFFECT_SONICBOOM:
+        gBattleMoveDamage = 20;
+        break;
+    case EFFECT_PSYWAVE:
+        gBattleMoveDamage = gBattleMons[attacker].level * 80 / 100;
+        break;
+    case EFFECT_SUPER_FANG:
+        gBattleMoveDamage = gBattleMons[defender].hp/2;
+        break;
+    case EFFECT_MULTI_HIT:
+            gBattleMoveDamage *= 3; // Average number of hits is three
+        break;
+	case EFFECT_TWINEEDLE:
+	case EFFECT_DOUBLE_HIT:
+            gBattleMoveDamage *= 2;
+        break;
+    case EFFECT_TRIPLE_KICK:
+            gBattleMoveDamage *= 6;
+        break;
+    default:
+        break;
+    }
+    if (gBattleMoveDamage == 0)
+        gBattleMoveDamage = 1; // Salvo inmunidad, el daño siempre es al menos 1
     gBattleMoveDamage = gBattleMoveDamage * gCritMultiplier * gBattleScripting.dmgMultiplier;
+    gBattleStruct->dynamicMoveType = 0;
+	gBattleScripting.dmgMultiplier = 1;
+	gCritMultiplier = 1;
+
     if (gStatuses3[attacker] & STATUS3_CHARGED_UP && gBattleMoves[gCurrentMove].type == TYPE_ELECTRIC)
         gBattleMoveDamage *= 2;
     if (gProtectStructs[attacker].helpingHand)
@@ -1529,8 +1681,11 @@ static void atk06_typecalc(void)
     // check stab
     if (IS_BATTLER_OF_TYPE(gBattlerAttacker, moveType))
     {
-        gBattleMoveDamage = gBattleMoveDamage * 15;
-        gBattleMoveDamage = gBattleMoveDamage / 10;
+	  if (gBattleMons[gBattlerAttacker].ability == ABILITY_ADAPTABILITY)
+		gBattleMoveDamage = gBattleMoveDamage *= 2;
+	  else 
+	  {gBattleMoveDamage = gBattleMoveDamage * 15;
+	  gBattleMoveDamage = gBattleMoveDamage / 10;}
     }
 
     if (gBattleMons[gBattlerTarget].ability == ABILITY_LEVITATE && moveType == TYPE_GROUND)
@@ -1544,7 +1699,12 @@ static void atk06_typecalc(void)
     }
     else
     {
-        while (TYPE_EFFECT_ATK_TYPE(i) != TYPE_ENDTABLE)
+        // Si el poke rival no tiene Levitación, la IA toma nota
+        // (Levitación siempre es la primera habilidad)
+        if (moveType == TYPE_GROUND && gBaseStats[gBattleMons[gBattlerTarget].species].abilities[0] == ABILITY_LEVITATE && gBaseStats[gBattleMons[gBattlerTarget].species].abilities[1] == gBattleMons[gBattlerTarget].ability)
+            RecordAbilityBattle(gBattlerTarget, gBattleMons[gBattlerTarget].ability);
+        
+		while (TYPE_EFFECT_ATK_TYPE(i) != TYPE_ENDTABLE)
         {
             if (TYPE_EFFECT_ATK_TYPE(i) == TYPE_FORESIGHT)
             {
@@ -1609,6 +1769,9 @@ static void CheckWonderGuardAndLevitate(void)
         RecordAbilityBattle(gBattlerTarget, ABILITY_LEVITATE);
         return;
     }
+    else if (moveType == TYPE_GROUND && gBaseStats[gBattleMons[gBattlerTarget].species].abilities[0] == ABILITY_LEVITATE && gBaseStats[gBattleMons[gBattlerTarget].species].abilities[1] == gBattleMons[gBattlerTarget].ability)
+        RecordAbilityBattle(gBattlerTarget, gBattleMons[gBattlerTarget].ability); // El poke no tiene Levitación: la IA toma nota
+	
     while (TYPE_EFFECT_ATK_TYPE(i) != TYPE_ENDTABLE)
     {
         if (TYPE_EFFECT_ATK_TYPE(i) == TYPE_FORESIGHT)
@@ -1701,15 +1864,49 @@ u8 TypeCalc(u16 move, u8 attacker, u8 defender)
     s32 i = 0;
     u8 flags = 0;
     u8 moveType;
-
+    struct Pokemon *monAttacker;
+    
     if (move == MOVE_STRUGGLE)
         return 0;
-    moveType = gBattleMoves[move].type;
+    
+    if (GetBattlerSide(attacker) == B_SIDE_PLAYER)
+        monAttacker = &gPlayerParty[gBattlerPartyIndexes[attacker]];
+    else
+        monAttacker = &gEnemyParty[gBattlerPartyIndexes[attacker]];
+
+    if (move == MOVE_HIDDEN_POWER || move == MOVE_MONADO_POWER)
+    {
+        moveType = monAttacker->box.hpType;;
+    }
+	else if (move == MOVE_WEATHER_BALL) 
+	{
+		if (WEATHER_HAS_EFFECT)
+        {
+            if (gBattleWeather & WEATHER_RAIN_ANY)
+                moveType = TYPE_WATER;
+            else if (gBattleWeather & WEATHER_SANDSTORM_ANY)
+                moveType = TYPE_ROCK;
+            else if (gBattleWeather & WEATHER_SUN_ANY)
+                moveType = TYPE_FIRE;
+            else if (gBattleWeather & WEATHER_HAIL_ANY)
+                moveType = TYPE_ICE;
+            else
+                moveType = TYPE_NORMAL;
+        }
+	}
+    else
+    {
+        moveType = gBattleMoves[move].type;
+    }
+	
     // check stab
     if (IS_BATTLER_OF_TYPE(attacker, moveType))
     {
-        gBattleMoveDamage = gBattleMoveDamage * 15;
-        gBattleMoveDamage = gBattleMoveDamage / 10;
+	  if (gBattleMons[attacker].ability == ABILITY_ADAPTABILITY)
+		gBattleMoveDamage = gBattleMoveDamage *= 2;
+	  else
+	  {gBattleMoveDamage = gBattleMoveDamage * 15;
+	  gBattleMoveDamage = gBattleMoveDamage / 10;}
     }
 
     if (gBattleMons[defender].ability == ABILITY_LEVITATE && moveType == TYPE_GROUND)
@@ -3134,6 +3331,7 @@ static void atk1B_cleareffectsonfaint(void)
         BtlController_EmitSetMonData(0, REQUEST_STATUS_BATTLE, 0, 0x4, &gBattleMons[gActiveBattler].status1);
         MarkBattlerForControllerExec(gActiveBattler);
         FaintClearSetData(); // Effects like attractions, trapping, etc.
+		AI_MarkForcedChange();
         gBattlescriptCurrInstr += 2;
     }
 }
@@ -4521,6 +4719,11 @@ static void atk4A_typecalc2(void)
     }
     else
     {
+        // Si el poke rival no tiene Levitación, la IA toma nota
+        // (Levitación siempre es la primera habilidad)
+        if (moveType == TYPE_GROUND && gBaseStats[gBattleMons[gBattlerTarget].species].abilities[0] == ABILITY_LEVITATE && gBaseStats[gBattleMons[gBattlerTarget].species].abilities[1] == gBattleMons[gBattlerTarget].ability)
+            RecordAbilityBattle(gBattlerTarget, gBattleMons[gBattlerTarget].ability);
+
         while (TYPE_EFFECT_ATK_TYPE(i) != TYPE_ENDTABLE)
         {
             if (TYPE_EFFECT_ATK_TYPE(i) == TYPE_FORESIGHT)
@@ -5089,6 +5292,14 @@ static void atk52_switchineffects(void)
     UpdateSentPokesToOpponentValue(gActiveBattler);
     gHitMarker &= ~(HITMARKER_FAINTED(gActiveBattler));
     gSpecialStatuses[gActiveBattler].flag40 = 0;
+
+    // Al observar si recibe o no daño de Púas, la IA puede ver que la habilidad es o no es Levitación
+    if (!(gSideStatuses[GetBattlerSide(gActiveBattler)] & SIDE_STATUS_SPIKES_DAMAGED)
+        && (gSideStatuses[GetBattlerSide(gActiveBattler)] & SIDE_STATUS_SPIKES)
+        && !IS_BATTLER_OF_TYPE(gActiveBattler, TYPE_FLYING)
+        && gBaseStats[gBattleMons[gActiveBattler].species].abilities[0] == ABILITY_LEVITATE)
+        RecordAbilityBattle(gActiveBattler, gBattleMons[gBattlerTarget].ability);
+	
     if (!(gSideStatuses[GetBattlerSide(gActiveBattler)] & SIDE_STATUS_SPIKES_DAMAGED)
      && (gSideStatuses[GetBattlerSide(gActiveBattler)] & SIDE_STATUS_SPIKES)
      && !IS_BATTLER_OF_TYPE(gActiveBattler, TYPE_FLYING)
@@ -6978,6 +7189,8 @@ static void atk8F_forcerandomswitch(void)
                 UpdatePartyOwnerOnSwitch_NonMulti(gBattlerTarget);
             SwitchPartyOrderLinkMulti(gBattlerTarget, i, 0);
             SwitchPartyOrderLinkMulti(gBattlerTarget ^ 2, i, 1);
+
+			AI_MarkForcedChange();  // Esto va aqui o mas abajo?? (https://github.com/Raguzero/Midele-Emerald-1.1.3-FINAL/commit/0e87962910de5fecb7d2fa01f604cfe7740f96bb#diff-362cff5da832aff8867c153dcde88ca149916d70f4e67aa92ea37ceb320bc459R8422)
         }
     }
     else
@@ -7401,6 +7614,14 @@ static void atk9B_transformdataexecution(void)
             else
                 gBattleMons[gBattlerAttacker].pp[i] = 5;
         }
+		// Si el rival se transforma en la IA, la IA sabe sus movimientos y habilidad
+        CopyBattlerHistoryForTransformedMon(gBattlerAttacker, gBattlerTarget);
+
+		// Si la IA se transforma en el rival, puede ver sus movimientos y habilidad
+		LearnBattlerHistoryFromTransformedMon(gBattlerAttacker, gBattlerTarget);
+
+        AI_MarkForcedChange(); // Evita que la IA tenga en cuenta sus movimientos pasados
+		
         gActiveBattler = gBattlerAttacker;
         BtlController_EmitResetActionMoveSelection(0, RESET_MOVE_SELECTION);
         MarkBattlerForControllerExec(gActiveBattler);
@@ -7849,16 +8070,8 @@ static void atkAB_trysetdestinybondtohappen(void)
 
 static void atkAC_remaininghptopower(void)
 {
-    s32 i;
-    s32 hpFraction = GetScaledHPFraction(gBattleMons[gBattlerAttacker].hp, gBattleMons[gBattlerAttacker].maxHP, 48);
-
-    for (i = 0; i < (s32)sizeof(sFlailHpScaleToPowerTable); i += 2)
-    {
-        if (hpFraction <= sFlailHpScaleToPowerTable[i])
-            break;
-    }
-    gDynamicBasePower = sFlailHpScaleToPowerTable[i + 1];
-    ++gBattlescriptCurrInstr;
+    gDynamicBasePower = CalculateFlailPower(gBattlerAttacker);
+    gBattlescriptCurrInstr++;
 }
 
 static void atkAD_tryspiteppreduce(void)
@@ -8102,7 +8315,7 @@ static void atkB5_furycuttercalc(void)
     {
         s32 i;
 
-        if (gDisableStructs[gBattlerAttacker].furyCutterCounter != 5)
+        if (gDisableStructs[gBattlerAttacker].furyCutterCounter != 3)
             ++gDisableStructs[gBattlerAttacker].furyCutterCounter;
         gDynamicBasePower = gBattleMoves[gCurrentMove].power;
 
@@ -8405,23 +8618,22 @@ static void atkC3_trysetfutureattack(void)
     }
     else
     {
+        gSideStatuses[GET_BATTLER_SIDE(gBattlerTarget)] |= SIDE_STATUS_FUTUREATTACK;
         gWishFutureKnock.futureSightMove[gBattlerTarget] = gCurrentMove;
         gWishFutureKnock.futureSightAttacker[gBattlerTarget] = gBattlerAttacker;
         gWishFutureKnock.futureSightCounter[gBattlerTarget] = 3;
-        gWishFutureKnock.futureSightDmg[gBattlerTarget] = CalculateBaseDamage(&gBattleMons[gBattlerAttacker],
-                                                                              &gBattleMons[gBattlerTarget],
-                                                                              gCurrentMove,
-                                                                              gSideStatuses[GET_BATTLER_SIDE(gBattlerTarget)],
-                                                                              0,
-                                                                              0,
-                                                                              gBattlerAttacker,
-                                                                              gBattlerTarget);
+        gWishFutureKnock.futureSightDmg[gBattlerTarget] = CalculateBaseDamage(&gBattleMons[gBattlerAttacker], &gBattleMons[gBattlerTarget], gCurrentMove,
+                                                    gSideStatuses[GET_BATTLER_SIDE(gBattlerTarget)], 0,
+                                                    0, gBattlerAttacker, gBattlerTarget);
+
         if (gProtectStructs[gBattlerAttacker].helpingHand)
             gWishFutureKnock.futureSightDmg[gBattlerTarget] = gWishFutureKnock.futureSightDmg[gBattlerTarget] * 15 / 10;
+
         if (gCurrentMove == MOVE_DOOM_DESIRE)
             gBattleCommunication[MULTISTRING_CHOOSER] = 1;
         else
             gBattleCommunication[MULTISTRING_CHOOSER] = 0;
+
         gBattlescriptCurrInstr += 5;
     }
 }
@@ -8902,18 +9114,8 @@ static void atkDC_trysetgrudge(void)
 
 static void atkDD_weightdamagecalculation(void)
 {
-    s32 i;
-
-    for (i = 0; sWeightToDamageTable[i] != 0xFFFF; i += 2)
-    {
-        if (sWeightToDamageTable[i] > GetPokedexHeightWeight(SpeciesToNationalPokedexNum(gBattleMons[gBattlerTarget].species), 1))
-            break;
-    }
-    if (sWeightToDamageTable[i] != 0xFFFF)
-        gDynamicBasePower = sWeightToDamageTable[i + 1];
-    else
-        gDynamicBasePower = 120;
-    ++gBattlescriptCurrInstr;
+    gDynamicBasePower = CalculateWeightDamagePower(gBattlerTarget);
+    gBattlescriptCurrInstr++;
 }
 
 static void atkDE_assistattackselect(void)
@@ -9656,4 +9858,15 @@ static void atkF7_finishturn(void)
 {
     gCurrentActionFuncId = B_ACTION_FINISHED;
     gCurrentTurnActionNumber = gBattlersCount;
+}
+
+static void atkF8_jumpifholdeffect(void)
+{
+    u8 holdEffect = gBattlescriptCurrInstr[2];
+    gActiveBattler = GetBattlerForBattleScript(gBattlescriptCurrInstr[1]);
+
+    if (ItemId_GetHoldEffect(gBattleMons[gActiveBattler].item) == holdEffect)
+        gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
+    else
+        gBattlescriptCurrInstr += 7;
 }

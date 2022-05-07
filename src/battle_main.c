@@ -2345,6 +2345,7 @@ void SwitchInClearSetData(void)
     struct DisableStruct disableStructCopy = gDisableStructs[gActiveBattler];
     s32 i;
     u8 *ptr;
+	bool8 was_transformed = (gBattleMons[gActiveBattler].status2 & STATUS2_TRANSFORMED);
 
     if (gBattleMoves[gCurrentMove].effect != EFFECT_BATON_PASS)
     {
@@ -2433,6 +2434,13 @@ void SwitchInClearSetData(void)
     *((u8 *)(&gBattleStruct->choicedMove[gActiveBattler]) + 1) = MOVE_NONE;
     gBattleResources->flags->flags[gActiveBattler] = 0;
     gCurrentMove = MOVE_NONE;
+	
+    if (was_transformed)
+    {
+    // Dado que estaba transformado, sus movimientos y habilidad probablemente no son los registrados
+    // ClearBattlerMoveHistory(gActiveBattler); ¿Hay que añadir esto? Esta en Pokeemerald base
+    // ClearBattlerAbilityHistory(gActiveBattler); ¿Hay que añadir esto? Esta en Pokeemerald base
+	}
 }
 
 void FaintClearSetData(void)
@@ -2865,6 +2873,9 @@ static void TryDoEventsBeforeFirstTurn(void)
         {
             if (AbilityBattleEffects(ABILITYEFFECT_ON_SWITCHIN, gBattlerByTurnOrder[gBattleStruct->switchInAbilitiesCounter], 0, 0, 0) != 0)
                 ++effect;
+	
+		if (!effect || gBattleMons[gBattlerByTurnOrder[gBattleStruct->switchInAbilitiesCounter]].ability != ABILITY_IMPOSTER)
+			
             ++gBattleStruct->switchInAbilitiesCounter;
             if (effect)
                 return;
@@ -3137,7 +3148,11 @@ static void HandleTurnActionSelectionState(void)
                         *(gBattleStruct->moveTarget + gActiveBattler) = gBattleBufferB[gActiveBattler][3];
                         return;
                     }
-                    else if (gDisableStructs[gActiveBattler].encoredMove != MOVE_NONE)
+                    // No deja elegir ataque en Encore, excepto a la IA de entrenador (para que pueda evaluar la conveniencia de repetir ataque)
+                    else if (gDisableStructs[gActiveBattler].encoredMove != 0   // 0   o   MOVE_NONE(así estaba en firered base)??  es lo mismo???
+                             && !(gBattlerControllerFuncs[gActiveBattler] == OpponentBufferRunCommand
+                               //   && !(gBattleTypeFlags & BATTLE_TYPE_PALACE)  // No existe en firered
+                                  && (gBattleTypeFlags & BATTLE_TYPE_TRAINER)))
                     {
                         gChosenMoveByBattler[gActiveBattler] = gDisableStructs[gActiveBattler].encoredMove;
                         *(gBattleStruct->chosenMovePositions + gActiveBattler) = gDisableStructs[gActiveBattler].encoredMovePos;
