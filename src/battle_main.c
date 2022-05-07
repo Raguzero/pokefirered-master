@@ -1621,24 +1621,31 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
                 const struct TrainerMonCustomMidele *partyData = gTrainers[trainerNum].party.ItemCustomMidele;
                 u8 mideleLevel;
 				
-		// NUEVO RANDOM BATTLE
+		// NUEVO RANDOM BATTLE CC
                 if (FlagGet(FLAG_RYU_RANDOMBATTLE) == 1)
                 {
-                    u8 playerPartyMaxLevel = GetPlayerPartyMaxLevel();
-					u8 minLevel = 60;
-					u8 level = max(playerPartyMaxLevel, minLevel);
-				  const struct FacilityMon * pokeenemy  = &gBattleFrontierMons[Random() % NUM_FRONTIER_MONS];
-				CreateMonWithEVSpreadNatureOTID(&gEnemyParty[i], pokeenemy -> species, level, pokeenemy -> nature, 31, pokeenemy -> evSpread, 0);
-                for (j = 0; j < MAX_MON_MOVES; j++)
-        {
-            SetMonMoveAvoidReturn(&gEnemyParty[i], pokeenemy -> moves[j], j);
-        }
+					 u8 level = 100;
+					u32 otID = T1_READ_32(gSaveBlock2Ptr->playerTrainerId);
+				const struct FacilityMon * pokeenemy;
+				const struct FacilityMon * pokeplayer;
+					do {
+					pokeenemy = &gBattleFrontierMons[Random() % NUM_FRONTIER_MONS];
+						for (j=0; j<i && pokeenemy->species != GetMonData(&gEnemyParty[j], MON_DATA_SPECIES2); j++);
+						/*if (Random() > accepting_probability[num_frontier_sets_by_species[pokeenemy->species]]) j = -1;
+						*/} while (j < i);
+					do {
+					pokeplayer = &gBattleFrontierMons[Random() % NUM_FRONTIER_MONS];
+						for (j=0; j<i && pokeplayer->species != GetMonData(&gPlayerParty[j], MON_DATA_SPECIES2); j++);
+						/*if (Random() > accepting_probability[num_frontier_sets_by_species[pokeplayer->species]]) j = -1;
+						*/} while (j < i);
+				CreateMonWithEVSpreadNatureOTID(&gEnemyParty[i], pokeenemy -> species, level, pokeenemy -> nature, 31, pokeenemy -> evSpread, otID);
+                CreateMonWithEVSpreadNatureOTID(&gPlayerParty[i], pokeplayer -> species, level, pokeplayer -> nature, 31, pokeplayer -> evSpread, otID);
 
         SetMonData(&gEnemyParty[i], MON_DATA_FRIENDSHIP, 0);
-        //SetMonData(&gEnemyParty[i], MON_DATA_HELD_ITEM, &sBattleTowerHeldItems[pokeenemy -> itemTableId]);
+        SetMonData(&gPlayerParty[i], MON_DATA_FRIENDSHIP, 0);
 					break;
                 }
-		// NUEVO RANDOM BATTLE
+		// NUEVO RANDOM BATTLE CC
 				
                 fixedIV = partyData[i].iv;
               /*  if (FlagGet(FLAG_CIBERCAFE_RANDOM) == 1)

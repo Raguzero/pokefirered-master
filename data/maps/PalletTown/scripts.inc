@@ -437,6 +437,7 @@ PalletTown_EventScript_FatMan:: @ 816582F
 	//msgbox PalletTown_Text_CanStoreItemsAndMonsInPC, MSGBOX_NPC
 	//end
 //BattleFrontier_Lounge5_EventScript_Midele_NatureChanger1::
+	clearflag FLAG_RYU_RANDOMBATTLE // Test random battle desactivado, borrar luego
 	lock
 	faceplayer
 	msgbox BattleFrontier_Lounge5_Text_Midele_NatureChanger1_Greeting, MSGBOX_YESNO
@@ -667,6 +668,7 @@ EventScript_Debug_Pallet_Town::
     setflag FLAG_SYS_POKEMON_GET
     setflag FLAG_SYS_POKEDEX_GET
 	setflag FLAG_SYS_DEXNAV_GET
+	setflag FLAG_RYU_RANDOMBATTLE
 	setflag FLAG_SYS_B_DASH @ RUNNING SHOES
     clearflag FLAG_HIDE_OAK_IN_HIS_LAB
     setvar VAR_MAP_SCENE_PALLET_TOWN_OAK, 1
@@ -843,8 +845,9 @@ EventScript_Debug_Pallet_Town::
     additem ITEM_SUPER_ROD, 1
 	additem ITEM_COIN_CASE, 1
 	additem ITEM_ITEMFINDER, 1
-    givemon SPECIES_RAICHU, 50, ITEM_NONE
-    givemon SPECIES_ESPEON, 50, ITEM_NONE
+    givemon SPECIES_RAICHU, 100, ITEM_NONE
+    givemon SPECIES_ESPEON, 100, ITEM_NONE
+    givemon SPECIES_SHEDINJA, 100, ITEM_NONE
     givemon SPECIES_AERODACTYL, 99, ITEM_NONE
     givemon SPECIES_RAYQUAZA, 99, ITEM_NONE
     givemon SPECIES_GROUDON, 99, ITEM_NONE

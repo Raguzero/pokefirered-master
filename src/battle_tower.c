@@ -1445,7 +1445,7 @@ void Dummy_TryEnableBravoTrainerBattleTower(void)
 static void FillTrainerParty(u16 trainerId, u8 firstMonId, u8 monCount)
 {
     s32 i, j;
-    //u16 chosenMonIndices[4];
+    u16 chosenMonIndices[4];
     u8 friendship = 255;
     u8 level = 100;
     u8 fixedIV = 0;
@@ -1491,7 +1491,7 @@ static void FillTrainerParty(u16 trainerId, u8 firstMonId, u8 monCount)
         for (i = firstMonId; i < firstMonId + 3; i++)
             CreateApprenticeMon(&gEnemyParty[i], &gSaveBlock2Ptr->apprentices[trainerId - TRAINER_RECORD_MIXING_APPRENTICE], i - firstMonId);
         return;
-    }
+    }*/
 
     // Regular battle frontier trainer.
     // Attempt to fill the trainer's party with random Pokemon until 3 have been
@@ -1502,15 +1502,15 @@ static void FillTrainerParty(u16 trainerId, u8 firstMonId, u8 monCount)
     i = 0;
     otID = Random32();
     while (i != monCount)
-    {*/
+    {
         u16 battleMonIndex = monSet[Random() % bfMonCount];
-        /*if ((level == 50 || level == 20) && monId > FRONTIER_MONS_HIGH_TIER)
+        //if ((level == 50 || level == 20) && battleMonIndex > FRONTIER_MONS_HIGH_TIER)
             continue;
 		
         // Ensure this pokemon species isn't a duplicate.
         for (j = 0; j < i + firstMonId; j++)
         {
-            if (GetMonData(&gEnemyParty[j], MON_DATA_SPECIES, NULL) == gFacilityTrainerMons[monId].species)
+            if (GetMonData(&gEnemyParty[j], MON_DATA_SPECIES, NULL) == gFacilityTrainerMons[battleMonIndex].species)
                 break;
         }
         if (j != i + firstMonId)
@@ -1520,7 +1520,7 @@ static void FillTrainerParty(u16 trainerId, u8 firstMonId, u8 monCount)
         for (j = 0; j < i + firstMonId; j++)
         {
             if (GetMonData(&gEnemyParty[j], MON_DATA_HELD_ITEM, NULL) != 0
-             && GetMonData(&gEnemyParty[j], MON_DATA_HELD_ITEM, NULL) == gBattleFrontierHeldItems[gFacilityTrainerMons[monId].itemTableId])
+             && GetMonData(&gEnemyParty[j], MON_DATA_HELD_ITEM, NULL) == sBattleTowerHeldItems[gFacilityTrainerMons[battleMonIndex].itemTableId])
                 break;
         }
         if (j != i + firstMonId)
@@ -1530,14 +1530,14 @@ static void FillTrainerParty(u16 trainerId, u8 firstMonId, u8 monCount)
         // because the species and held items were already checked directly above.
         for (j = 0; j < i; j++)
         {
-            if (chosenMonIndices[j] == monId)
+            if (chosenMonIndices[j] == battleMonIndex)
                 break;
         }
         if (j != i)
             continue;
 
-        chosenMonIndices[i] = monId;
-        */
+        chosenMonIndices[i] = battleMonIndex;
+        
         // Place the chosen pokemon into the trainer's party.
         CreateMonWithEVSpreadNatureOTID(&gEnemyParty[i + firstMonId],
                                              gFacilityTrainerMons[battleMonIndex].species,
@@ -1562,7 +1562,7 @@ static void FillTrainerParty(u16 trainerId, u8 firstMonId, u8 monCount)
         // The pokemon was successfully added to the trainer's party, so it's safe to move on to
         // the next party slot.
         i++;
-    //}
+    }
 }
 
 
