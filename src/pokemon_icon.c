@@ -278,31 +278,6 @@ const u8 *const gMonIconTable[] = {
     [SPECIES_LUGIA]       = gMonIcon_Lugia,
     [SPECIES_HO_OH]       = gMonIcon_HoOh,
     [SPECIES_CELEBI]      = gMonIcon_Celebi,
-    [SPECIES_OLD_UNOWN_B] = gMonIcon_QuestionMark,
-    [SPECIES_OLD_UNOWN_C] = gMonIcon_QuestionMark,
-    [SPECIES_OLD_UNOWN_D] = gMonIcon_QuestionMark,
-    [SPECIES_OLD_UNOWN_E] = gMonIcon_QuestionMark,
-    [SPECIES_OLD_UNOWN_F] = gMonIcon_QuestionMark,
-    [SPECIES_OLD_UNOWN_G] = gMonIcon_QuestionMark,
-    [SPECIES_OLD_UNOWN_H] = gMonIcon_QuestionMark,
-    [SPECIES_OLD_UNOWN_I] = gMonIcon_QuestionMark,
-    [SPECIES_OLD_UNOWN_J] = gMonIcon_QuestionMark,
-    [SPECIES_OLD_UNOWN_K] = gMonIcon_QuestionMark,
-    [SPECIES_OLD_UNOWN_L] = gMonIcon_QuestionMark,
-    [SPECIES_OLD_UNOWN_M] = gMonIcon_QuestionMark,
-    [SPECIES_OLD_UNOWN_N] = gMonIcon_QuestionMark,
-    [SPECIES_OLD_UNOWN_O] = gMonIcon_QuestionMark,
-    [SPECIES_OLD_UNOWN_P] = gMonIcon_QuestionMark,
-    [SPECIES_OLD_UNOWN_Q] = gMonIcon_QuestionMark,
-    [SPECIES_OLD_UNOWN_R] = gMonIcon_QuestionMark,
-    [SPECIES_OLD_UNOWN_S] = gMonIcon_QuestionMark,
-    [SPECIES_OLD_UNOWN_T] = gMonIcon_QuestionMark,
-    [SPECIES_OLD_UNOWN_U] = gMonIcon_QuestionMark,
-    [SPECIES_OLD_UNOWN_V] = gMonIcon_QuestionMark,
-    [SPECIES_OLD_UNOWN_W] = gMonIcon_QuestionMark,
-    [SPECIES_OLD_UNOWN_X] = gMonIcon_QuestionMark,
-    [SPECIES_OLD_UNOWN_Y] = gMonIcon_QuestionMark,
-    [SPECIES_OLD_UNOWN_Z] = gMonIcon_QuestionMark,
     [SPECIES_TREECKO]     = gMonIcon_Treecko,
     [SPECIES_GROVYLE]     = gMonIcon_Grovyle,
     [SPECIES_SCEPTILE]    = gMonIcon_Sceptile,
@@ -439,33 +414,34 @@ const u8 *const gMonIconTable[] = {
     [SPECIES_DEOXYS]      = gMonIcon_Deoxys,
     [SPECIES_CHIMECHO]    = gMonIcon_Chimecho,
     [SPECIES_EGG]         = gMonIcon_Egg,
-    [SPECIES_UNOWN_B]     = gMonIcon_UnownB,
-    [SPECIES_UNOWN_C]     = gMonIcon_UnownC,
-    [SPECIES_UNOWN_D]     = gMonIcon_UnownD,
-    [SPECIES_UNOWN_E]     = gMonIcon_UnownE,
-    [SPECIES_UNOWN_F]     = gMonIcon_UnownF,
-    [SPECIES_UNOWN_G]     = gMonIcon_UnownG,
-    [SPECIES_UNOWN_H]     = gMonIcon_UnownH,
-    [SPECIES_UNOWN_I]     = gMonIcon_UnownI,
-    [SPECIES_UNOWN_J]     = gMonIcon_UnownJ,
-    [SPECIES_UNOWN_K]     = gMonIcon_UnownK,
-    [SPECIES_UNOWN_L]     = gMonIcon_UnownL,
-    [SPECIES_UNOWN_M]     = gMonIcon_UnownM,
-    [SPECIES_UNOWN_N]     = gMonIcon_UnownN,
-    [SPECIES_UNOWN_O]     = gMonIcon_UnownO,
-    [SPECIES_UNOWN_P]     = gMonIcon_UnownP,
-    [SPECIES_UNOWN_Q]     = gMonIcon_UnownQ,
-    [SPECIES_UNOWN_R]     = gMonIcon_UnownR,
-    [SPECIES_UNOWN_S]     = gMonIcon_UnownS,
-    [SPECIES_UNOWN_T]     = gMonIcon_UnownT,
-    [SPECIES_UNOWN_U]     = gMonIcon_UnownU,
-    [SPECIES_UNOWN_V]     = gMonIcon_UnownV,
-    [SPECIES_UNOWN_W]     = gMonIcon_UnownW,
-    [SPECIES_UNOWN_X]     = gMonIcon_UnownX,
-    [SPECIES_UNOWN_Y]     = gMonIcon_UnownY,
-    [SPECIES_UNOWN_Z]     = gMonIcon_UnownZ,
+    [SPECIES_UNOWN_A] = gMonIcon_UnownA,
+    [SPECIES_UNOWN_B] = gMonIcon_UnownB,
+    [SPECIES_UNOWN_C] = gMonIcon_UnownC,
+    [SPECIES_UNOWN_D] = gMonIcon_UnownD,
+    [SPECIES_UNOWN_E] = gMonIcon_UnownE,
+    [SPECIES_UNOWN_F] = gMonIcon_UnownF,
+    [SPECIES_UNOWN_G] = gMonIcon_UnownG,
+    [SPECIES_UNOWN_H] = gMonIcon_UnownH,
+    [SPECIES_UNOWN_I] = gMonIcon_UnownI,
+    [SPECIES_UNOWN_J] = gMonIcon_UnownJ,
+    [SPECIES_UNOWN_K] = gMonIcon_UnownK,
+    [SPECIES_UNOWN_L] = gMonIcon_UnownL,
+    [SPECIES_UNOWN_M] = gMonIcon_UnownM,
+    [SPECIES_UNOWN_N] = gMonIcon_UnownN,
+    [SPECIES_UNOWN_O] = gMonIcon_UnownO,
+    [SPECIES_UNOWN_P] = gMonIcon_UnownP,
+    [SPECIES_UNOWN_Q] = gMonIcon_UnownQ,
+    [SPECIES_UNOWN_R] = gMonIcon_UnownR,
+    [SPECIES_UNOWN_S] = gMonIcon_UnownS,
+    [SPECIES_UNOWN_T] = gMonIcon_UnownT,
+    [SPECIES_UNOWN_U] = gMonIcon_UnownU,
+    [SPECIES_UNOWN_V] = gMonIcon_UnownV,
+    [SPECIES_UNOWN_W] = gMonIcon_UnownW,
+    [SPECIES_UNOWN_X] = gMonIcon_UnownX,
+    [SPECIES_UNOWN_Y] = gMonIcon_UnownY,
+    [SPECIES_UNOWN_Z] = gMonIcon_UnownZ,
     [SPECIES_UNOWN_EMARK] = gMonIcon_UnownExclamationMark,
-    [SPECIES_UNOWN_QMARK] = gMonIcon_UnownQuestionMark
+    [SPECIES_UNOWN_QMARK] = gMonIcon_UnownQuestionMark,
 };
 
 const u8 gMonIconPaletteIndices[] = {
@@ -670,7 +646,6 @@ const u8 gMonIconPaletteIndices[] = {
     [SPECIES_MURKROW]     = 2,
     [SPECIES_SLOWKING]    = 0,
     [SPECIES_MISDREAVUS]  = 0,
-    [SPECIES_UNOWN]       = 0,
     [SPECIES_WOBBUFFET]   = 0,
     [SPECIES_GIRAFARIG]   = 1,
     [SPECIES_PINECO]      = 0,
@@ -721,31 +696,6 @@ const u8 gMonIconPaletteIndices[] = {
     [SPECIES_LUGIA]       = 0,
     [SPECIES_HO_OH]       = 1,
     [SPECIES_CELEBI]      = 1,
-    [SPECIES_OLD_UNOWN_B] = 0,
-    [SPECIES_OLD_UNOWN_C] = 0,
-    [SPECIES_OLD_UNOWN_D] = 0,
-    [SPECIES_OLD_UNOWN_E] = 0,
-    [SPECIES_OLD_UNOWN_F] = 0,
-    [SPECIES_OLD_UNOWN_G] = 0,
-    [SPECIES_OLD_UNOWN_H] = 0,
-    [SPECIES_OLD_UNOWN_I] = 0,
-    [SPECIES_OLD_UNOWN_J] = 0,
-    [SPECIES_OLD_UNOWN_K] = 0,
-    [SPECIES_OLD_UNOWN_L] = 0,
-    [SPECIES_OLD_UNOWN_M] = 0,
-    [SPECIES_OLD_UNOWN_N] = 0,
-    [SPECIES_OLD_UNOWN_O] = 0,
-    [SPECIES_OLD_UNOWN_P] = 0,
-    [SPECIES_OLD_UNOWN_Q] = 0,
-    [SPECIES_OLD_UNOWN_R] = 0,
-    [SPECIES_OLD_UNOWN_S] = 0,
-    [SPECIES_OLD_UNOWN_T] = 0,
-    [SPECIES_OLD_UNOWN_U] = 0,
-    [SPECIES_OLD_UNOWN_V] = 0,
-    [SPECIES_OLD_UNOWN_W] = 0,
-    [SPECIES_OLD_UNOWN_X] = 0,
-    [SPECIES_OLD_UNOWN_Y] = 0,
-    [SPECIES_OLD_UNOWN_Z] = 0,
     [SPECIES_TREECKO]     = 1,
     [SPECIES_GROVYLE]     = 0,
     [SPECIES_SCEPTILE]    = 1,
@@ -882,6 +832,7 @@ const u8 gMonIconPaletteIndices[] = {
     [SPECIES_DEOXYS]      = 0,
     [SPECIES_CHIMECHO]    = 0,
     [SPECIES_EGG]         = 1,
+    [SPECIES_UNOWN_A]     = 0,
     [SPECIES_UNOWN_B]     = 0,
     [SPECIES_UNOWN_C]     = 0,
     [SPECIES_UNOWN_D]     = 0,
@@ -1059,12 +1010,7 @@ u16 GetIconSpecies(u16 species, u32 personality)
 
     if (species == SPECIES_UNOWN)
     {
-        u16 letter = GetUnownLetterByPersonality(personality);
-        if (letter == 0)
-            letter = SPECIES_UNOWN;
-        else
-            letter += (SPECIES_UNOWN_B - 1);
-        result = letter;
+        result = GetUnownSpeciesId(personality);
     }
     else
     {
@@ -1091,16 +1037,14 @@ u16 MailSpeciesToIconSpecies(u16 species)
 
     if (MailSpeciesToSpecies(species, &value) == SPECIES_UNOWN)
     {
-        if (value == 0)
-            value += SPECIES_UNOWN;
-        else
-            value += (SPECIES_UNOWN_B - 1);
+        value += SPECIES_UNOWN_A;
         return value;
     }
     else
     {
-        if (species > (SPECIES_UNOWN_B - 1))
-            species = SPECIES_NONE;
+        if (species > NUM_SPECIES)
+            species = 0;
+		
         return GetIconSpecies(species, 0);
     }
 }

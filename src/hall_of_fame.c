@@ -30,7 +30,7 @@ struct HallofFameMon
 {
     u32 tid;
     u32 personality;
-    u16 species:9;
+    u16 species:11; // Sube de 9 a 11, debido a que SPECIES_EGG se ha expandido con mas de 800 mons, y debido a que 9 bits son 2^9-1 = 511 mon, se quedaba muy corto por lo que daba error de varias funciones de hall fame al compilar.
     u16 lvl:7;
     u8 nick[10];
 };
