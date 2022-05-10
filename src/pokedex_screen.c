@@ -902,7 +902,7 @@ void DexScreen_LoadResources(void)
     sPokedexScreenData = Alloc(sizeof(struct PokedexScreenData));
     *sPokedexScreenData = sDexScreenDataInitialState;
     sPokedexScreenData->taskId = taskId;
-    sPokedexScreenData->listItems = Alloc(NATIONAL_DEX_COUNT * sizeof(struct ListMenuItem));
+    sPokedexScreenData->listItems = Alloc(NELEMS(gPokedexOrder_Height) * sizeof(struct ListMenuItem));
     sPokedexScreenData->numSeenNational = DexScreen_GetDexCount(FLAG_GET_SEEN, 1);
     sPokedexScreenData->numOwnedNational = DexScreen_GetDexCount(FLAG_GET_CAUGHT, 1);
     sPokedexScreenData->numSeenKanto = DexScreen_GetDexCount(FLAG_GET_SEEN, 0);
@@ -1366,7 +1366,7 @@ static void DexScreen_CreateCharacteristicListMenu(void)
 
 static u16 DexScreen_CountMonsInOrderedList(u8 orderIdx)
 {
-    s32 max_n = IsNationalPokedexEnabled() ? NATIONAL_DEX_COUNT : KANTO_DEX_COUNT;
+    s32 max_n = IsNationalPokedexEnabled() ? NELEMS(gPokedexOrder_Height) : KANTO_DEX_COUNT;
     u16 ndex_num;
     u16 ret = NATIONAL_DEX_NONE;
     s32 i;
@@ -1429,7 +1429,7 @@ static u16 DexScreen_CountMonsInOrderedList(u8 orderIdx)
         }
         break;
     case DEX_ORDER_LIGHTEST:
-        for (i = 0; i < NATIONAL_DEX_COUNT; i++)
+        for (i = 0; i < NELEMS(gPokedexOrder_Height); i++)
         {
             ndex_num = gPokedexOrder_Weight[i];
             if (ndex_num <= max_n)
@@ -1446,7 +1446,7 @@ static u16 DexScreen_CountMonsInOrderedList(u8 orderIdx)
         }
         break;
     case DEX_ORDER_SMALLEST:
-        for (i = 0; i < NATIONAL_DEX_COUNT; i++)
+        for (i = 0; i < NELEMS(gPokedexOrder_Height); i++)
         {
             ndex_num = gPokedexOrder_Height[i];
             if (ndex_num <= max_n)
@@ -1463,7 +1463,7 @@ static u16 DexScreen_CountMonsInOrderedList(u8 orderIdx)
         }
         break;
     case DEX_ORDER_NUMERICAL_NATIONAL:
-        for (i = 0; i < NATIONAL_DEX_COUNT; i++)
+        for (i = 0; i < NELEMS(gPokedexOrder_Height); i++)
         {
             ndex_num = i + 1;
             seen = DexScreen_GetSetPokedexFlag(ndex_num, FLAG_GET_SEEN, FALSE);
@@ -2279,7 +2279,7 @@ static u16 DexScreen_GetDexCount(u8 caseId, bool8 whichDex)
         }
         break;
     case 1: // National
-        for (i = 0; i < NATIONAL_DEX_COUNT; i++)
+        for (i = 0; i < NELEMS(gPokedexOrder_Height); i++)
         {
             if (DexScreen_GetSetPokedexFlag(i + 1, caseId, FALSE))
                 count++;

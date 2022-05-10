@@ -1,5 +1,6 @@
 #include "global.h"
 #include "pokedex.h"
+#include "pokedex_orders.h"
 #include "pokedex_screen.h"
 
 const u8 *sub_8088E20(u16 dexNum)
@@ -30,7 +31,7 @@ u16 GetNationalPokedexCount(u8 caseID)
     u16 count = 0;
     u16 i;
 
-    for (i = 0; i < NATIONAL_DEX_COUNT; i++)
+    for (i = 0; i < NELEMS(gPokedexOrder_Height); i++)
     {
         switch (caseID)
         {
