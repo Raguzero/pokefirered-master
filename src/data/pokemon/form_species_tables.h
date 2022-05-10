@@ -262,7 +262,19 @@ static const u16 sMewtwoFormSpeciesIdTable[] = {
     SPECIES_MEWTWO_MEGA_Y,
     FORM_SPECIES_END,
 };
+*/
+static const u16 sSpinarakFormSpeciesIdTable[] = {
+    SPECIES_SPINARAK,
+    SPECIES_SPINARAK_BETA,
+    FORM_SPECIES_END,
+};
 
+static const u16 sAriadosFormSpeciesIdTable[] = {
+    SPECIES_ARIADOS,
+    SPECIES_ARIADOS_BETA,
+    FORM_SPECIES_END,
+};
+/*
 static const u16 sPichuFormSpeciesIdTable[] = {
     SPECIES_PICHU,
     SPECIES_PICHU_SPIKY_EARED,
