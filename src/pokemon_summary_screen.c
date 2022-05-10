@@ -3616,7 +3616,7 @@ static void PokeSum_PrintMonTypeIcons(void)
             BlitMoveInfoIcon(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], sMonSummaryScreen->monTypes[0] + 1, 47, 35);
 
             if (sMonSummaryScreen->monTypes[0] != sMonSummaryScreen->monTypes[1])
-			     BlitMoveInfoIcon(sMonSummaryScreen->windowIds[POKESUM_WIN_MOVES_5], sMonSummaryScreen->monTypes[1] + 1, 83, 35);
+			     BlitMoveInfoIcon(sMonSummaryScreen->windowIds[POKESUM_WIN_RIGHT_PANE], sMonSummaryScreen->monTypes[1] + 1, 83, 35);
         }
         break;
     case PSS_PAGE_SKILLS:
