@@ -41,6 +41,7 @@
 #include "pokemon.h"
 #include "pokemon_icon.h"
 #include "pokemon_jump.h"
+#include "pokemon_storage_system.h"
 #include "pokemon_special_anim.h"
 #include "pokemon_summary_screen.h"
 #include "quest_log.h"
@@ -6487,4 +6488,32 @@ void MideleResetSelectedMonEVs(void)
     u8 resetEvValue = 0;
     SetMonData(&gPlayerParty[gSpecialVar_0x8004], monDataEV, &resetEvValue);
     CalculateMonStats(&gPlayerParty[gSpecialVar_0x8004]);
+}
+
+// NUEVO: añade todos los Pokémon en las cajas.
+bool8 GiveAllMons(void)
+{
+    u16 species;
+    u16 boxNum = 0;
+    u16 boxPosition = 0;
+
+    for (species = 585; species < NUM_SPECIES; species++)
+    {
+       /* if (species == SPECIES_OLD_UNOWN_B)
+            species += 25; //assumes OLD_UNOWN are continuous*/
+
+        while (GetBoxMonData(&gPokemonStoragePtr->boxes[boxNum][boxPosition], MON_DATA_SPECIES) != SPECIES_NONE)
+        {
+            boxPosition++;
+            if (boxPosition == IN_BOX_COUNT) {
+                boxPosition = 0;
+
+                boxNum++;
+                if (boxNum == TOTAL_BOXES_COUNT)
+                    return FALSE;
+            }
+        }
+        CreateBoxMonAt(boxNum, boxPosition, species, 100, 31, 0, 0, 0, 0);
+    }
+    return TRUE;
 }

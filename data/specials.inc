@@ -455,4 +455,5 @@ gSpecials:: @ 815FD60
 	def_special MideleChangeSelectedMonHiddenPowerType
 	def_special MideleChangeSelectedMonNature
 	def_special MideleResetSelectedMonEVs
+	def_special GiveAllMons
 gSpecialsEnd::
