@@ -2195,6 +2195,8 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
 		gBattleMovePower = (130 * gBattleMovePower) / 100;
 	if ((move == MOVE_CRUNCH || move == MOVE_BITE || move == MOVE_POISON_FANG || move == MOVE_HYPER_FANG) && attacker->ability == ABILITY_STRONG_JAW)
 		gBattleMovePower = (150 * gBattleMovePower) / 100;
+	if ((move == MOVE_DARK_PULSE || move == MOVE_DRAGON_PULSE || move == MOVE_WATER_PULSE || move == MOVE_AURA_SPHERE) && attacker->ability == ABILITY_MEGA_LAUNCHER)
+		gBattleMovePower = (150 * gBattleMovePower) / 100;
     if (type == TYPE_ELECTRIC && AbilityBattleEffects(ABILITYEFFECT_FIELD_SPORT, 0, 0, 0xFD, 0))
         gBattleMovePower /= 2;
     if (type == TYPE_FIRE && AbilityBattleEffects(ABILITYEFFECT_FIELD_SPORT, 0, 0, 0xFE, 0))
