@@ -4433,6 +4433,11 @@ BattleScript_DrySkinDmg::
 	tryfaintmon BS_ATTACKER, FALSE, NULL
 	end3
 	
+BattleScript_Protean::
+    printstring STRINGID_PROTEANACTIVATES
+    pause 0x64
+    return
+	
 BattleScript_SlowStarted::
 	printstring STRINGID_SLOWSTARTED
 	waitmessage 64
