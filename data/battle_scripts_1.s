@@ -4410,10 +4410,26 @@ BattleScript_SnowWarningActivates::
 	playanimation BS_BATTLER_0, B_ANIM_HAIL_CONTINUES, NULL
 	call BattleScript_HandleWeatherFormChanges
 	end3
+	
+BattleScript_CursedBodyActivates::
+	printstring STRINGID_CUSEDBODYDISABLED
+	waitmessage 0x40
+	return
 
 BattleScript_MummyActivates::
 	printstring STRINGID_ATTACKERACQUIREDABILITY
 	waitmessage 0x40
+	return
+	
+BattleScript_WanderingSpiritActivates::
+	swapattackerwithtarget
+	tryswapabilities BattleScript_WanderingSpiritActivatesReturn
+	printstring STRINGID_PKMNSWAPPEDABILITIES
+	waitmessage 0x40
+	switchoutabilities BS_ATTACKER
+	switchoutabilities BS_TARGET
+BattleScript_WanderingSpiritActivatesReturn:
+	swapattackerwithtarget
 	return
 
 BattleScript_IceBodyActivates::
@@ -4447,6 +4463,11 @@ BattleScript_SlowStartEnds::
 	printstring STRINGID_SLOWSTARTENDS
 	waitmessage 64
 	end3
+	
+BattleScript_PerishBodyActivates::
+	printstring STRINGID_PERISHBODY
+	waitmessage 0x30
+	return
 	
 BattleScript_SandSpitActivates::
 	printstring STRINGID_ASANDSTORMKICKEDUP

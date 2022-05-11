@@ -1954,6 +1954,23 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
         case ABILITYEFFECT_MOVE_END: // Think contact abilities.
             switch (gLastUsedAbility)
             {
+		case ABILITY_CURSED_BODY:
+            if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
+             && TARGET_TURN_DAMAGED
+			 && gBattleMoves[moveArg].power != 0 
+             && gDisableStructs[gBattlerAttacker].disabledMove == MOVE_NONE
+             && IsBattlerAlive(gBattlerAttacker)
+             && gBattleMons[gBattlerAttacker].pp[gChosenMovePos] != 0
+             && (Random() % 3) == 0)
+            {
+                gDisableStructs[gBattlerAttacker].disabledMove = gChosenMove;
+                gDisableStructs[gBattlerAttacker].disableTimer = 4;
+                PREPARE_MOVE_BUFFER(gBattleTextBuff1, gChosenMove);
+                BattleScriptPushCursor();
+                gBattlescriptCurrInstr = BattleScript_CursedBodyActivates;
+                effect++;
+            }
+            break;
 		case ABILITY_MUMMY:
             if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
 			 && TARGET_TURN_DAMAGED
@@ -1972,6 +1989,29 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 }
             }
             break;
+			case ABILITY_WANDERING_SPIRIT:
+			   if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
+                && (gBattleMoves[moveArg].flags & FLAG_MAKES_CONTACT)
+				&& gBattleMoves[moveArg].power != 0
+				&& TARGET_TURN_DAMAGED
+				&& gBattleMons[gBattlerAttacker].ability != gBattleMons[gBattlerTarget].ability
+				&& (IsBattlerAlive(gBattlerAttacker) || IsBattlerAlive(gBattlerTarget))
+				&& (gBattleMons[gBattlerAttacker].hp != 0))
+				{
+				switch (gBattleMons[gBattlerAttacker].ability)
+				{
+					case ABILITY_IMPOSTER:
+					case ABILITY_WONDER_GUARD:
+					case ABILITY_NONE:
+						break;
+				default:
+					BattleScriptPushCursor();
+					gBattlescriptCurrInstr = BattleScript_WanderingSpiritActivates;
+					effect++;
+					break;
+				}
+				}
+				break;
             case ABILITY_COLOR_CHANGE:
                 if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
                  && moveArg != MOVE_STRUGGLE
@@ -2020,6 +2060,28 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                     ++effect;
                 }
                 break;
+			case ABILITY_PERISH_BODY:
+			if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
+             && IsBattlerAlive(gBattlerAttacker)
+             && !gProtectStructs[gBattlerAttacker].confusionSelfDmg
+             && TARGET_TURN_DAMAGED
+             && (gBattleMoves[moveArg].flags & FLAG_MAKES_CONTACT)
+			 && !(gStatuses3[gBattlerAttacker] & STATUS3_PERISH_SONG))
+			{
+				if(!(gStatuses3[battler] & STATUS3_PERISH_SONG))
+				{
+					gStatuses3[battler] |= STATUS3_PERISH_SONG;
+					gDisableStructs[battler].perishSongTimer = 3;
+					gDisableStructs[battler].perishSongTimerStartValue = 3;
+				}
+				gStatuses3[gBattlerAttacker] |= STATUS3_PERISH_SONG;
+				gDisableStructs[gBattlerAttacker].perishSongTimer = 3;
+				gDisableStructs[gBattlerAttacker].perishSongTimerStartValue = 3;
+				BattleScriptPushCursor();
+				gBattlescriptCurrInstr = BattleScript_PerishBodyActivates;
+				effect++;
+			}
+			break;
             case ABILITY_EFFECT_SPORE:
                 if (!(gMoveResultFlags & MOVE_RESULT_NO_EFFECT)
                  && gBattleMons[gBattlerAttacker].hp != 0
