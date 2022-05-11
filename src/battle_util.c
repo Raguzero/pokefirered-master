@@ -1188,6 +1188,7 @@ enum
     CANCELLER_IN_LOVE,
     CANCELLER_BIDE,
     CANCELLER_THAW,
+	CANCELLER_POWDER_MOVE,
 	CANCELER_PROTEAN,
     CANCELLER_END,
 };
@@ -1462,6 +1463,18 @@ u8 AtkCanceller_UnableToUseMove(void)
             }
             ++gBattleStruct->atkCancellerTracker;
             break;
+        case CANCELLER_POWDER_MOVE:
+            if (gCurrentMove == MOVE_COTTON_SPORE || gCurrentMove == MOVE_SLEEP_POWDER || gCurrentMove == MOVE_POISON_POWDER || gCurrentMove == MOVE_SPORE || gCurrentMove == MOVE_STUN_SPORE)
+            {
+                if (gBattleMons[gBattlerTarget].ability == ABILITY_OVERCOAT)
+                {
+                    gActiveBattler = gBattlerTarget;
+                    effect = 1;
+                }
+                if (effect)
+                    gBattlescriptCurrInstr = BattleScript_PowderMoveNoEffect;
+            }
+            ++gBattleStruct->atkCancellerTracker;
 		case CANCELER_PROTEAN: // protean
 			if (gBattleMons[gBattlerAttacker].ability == ABILITY_PROTEAN)
 			{
@@ -2088,6 +2101,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                  && !gProtectStructs[gBattlerAttacker].confusionSelfDmg
                  && TARGET_TURN_DAMAGED
                  && (gBattleMoves[moveArg].flags & FLAG_MAKES_CONTACT)
+				 && gBattleMons[gBattlerAttacker].ability != ABILITY_OVERCOAT
                  && (Random() % 10) == 0)
                 {
                     do

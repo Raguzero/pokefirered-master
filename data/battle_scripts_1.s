@@ -234,6 +234,11 @@ gBattleScriptsForMoveEffects::
 	.4byte BattleScript_EffectCalmMind
 	.4byte BattleScript_EffectDragonDance
 	.4byte BattleScript_EffectCamouflage
+	.4byte BattleScript_EffectSpecialAttackUp3
+	.4byte BattleScript_EffectAttackSpAttackUp
+	.4byte BattleScript_EffectQuiverDance
+	.4byte BattleScript_EffectCoil
+	.4byte BattleScript_PowderMoveNoEffect
 
 BattleScript_EffectHit::
 	jumpifnotmove MOVE_SURF, BattleScript_HitFromAtkCanceler
@@ -945,6 +950,10 @@ BattleScript_EffectSpeedUp2::
 
 BattleScript_EffectSpecialAttackUp2::
 	setstatchanger STAT_SPATK, 2, FALSE
+	goto BattleScript_EffectStatUp
+	
+BattleScript_EffectSpecialAttackUp3::
+	setstatchanger STAT_SPATK, 3, FALSE
 	goto BattleScript_EffectStatUp
 
 BattleScript_EffectSpecialDefenseUp2::
@@ -4440,6 +4449,31 @@ BattleScript_IceBodyActivates::
 	datahpupdate BS_ATTACKER
 	end3
 	
+BattleScript_EffectAttackSpAttackUp:
+	attackcanceler
+	attackstring
+	ppreduce
+	jumpifstat BS_ATTACKER, CMP_LESS_THAN, STAT_ATK, 0xC, BattleScript_AttackSpAttackUpDoMoveAnim
+	jumpifstat BS_ATTACKER, CMP_EQUAL, STAT_SPATK, 0xC, BattleScript_CantRaiseMultipleStats
+BattleScript_AttackSpAttackUpDoMoveAnim::
+	attackanimation
+	waitanimation
+	setbyte sSTAT_ANIM_PLAYED, FALSE
+	playstatchangeanimation BS_ATTACKER, BIT_ATK | BIT_SPATK, 0x0
+	setstatchanger STAT_ATK, 1, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, BattleScript_AttackSpAttackUpTrySpAtk
+	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 0x2, BattleScript_AttackSpAttackUpTrySpAtk
+	printfromtable gStatUpStringIds
+	waitmessage 0x40
+BattleScript_AttackSpAttackUpTrySpAtk::
+	setstatchanger STAT_SPATK, 1, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, BattleScript_AttackSpAttackUpEnd
+	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 0x2, BattleScript_AttackSpAttackUpEnd
+	printfromtable gStatUpStringIds
+	waitmessage 0x40
+BattleScript_AttackSpAttackUpEnd:
+	goto BattleScript_MoveEnd
+	
 BattleScript_DrySkinDmg::
 	printstring STRINGID_DRYSKIN
 	waitmessage 0x64
@@ -4448,6 +4482,70 @@ BattleScript_DrySkinDmg::
 	datahpupdate BS_ATTACKER
 	tryfaintmon BS_ATTACKER, FALSE, NULL
 	end3
+	
+BattleScript_EffectCoil:
+	attackcanceler
+	attackstring
+	ppreduce
+	jumpifstat BS_ATTACKER, CMP_LESS_THAN, STAT_ATK, 0xC, BattleScript_CoilDoMoveAnim
+	jumpifstat BS_ATTACKER, CMP_LESS_THAN, STAT_DEF, 0xC, BattleScript_CoilDoMoveAnim
+	jumpifstat BS_ATTACKER, CMP_EQUAL, STAT_ACC, 0xC, BattleScript_CantRaiseMultipleStats
+BattleScript_CoilDoMoveAnim:
+	attackanimation
+	waitanimation
+	setbyte sSTAT_ANIM_PLAYED, FALSE
+	playstatchangeanimation BS_ATTACKER, BIT_ATK | BIT_DEF | BIT_ACC, 0x0
+	setstatchanger STAT_ATK, 1, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, BattleScript_CoilTryDef
+	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 0x2, BattleScript_CoilTryDef
+	printfromtable gStatUpStringIds
+	waitmessage 0x40
+BattleScript_CoilTryDef:
+	setstatchanger STAT_DEF, 1, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, BattleScript_CoilTryAcc
+	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 0x2, BattleScript_CoilTryAcc
+	printfromtable gStatUpStringIds
+	waitmessage 0x40
+BattleScript_CoilTryAcc:
+	setstatchanger STAT_ACC, 1, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, BattleScript_CoilEnd
+	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 0x2, BattleScript_CoilEnd
+	printfromtable gStatUpStringIds
+	waitmessage 0x40
+BattleScript_CoilEnd:
+	goto BattleScript_MoveEnd
+
+BattleScript_EffectQuiverDance:
+	attackcanceler
+	attackstring
+	ppreduce
+	jumpifstat BS_ATTACKER, CMP_LESS_THAN, STAT_SPATK, 0xC, BattleScript_QuiverDanceDoMoveAnim
+	jumpifstat BS_ATTACKER, CMP_LESS_THAN, STAT_SPDEF, 0xC, BattleScript_QuiverDanceDoMoveAnim
+	jumpifstat BS_ATTACKER, CMP_EQUAL, STAT_SPEED, 0xC, BattleScript_CantRaiseMultipleStats
+BattleScript_QuiverDanceDoMoveAnim::
+	attackanimation
+	waitanimation
+	setbyte sSTAT_ANIM_PLAYED, FALSE
+	playstatchangeanimation BS_ATTACKER, BIT_SPATK | BIT_SPDEF | BIT_SPEED, 0x0
+	setstatchanger STAT_SPATK, 1, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, BattleScript_QuiverDanceTrySpDef
+	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 0x2, BattleScript_QuiverDanceTrySpDef
+	printfromtable gStatUpStringIds
+	waitmessage 0x40
+BattleScript_QuiverDanceTrySpDef::
+	setstatchanger STAT_SPDEF, 1, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, BattleScript_QuiverDanceTrySpeed
+	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 0x2, BattleScript_QuiverDanceTrySpeed
+	printfromtable gStatUpStringIds
+	waitmessage 0x40
+BattleScript_QuiverDanceTrySpeed::
+	setstatchanger STAT_SPEED, 1, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, BattleScript_QuiverDanceEnd
+	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 0x2, BattleScript_QuiverDanceEnd
+	printfromtable gStatUpStringIds
+	waitmessage 0x40
+BattleScript_QuiverDanceEnd::
+	goto BattleScript_MoveEnd
 	
 BattleScript_Protean::
     printstring STRINGID_PROTEANACTIVATES
@@ -4475,3 +4573,17 @@ BattleScript_SandSpitActivates::
 	playanimation BS_BATTLER_0, B_ANIM_SANDSTORM_CONTINUES, NULL
 	call BattleScript_HandleWeatherFormChanges
 	return
+	
+BattleScript_PowderMoveNoEffect::
+	attackstring
+	ppreduce
+	pause 0x20
+	jumpifability BS_TARGET, ABILITY_OVERCOAT, BattleScript_PowderMoveNoEffectOvercoat
+	goto BattleScript_PowderMoveNoEffectWaitMsg
+BattleScript_PowderMoveNoEffectOvercoat:
+	printstring STRINGID_ITDOESNTAFFECT
+BattleScript_PowderMoveNoEffectWaitMsg:
+	waitmessage 0x40
+	cancelmultiturnmoves BS_ATTACKER
+	sethword gMoveResultFlags, MOVE_RESULT_FAILED
+	goto BattleScript_MoveEnd
