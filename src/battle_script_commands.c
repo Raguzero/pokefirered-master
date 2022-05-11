@@ -2594,6 +2594,13 @@ void SetMoveEffect(bool8 primary, u8 certain)
         ++gBattlescriptCurrInstr;
         return;
     }
+	if (gBattleMons[gBattlerAttacker].ability == ABILITY_SHEER_FORCE
+        && gBattleMoves[gCurrentMove].flags & FLAG_SHEER_FORCE_BOOST
+        && !(gHitMarker & HITMARKER_IGNORE_SAFEGUARD))
+    {
+        ++gBattlescriptCurrInstr;
+        return;
+    }
     if (gBattleMons[gEffectBattler].hp == 0
      && gBattleCommunication[MOVE_EFFECT_BYTE] != MOVE_EFFECT_PAYDAY
      && gBattleCommunication[MOVE_EFFECT_BYTE] != MOVE_EFFECT_STEAL_ITEM)
