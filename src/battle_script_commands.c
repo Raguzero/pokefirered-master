@@ -1219,6 +1219,11 @@ static bool8 AccuracyCalcHelper(u16 move)
         JumpIfMoveFailed(7, move);
         return TRUE;
     }
+	if (gBattleMons[gBattlerTarget].ability == ABILITY_NO_GUARD || gBattleMons[gBattlerAttacker].ability == ABILITY_NO_GUARD)
+    {
+        JumpIfMoveFailed(7, move);
+        return TRUE;
+    }
     if (!(gHitMarker & HITMARKER_IGNORE_ON_AIR) && gStatuses3[gBattlerTarget] & STATUS3_ON_AIR)
     {
         gMoveResultFlags |= MOVE_RESULT_MISSED;
@@ -7344,18 +7349,12 @@ static void atk93_tryKO(void)
     {
         u16 chance;
 
-        if (!(gStatuses3[gBattlerTarget] & STATUS3_ALWAYS_HITS))
-        {
-            chance = gBattleMoves[gCurrentMove].accuracy + (gBattleMons[gBattlerAttacker].level - gBattleMons[gBattlerTarget].level);
-            if (Random() % 100 + 1 < chance && gBattleMons[gBattlerAttacker].level >= gBattleMons[gBattlerTarget].level)
-                chance = TRUE;
-            else
-                chance = FALSE;
-        }
-        else if (gDisableStructs[gBattlerTarget].battlerWithSureHit == gBattlerAttacker
-                 && gBattleMons[gBattlerAttacker].level >= gBattleMons[gBattlerTarget].level)
-        {
-            chance = TRUE;
+    if ((((gStatuses3[gBattlerTarget] & STATUS3_ALWAYS_HITS) && gDisableStructs[gBattlerTarget].battlerWithSureHit == gBattlerAttacker) // si debe no fallar por Telépata/Fijar Blanco
+       || gBattleMons[gBattlerTarget].ability == ABILITY_NO_GUARD    // o porque alguno tiene No Guard
+       || gBattleMons[gBattlerAttacker].ability == ABILITY_NO_GUARD)
+       && gBattleMons[gBattlerAttacker].level >= gBattleMons[gBattlerTarget].level) // y siempre que el nivel no sea superior
+	   {
+		chance = TRUE;
         }
         else
         {
