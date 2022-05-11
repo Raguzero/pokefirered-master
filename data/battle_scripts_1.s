@@ -3062,7 +3062,7 @@ BattleScript_PrintFullBox::
 BattleScript_ActionSwitch::
 	hpthresholds2 BS_ATTACKER
 	printstring STRINGID_RETURNMON
-	setbyte sDMG_MULTIPLIER, 2
+	sethword gDynamicBasePower, 80
 	jumpifbattletype BATTLE_TYPE_DOUBLE, BattleScript_PursuitSwitchCheckTwice
 	setmultihit 1
 	goto BattleScript_PursuitSwitchLoop
