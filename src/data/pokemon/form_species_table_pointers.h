@@ -49,6 +49,7 @@ const u16 *const gFormSpeciesIdTables[NUM_SPECIES] =
     [SPECIES_REMORAID] = sRemoraidFormSpeciesIdTable,
     [SPECIES_OCTILLERY] = sOctilleryFormSpeciesIdTable,
     [SPECIES_UNOWN] = sUnownFormSpeciesIdTable,
+    [SPECIES_GIRAFARIG] = sGirafarigFormSpeciesIdTable,
     //[SPECIES_STEELIX] = sSteelixFormSpeciesIdTable,
     //[SPECIES_SCIZOR] = sScizorFormSpeciesIdTable,
     //[SPECIES_HERACROSS] = sHeracrossFormSpeciesIdTable,

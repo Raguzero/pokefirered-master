@@ -1278,5 +1278,6 @@ const u16 *const gLevelUpLearnsets[NUM_SPECIES] =
     [SPECIES_OCTILLERY_BETA] = sOctilleryBetaLevelUpLearnset,
     [SPECIES_SPINARAK_BETA] = sSpinarakBetaLevelUpLearnset,
     [SPECIES_ARIADOS_BETA] = sAriadosBetaLevelUpLearnset,
+    [SPECIES_GIRAFARIG_BETA] = sGirafarigBetaLevelUpLearnset,
 };
 

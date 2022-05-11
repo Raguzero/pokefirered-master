@@ -3783,7 +3783,20 @@ const u16 gEggMoves[] = {
               MOVE_PURSUIT,
               MOVE_SIGNAL_BEAM,
 			MOVE_ELECTROWEB,
+			MOVE_ANCIENT_POWER,
 			MOVE_NIGHT_SHADE),
+			
+    egg_moves(GIRAFARIG_BETA,
+              MOVE_TAKE_DOWN,
+              MOVE_CURSE,
+              MOVE_MEMENTO,
+              MOVE_FUTURE_SIGHT,
+              MOVE_BEAT_UP,
+              MOVE_PSYCH_UP,
+              MOVE_MAGIC_COAT,
+			MOVE_ANCIENT_POWER,
+			MOVE_IMPRISON,
+			MOVE_SIGNAL_BEAM),
 
     EGG_MOVES_TERMINATOR
 };

@@ -324,6 +324,13 @@ static const u16 sUnownFormSpeciesIdTable[] = {
     SPECIES_UNOWN_QMARK,
     FORM_SPECIES_END,
 };
+
+static const u16 sGirafarigFormSpeciesIdTable[] = {
+    SPECIES_GIRAFARIG,
+    SPECIES_GIRAFARIG_BETA,
+    FORM_SPECIES_END,
+};
+
 /*
 static const u16 sSteelixFormSpeciesIdTable[] = {
     SPECIES_STEELIX,
