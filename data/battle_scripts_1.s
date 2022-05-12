@@ -1,3 +1,4 @@
+#include "constants/hold_effects.h"
 #include "constants/moves.h"
 #include "constants/battle.h"
 #include "constants/battle_move_effects.h"
@@ -793,6 +794,12 @@ BattleScript_EffectRazorWind::
 	setbyte sTWOTURN_STRINGID, 0
 	call BattleScriptFirstChargingTurn
 	goto BattleScript_MoveEnd
+	
+BattleScript_PowerHerbActivates:
+	removeitem BS_ATTACKER
+	playanimation BS_ATTACKER, B_ANIM_ITEM_EFFECT, NULL
+	printstring STRINGID_POWERHERB
+	waitmessage 0x40
 
 BattleScript_TwoTurnMovesSecondTurn::
 	attackcanceler
@@ -815,7 +822,16 @@ BattleScriptFirstChargingTurn::
 	seteffectprimary
 	copybyte cMULTISTRING_CHOOSER, sTWOTURN_STRINGID
 	printfromtable gFirstTurnOfTwoStringIds
+	jumpifnotmove MOVE_SKULL_BASH, BattleScript_SkullBashEnd
+	setstatchanger STAT_DEF, 1, FALSE
+	statbuffchange STAT_CHANGE_BS_PTR | MOVE_EFFECT_AFFECTS_USER, BattleScript_SkullBashEnd
+	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 2, BattleScript_SkullBashEnd
+	setgraphicalstatchangevalues
+	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+	printfromtable gStatUpStringIds
 	waitmessage 0x40
+BattleScript_SkullBashEnd::
+	jumpifholdeffect BS_ATTACKER, HOLD_EFFECT_POWER_HERB, BattleScript_PowerHerbActivates
 	return
 
 BattleScript_EffectSuperFang::
@@ -1028,8 +1044,10 @@ BattleScript_EffectParalyze::
 	ppreduce
 	jumpifability BS_TARGET, ABILITY_LIMBER, BattleScript_LimberProtected
 	jumpifstatus2 BS_TARGET, STATUS2_SUBSTITUTE, BattleScript_ButItFailed
+	jumpifmove MOVE_GLARE, BattleScript_EffectParalyze_SaltarComprobacionTipos
 	typecalc
 	jumpifmovehadnoeffect BattleScript_ButItFailed
+BattleScript_EffectParalyze_SaltarComprobacionTipos::
 	jumpifstatus BS_TARGET, STATUS1_PARALYSIS, BattleScript_AlreadyParalyzed
 	jumpifstatus BS_TARGET, STATUS1_ANY, BattleScript_ButItFailed
 	accuracycheck BattleScript_ButItFailed, ACC_CURR_MOVE
@@ -1832,14 +1850,6 @@ BattleScript_EffectSkullBash::
 	jumpifword CMP_COMMON_BITS, gHitMarker, HITMARKER_NO_ATTACKSTRING, BattleScript_TwoTurnMovesSecondTurn
 	setbyte sTWOTURN_STRINGID, 2
 	call BattleScriptFirstChargingTurn
-	setstatchanger STAT_DEF, 1, FALSE
-	statbuffchange STAT_CHANGE_BS_PTR | MOVE_EFFECT_AFFECTS_USER, BattleScript_SkullBashEnd
-	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 2, BattleScript_SkullBashEnd
-	setgraphicalstatchangevalues
-	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
-	printfromtable gStatUpStringIds
-	waitmessage 0x40
-BattleScript_SkullBashEnd::
 	goto BattleScript_MoveEnd
 
 BattleScript_EffectTwister::
@@ -2325,6 +2335,14 @@ BattleScript_EffectCharge::
 	setcharge
 	attackanimation
 	waitanimation
+	setstatchanger STAT_SPDEF, 1, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, BattleScript_EffectChargeString
+	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 0x2, BattleScript_EffectChargeString
+	setgraphicalstatchangevalues
+	playanimation BS_ATTACKER, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+	printfromtable gStatUpStringIds
+	waitmessage 0x40
+BattleScript_EffectChargeString:
 	printstring STRINGID_PKMNCHARGINGPOWER
 	waitmessage 0x40
 	goto BattleScript_MoveEnd
@@ -2333,6 +2351,7 @@ BattleScript_EffectTaunt::
 	attackcanceler
 	attackstring
 	ppreduce
+	jumpifability BS_TARGET, ABILITY_OBLIVIOUS, BattleScript_ObliviousPreventsTaunt
 	accuracycheck BattleScript_ButItFailed, ACC_CURR_MOVE
 	settaunt BattleScript_ButItFailed
 	attackanimation
@@ -4022,6 +4041,10 @@ BattleScript_IntimidateActivationAnimLoop::
 	jumpifability BS_TARGET, ABILITY_CLEAR_BODY, BattleScript_IntimidateAbilityFail
 	jumpifability BS_TARGET, ABILITY_HYPER_CUTTER, BattleScript_IntimidateAbilityFail
 	jumpifability BS_TARGET, ABILITY_WHITE_SMOKE, BattleScript_IntimidateAbilityFail
+	jumpifability BS_TARGET, ABILITY_SCRAPPY, BattleScript_IntimidateAbilityFail
+	jumpifability BS_TARGET, ABILITY_INNER_FOCUS, BattleScript_IntimidateAbilityFail
+	jumpifability BS_TARGET, ABILITY_OBLIVIOUS, BattleScript_IntimidateAbilityFail
+	jumpifability BS_TARGET, ABILITY_OWN_TEMPO, BattleScript_IntimidateAbilityFail
 	statbuffchange STAT_CHANGE_BS_PTR | STAT_CHANGE_NOT_PROTECT_AFFECTED, BattleScript_IntimidateFail
 	jumpifbyte CMP_GREATER_THAN, cMULTISTRING_CHOOSER, 1, BattleScript_IntimidateFail
 	setgraphicalstatchangevalues
@@ -4134,6 +4157,12 @@ BattleScript_PSNPrevention::
 BattleScript_ObliviousPreventsAttraction::
 	pause 0x20
 	printstring STRINGID_PKMNPREVENTSROMANCEWITH
+	waitmessage 0x40
+	goto BattleScript_MoveEnd
+	
+BattleScript_ObliviousPreventsTaunt::
+	pause 0x20
+	printstring STRINGID_PKMNPREVENTSTAUNTWITH
 	waitmessage 0x40
 	goto BattleScript_MoveEnd
 

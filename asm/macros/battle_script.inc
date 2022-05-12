@@ -1241,6 +1241,13 @@
 	.macro finishturn
 	.byte 0xf7
 	.endm
+	
+	.macro jumpifholdeffect battler:req, holdeffect, param0:req
+	.byte 0xf8
+	.byte \battler
+	.byte \holdeffect
+	.4byte \param0
+	.endm
 
 @ various command changed to more readable macros
 	.macro cancelmultiturnmoves battler:req

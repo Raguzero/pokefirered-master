@@ -826,7 +826,7 @@ u8 DoBattlerEndTurnEffects(void)
                         gBattleTextBuff1[3] = *(gBattleStruct->wrappedMove + gActiveBattler * 2 + 1);
                         gBattleTextBuff1[4] = EOS;
                         gBattlescriptCurrInstr = BattleScript_WrapTurnDmg;
-                        gBattleMoveDamage = gBattleMons[gActiveBattler].maxHP / 16;
+                        gBattleMoveDamage = gBattleMons[gActiveBattler].maxHP / 8;
                         if (gBattleMoveDamage == 0)
                             gBattleMoveDamage = 1;
                     }
@@ -2065,7 +2065,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                  && TARGET_TURN_DAMAGED
                  && (gBattleMoves[moveArg].flags & FLAG_MAKES_CONTACT))
                 {
-                    gBattleMoveDamage = gBattleMons[gBattlerAttacker].maxHP / 16;
+                    gBattleMoveDamage = gBattleMons[gBattlerAttacker].maxHP / 8;
                     if (gBattleMoveDamage == 0)
                         gBattleMoveDamage = 1;
                     BattleScriptPushCursor();

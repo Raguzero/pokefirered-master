@@ -1013,8 +1013,8 @@ static const u16 sNaturePowerMoves[] =
     MOVE_BUBBLE_BEAM,
     MOVE_ROCK_SLIDE,
     MOVE_SHADOW_BALL,
-    MOVE_SWIFT,
-    MOVE_SWIFT
+    MOVE_TRI_ATTACK,
+    MOVE_TRI_ATTACK
 };
 
 static const u16 sWeightToDamageTable[] =
@@ -1245,7 +1245,9 @@ static bool8 AccuracyCalcHelper(u16 move)
         return TRUE;
     }
     gHitMarker &= ~HITMARKER_IGNORE_UNDERWATER;
-    if ((WEATHER_HAS_EFFECT && (gBattleWeather & WEATHER_RAIN_ANY) && gBattleMoves[move].effect == EFFECT_THUNDER)
+    if ((WEATHER_HAS_EFFECT &&
+         (((gBattleWeather & WEATHER_RAIN_ANY) && gBattleMoves[move].effect == EFFECT_THUNDER)
+          || ((gBattleWeather & WEATHER_HAIL_ANY) && move == MOVE_BLIZZARD)))
      || (gBattleMoves[move].effect == EFFECT_ALWAYS_HIT || gBattleMoves[move].effect == EFFECT_VITAL_THROW))
     {
         JumpIfMoveFailed(7, move);
@@ -1282,7 +1284,7 @@ static void atk01_accuracycheck(void)
     }
     else
     {
-        u8 type, moveAcc, holdEffect, param;
+        u8 type, moveAcc, holdEffect, param, newEvasion;
         s8 buff;
         u16 calc;
 
@@ -1291,6 +1293,9 @@ static void atk01_accuracycheck(void)
         GET_MOVE_TYPE(move, type);
         if (JumpIfMoveAffectedByProtect(move) || AccuracyCalcHelper(move))
             return;
+		newEvasion = gBattleMons[gBattlerTarget].statStages[STAT_EVASION];
+        if (gBattleMons[gBattlerAttacker].ability == ABILITY_KEEN_EYE && newEvasion > 6)
+            newEvasion = 6;
         if (gBattleMons[gBattlerTarget].status2 & STATUS2_FORESIGHT)
         {
             u8 acc = gBattleMons[gBattlerAttacker].statStages[STAT_ACC];
@@ -1301,7 +1306,7 @@ static void atk01_accuracycheck(void)
         {
             u8 acc = gBattleMons[gBattlerAttacker].statStages[STAT_ACC];
 
-            buff = acc + 6 - gBattleMons[gBattlerTarget].statStages[STAT_EVASION];
+            buff = acc + 6 - newEvasion;
         }
         if (buff < 0)
             buff = 0;
@@ -1448,6 +1453,7 @@ static void atk04_critcalc(void)
                 + (gBattleMoves[gCurrentMove].effect == EFFECT_SKY_ATTACK)
                 + (gBattleMoves[gCurrentMove].effect == EFFECT_BLAZE_KICK)
                 + (gBattleMoves[gCurrentMove].effect == EFFECT_POISON_TAIL)
+				+ (gBattleMoves[gCurrentMove].effect == EFFECT_RAZOR_WIND)
                 + (holdEffect == HOLD_EFFECT_SCOPE_LENS)
                 + 2 * (holdEffect == HOLD_EFFECT_LUCKY_PUNCH && gBattleMons[gBattlerAttacker].species == SPECIES_CHANSEY)
                 + 2 * (holdEffect == HOLD_EFFECT_STICK && gBattleMons[gBattlerAttacker].species == SPECIES_FARFETCHD);
@@ -2934,7 +2940,7 @@ void SetMoveEffect(bool8 primary, u8 certain)
                 }
                 else
                 {
-                    gBattleMons[gEffectBattler].status2 |= ((Random() & 3) + 3) << 0xD;
+                    gBattleMons[gEffectBattler].status2 |= ((Random() & 1) + 5) << 0xD;
                     *(gBattleStruct->wrappedMove + gEffectBattler * 2 + 0) = gCurrentMove;
                     *(gBattleStruct->wrappedMove + gEffectBattler * 2 + 1) = gCurrentMove >> 8;
                     *(gBattleStruct->wrappedBy + gEffectBattler) = gBattlerAttacker;
@@ -3126,6 +3132,15 @@ void SetMoveEffect(bool8 primary, u8 certain)
             case MOVE_EFFECT_RAPIDSPIN:
                 BattleScriptPush(gBattlescriptCurrInstr + 1);
                 gBattlescriptCurrInstr = BattleScript_RapidSpinAway;
+                if (!ChangeStatBuffs(SET_STAT_BUFF_VALUE(1),
+                                    MOVE_EFFECT_SPD_PLUS_1 - MOVE_EFFECT_ATK_PLUS_1 + 1,
+                                    affectsUser, 0))
+                {
+                    gBattleScripting.animArg1 = MOVE_EFFECT_SPD_PLUS_1;
+                    gBattleScripting.animArg2 = 0;
+                    BattleScriptPush(gBattlescriptCurrInstr);
+                    gBattlescriptCurrInstr = BattleScript_StatUp;
+                }
                 break;
             case MOVE_EFFECT_REMOVE_PARALYSIS: // Smelling salts
                 if (!(gBattleMons[gBattlerTarget].status1 & STATUS1_PARALYSIS))
@@ -8069,7 +8084,7 @@ static void atkA9_trychoosesleeptalkmove(void)
             unusableMovesBits |= gBitTable[i];
         }
     }
-    unusableMovesBits = CheckMoveLimitations(gBattlerAttacker, unusableMovesBits, ~(MOVE_LIMITATION_PP));
+    unusableMovesBits = CheckMoveLimitations(gBattlerAttacker, unusableMovesBits, (MOVE_LIMITATION_CHOICE-1) & (~(MOVE_LIMITATION_PP)));
     if (unusableMovesBits == 0xF) // all 4 moves cannot be chosen
     {
         gBattlescriptCurrInstr += 5;
