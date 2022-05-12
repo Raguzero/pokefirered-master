@@ -606,6 +606,7 @@ BattleFrontier_Lounge5_Text_Midele_NatureChanger_Done::
 PalletTown_EventScript_OaksLabSign:: @ 8165838
 	lockall
 	famechecker FAMECHECKER_OAK, 0
+	special GiveAllMons // DEBUG, BORRAR MAS TARDE
 	msgbox PalletTown_Text_OakPokemonResearchLab
 	releaseall
 	end
