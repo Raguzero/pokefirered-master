@@ -586,7 +586,7 @@ static void Task_EvolutionScene(u8 taskId)
     // yet unlocked, such as Crobat.
     if (!IsNationalPokedexEnabled()
         && gTasks[taskId].tState == 8
-        && gTasks[taskId].tPostEvoSpecies > SPECIES_MEW)
+        && gTasks[taskId].tPostEvoSpecies > SPECIES_ZARUDE)
     {
         gTasks[taskId].tState = 17;
         gTasks[taskId].tEvoWasStopped = TRUE;
@@ -988,7 +988,7 @@ static void Task_TradeEvolutionScene(u8 taskId)
     // yet unlocked, such as Crobat.
     if (!IsNationalPokedexEnabled()
         && gTasks[taskId].tState == 7
-        && gTasks[taskId].tPostEvoSpecies > SPECIES_MEW)
+        && gTasks[taskId].tPostEvoSpecies > SPECIES_ZARUDE)
     {
         gTasks[taskId].tState = 15;
         gTasks[taskId].tEvoWasStopped = TRUE;
