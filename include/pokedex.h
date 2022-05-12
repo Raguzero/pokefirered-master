@@ -2,6 +2,7 @@
 #define GUARD_POKEDEX_H
 
 #define KANTO_DEX_COUNT 151
+#define NATIONAL_DEX_COUNT 899
 
 enum
 {
