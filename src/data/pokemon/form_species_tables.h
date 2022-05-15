@@ -11,13 +11,15 @@ static const u16 sCharizardFormSpeciesIdTable[] = {
     SPECIES_CHARIZARD_MEGA_X,
     SPECIES_CHARIZARD_MEGA_Y,
     FORM_SPECIES_END,
-};
+};*/
+
 
 static const u16 sBlastoiseFormSpeciesIdTable[] = {
     SPECIES_BLASTOISE,
-    SPECIES_BLASTOISE_MEGA,
+    SPECIES_BLASTOISE_BETA,
+    //SPECIES_BLASTOISE_MEGA,
     FORM_SPECIES_END,
-};*/
+};
 
 static const u16 sBeedrillFormSpeciesIdTable[] = {
     SPECIES_BEEDRILL,
@@ -263,6 +265,13 @@ static const u16 sMewtwoFormSpeciesIdTable[] = {
     FORM_SPECIES_END,
 };
 */
+
+static const u16 sNoctowlFormSpeciesIdTable[] = {
+    SPECIES_NOCTOWL,
+    SPECIES_NOCTOWL_BETA,
+    FORM_SPECIES_END,
+};
+
 static const u16 sSpinarakFormSpeciesIdTable[] = {
     SPECIES_SPINARAK,
     SPECIES_SPINARAK_BETA,
@@ -581,6 +590,12 @@ static const u16 sLucarioFormSpeciesIdTable[] = {
 static const u16 sAbomasnowFormSpeciesIdTable[] = {
     SPECIES_ABOMASNOW,
     SPECIES_ABOMASNOW_MEGA,
+    FORM_SPECIES_END,
+};
+
+static const u16 sLickilickyFormSpeciesIdTable[] = {
+    SPECIES_LICKILICKY,
+    SPECIES_LICKILICKY_BETA,
     FORM_SPECIES_END,
 };
 /*

@@ -1,8 +1,8 @@
 const u16 *const gFormSpeciesIdTables[NUM_SPECIES] =
 {
- /*   [SPECIES_VENUSAUR] = sVenusaurFormSpeciesIdTable,
-    [SPECIES_CHARIZARD] = sCharizardFormSpeciesIdTable,
-    [SPECIES_BLASTOISE] = sBlastoiseFormSpeciesIdTable,*/
+ //   [SPECIES_VENUSAUR] = sVenusaurFormSpeciesIdTable,
+  //  [SPECIES_CHARIZARD] = sCharizardFormSpeciesIdTable,
+    [SPECIES_BLASTOISE] = sBlastoiseFormSpeciesIdTable,
     [SPECIES_BEEDRILL] = sBeedrillFormSpeciesIdTable,
     [SPECIES_PIDGEOT] = sPidgeotFormSpeciesIdTable,
     [SPECIES_RATTATA] = sRattataFormSpeciesIdTable,
@@ -41,6 +41,7 @@ const u16 *const gFormSpeciesIdTables[NUM_SPECIES] =
     [SPECIES_ZAPDOS] = sZapdosFormSpeciesIdTable,
     [SPECIES_MOLTRES] = sMoltresFormSpeciesIdTable,
     //[SPECIES_MEWTWO] = sMewtwoFormSpeciesIdTable,
+    [SPECIES_NOCTOWL] = sNoctowlFormSpeciesIdTable,
     [SPECIES_SPINARAK] = sSpinarakFormSpeciesIdTable,
     [SPECIES_ARIADOS] = sAriadosFormSpeciesIdTable,
    //[SPECIES_PICHU] = sPichuFormSpeciesIdTable,
@@ -91,6 +92,7 @@ const u16 *const gFormSpeciesIdTables[NUM_SPECIES] =
     //[SPECIES_GARCHOMP] = sGarchompFormSpeciesIdTable,
     //[SPECIES_LUCARIO] = sLucarioFormSpeciesIdTable,
     [SPECIES_ABOMASNOW] = sAbomasnowFormSpeciesIdTable,
+    [SPECIES_LICKILICKY] = sLickilickyFormSpeciesIdTable,
     /*[SPECIES_GALLADE] = sGalladeFormSpeciesIdTable,
     [SPECIES_ROTOM] = sRotomFormSpeciesIdTable,
     [SPECIES_GIRATINA] = sGiratinaFormSpeciesIdTable,
@@ -524,4 +526,7 @@ const u16 *const gFormSpeciesIdTables[NUM_SPECIES] =
     [SPECIES_STUNFISK_GALARIAN] = sStunfiskFormSpeciesIdTable,
     [SPECIES_REMORAID_BETA] = sRemoraidFormSpeciesIdTable,
     [SPECIES_OCTILLERY_BETA] = sOctilleryFormSpeciesIdTable,
+    [SPECIES_BLASTOISE_BETA] = sBlastoiseFormSpeciesIdTable,
+    [SPECIES_NOCTOWL_BETA] = sNoctowlFormSpeciesIdTable,
+    [SPECIES_LICKILICKY_BETA] = sLickilickyFormSpeciesIdTable,
 };

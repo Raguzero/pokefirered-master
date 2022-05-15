@@ -2075,5 +2075,35 @@ const struct MonCoords gMonBackPicCoords[] =
         .size = 0x47,
         .y_offset = 0x06,
     },
+    [SPECIES_GIRAFARIG_BETA] =
+    {
+        .size = 0x87,
+        .y_offset = 0x05,
+    },
+    [SPECIES_GUARDIA] =
+    {
+        .size = 0x77,
+        .y_offset = 0x05,
+    },
+    [SPECIES_OCTILLERY_BETA] =
+    {
+        .size = 0x66,
+        .y_offset = 0x08,
+    },
+    [SPECIES_REMORAID_BETA] =
+    {
+        .size = 0x75,
+        .y_offset = 0x0d,
+    },
+    [SPECIES_BELLIGNAN] =
+    {
+        .size = 0x66,
+        .y_offset = 0x0a,
+    },
+    [SPECIES_PORYGON_B] =
+    {
+        .size = 0x76,
+        .y_offset = 0x0a,
+    },
 };
 

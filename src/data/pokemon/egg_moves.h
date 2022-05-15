@@ -425,7 +425,7 @@ const u16 gEggMoves[] = {
     egg_moves(LICKITUNG,
               MOVE_BELLY_DRUM,
               MOVE_MAGNITUDE,
-              MOVE_BODY_SLAM,
+              MOVE_WISH,
               MOVE_CURSE,
               MOVE_SMELLING_SALT,
               MOVE_SLEEP_TALK,
@@ -3797,6 +3797,15 @@ const u16 gEggMoves[] = {
 			MOVE_ANCIENT_POWER,
 			MOVE_IMPRISON,
 			MOVE_SIGNAL_BEAM),
+			
+    egg_moves(BOMBSEEKER,
+        MOVE_CHARM,
+        MOVE_AMNESIA,
+        MOVE_EARTH_POWER,
+        MOVE_ENCORE,
+        MOVE_CURSE,
+		MOVE_SIGNAL_BEAM,
+        MOVE_PERISH_SONG),
 
     EGG_MOVES_TERMINATOR
 };
