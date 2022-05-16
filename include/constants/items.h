@@ -452,6 +452,6 @@
 #define NUM_HIDDEN_MACHINES     8
 
 // Check if the item is one that can be used on a Pokemon.
-#define IS_POKEMON_ITEM(item) ((item) >= ITEM_POTION && (item) <= ITEM_0B2)
+#define IS_POKEMON_ITEM(item) ((item) >= ITEM_POTION && (item) <= ITEM_UP_GRADE)
 
 #endif  // GUARD_CONSTANTS_ITEMS_H

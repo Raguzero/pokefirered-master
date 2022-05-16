@@ -313,6 +313,10 @@ enum
 #define EVO_LEVEL_NINJASK    0x000d // Pokémon reaches the specified level (special value for Ninjask)
 #define EVO_LEVEL_SHEDINJA   0x000e // Pokémon reaches the specified level (special value for Shedinja)
 #define EVO_BEAUTY           0x000f // Pokémon levels up with beauty ≥ specified value
+#define EVO_LEVEL_FEMALE     0x0010 // Pokémon reaches the specified level, is female
+#define EVO_LEVEL_MALE     	 0x0011 // Pokémon reaches the specified level, is male
+#define EVO_ITEM_MALE        0x0012 // specified item is used on a male Pokémon
+#define EVO_ITEM_FEMALE      0x0013 // specified item is used on a female Pokémon
 
 struct Evolution
 {
@@ -321,7 +325,7 @@ struct Evolution
     u16 targetSpecies;
 };
 
-#define EVOS_PER_MON 5
+#define EVOS_PER_MON 8
 
 extern u8 gPlayerPartyCount;
 extern struct Pokemon gPlayerParty[PARTY_SIZE];
