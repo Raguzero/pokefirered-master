@@ -324,30 +324,6 @@ static const u8 gItemEffect_IceStone[6] = {
     [4] = ITEM4_EVO_STONE,
 };
 
-static const u8 gItemEffect_KingRock[6] = {
-    [4] = ITEM4_EVO_STONE,
-};
-
-static const u8 gItemEffect_DeepSeaTooth[6] = {
-    [4] = ITEM4_EVO_STONE,
-};
-
-static const u8 gItemEffect_DeepSeaScale[6] = {
-    [4] = ITEM4_EVO_STONE,
-};
-
-static const u8 gItemEffect_MetalCoat[6] = {
-    [4] = ITEM4_EVO_STONE,
-};
-
-static const u8 gItemEffect_DragonScale[6] = {
-    [4] = ITEM4_EVO_STONE,
-};
-
-static const u8 gItemEffect_UpGrade[6] = {
-    [4] = ITEM4_EVO_STONE,
-};
-
 static const u8 sItemEffect_CheriBerry[6] = {
     [3] = ITEM3_PARALYSIS,
 };
@@ -510,13 +486,7 @@ const u8 *const gItemEffectTable[] =
     [ITEM_DUSK_STONE - ITEM_POTION] = gItemEffect_DuskStone,
     [ITEM_SHINY_STONE - ITEM_POTION] = gItemEffect_ShinyStone,
     [ITEM_ICE_STONE - ITEM_POTION] = gItemEffect_IceStone,
-    [ITEM_KINGS_ROCK - ITEM_POTION] = gItemEffect_KingRock,
-    [ITEM_DEEP_SEA_TOOTH - ITEM_POTION] = gItemEffect_DeepSeaTooth,
-    [ITEM_DEEP_SEA_SCALE - ITEM_POTION] = gItemEffect_DeepSeaScale,
-    [ITEM_METAL_COAT - ITEM_POTION] = gItemEffect_MetalCoat,
-    [ITEM_DRAGON_SCALE - ITEM_POTION] = gItemEffect_DragonScale,
-    [ITEM_UP_GRADE - ITEM_POTION] = gItemEffect_UpGrade,
-	[ITEM_CHERI_BERRY - ITEM_POTION] = sItemEffect_CheriBerry,
+    [ITEM_CHERI_BERRY - ITEM_POTION] = sItemEffect_CheriBerry,
     [ITEM_CHESTO_BERRY - ITEM_POTION] = sItemEffect_ChestoBerry,
     [ITEM_PECHA_BERRY - ITEM_POTION] = sItemEffect_PechaBerry,
     [ITEM_RAWST_BERRY - ITEM_POTION] = sItemEffect_RawstBerry,
