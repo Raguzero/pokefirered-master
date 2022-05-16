@@ -763,6 +763,12 @@ EventScript_Debug_Pallet_Town::
 	additem ITEM_DUSK_STONE, 99
 	additem ITEM_SHINY_STONE, 99
 	additem ITEM_ICE_STONE, 99
+	additem ITEM_KINGS_ROCK, 99
+	additem ITEM_DEEP_SEA_TOOTH, 99
+	additem ITEM_DEEP_SEA_SCALE, 99
+	additem ITEM_DRAGON_SCALE, 99
+	additem ITEM_METAL_COAT, 99
+	additem ITEM_UP_GRADE, 99
     additem ITEM_RARE_CANDY, 99
 	additem ITEM_ABILITY_CAPSULE, 99
 	additem ITEM_SACRED_ASH, 99
