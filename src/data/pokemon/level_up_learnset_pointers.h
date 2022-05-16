@@ -1287,9 +1287,13 @@ const u16 *const gLevelUpLearnsets[NUM_SPECIES] =
     [SPECIES_PORYGON_B] = sPorygonBLevelUpLearnset,
     [SPECIES_GUARDIA] = sGuardiaLevelUpLearnset,
 	[SPECIES_BLASTOISE_BETA] = sBlastoiseBetaLevelUpLearnset,
+	[SPECIES_HOOTHOOT_BETA] = sHoothootBetaLevelUpLearnset,
 	[SPECIES_NOCTOWL_BETA] = sNoctowlBetaLevelUpLearnset,
 	[SPECIES_DISTURBAN] = sDisturbanLevelUpLearnset,
 	[SPECIES_BOMBSEEKER] = sBombseekerLevelUpLearnset,
+    [SPECIES_BURGELA] = sBurgelaLevelUpLearnset,
+    [SPECIES_JUNGELA] = sJungelaLevelUpLearnset,
+    [SPECIES_POLITOED_BETA] = sPolitoedBetaLevelUpLearnset,
 	// New Evos (Giga)
 	[SPECIES_GARBODOR_GIGA] = sGarbodorGigaLevelUpLearnset,
 };

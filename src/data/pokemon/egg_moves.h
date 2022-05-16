@@ -3806,6 +3806,28 @@ const u16 gEggMoves[] = {
         MOVE_CURSE,
 		MOVE_SIGNAL_BEAM,
         MOVE_PERISH_SONG),
+		
+    egg_moves(BURGELA,
+              MOVE_FLAIL,
+              MOVE_CONFUSION,
+              MOVE_MEGA_DRAIN,
+              MOVE_AMNESIA,
+              MOVE_LEECH_SEED,
+              MOVE_NATURE_POWER,
+              MOVE_LEAF_STORM,
+			MOVE_ENDEAVOR),
+			
+    egg_moves(HOOTHOOT_BETA,
+              MOVE_MIRROR_MOVE,
+              MOVE_CONFUSE_RAY,
+              MOVE_FAINT_ATTACK,
+              MOVE_WING_ATTACK,
+              MOVE_WHIRLWIND,
+              MOVE_PURSUIT,
+              MOVE_FAKE_TEARS,
+			   MOVE_AGILITY,
+			MOVE_MEAN_LOOK,
+			MOVE_ANCIENT_POWER),
 
     EGG_MOVES_TERMINATOR
 };

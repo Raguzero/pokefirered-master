@@ -2105,5 +2105,30 @@ const struct MonCoords gMonBackPicCoords[] =
         .size = 0x76,
         .y_offset = 0x0a,
     },
+    [SPECIES_HOOTHOOT_BETA] =
+    {
+        .size = 0x66,
+        .y_offset = 0x08,
+    },
+    [SPECIES_NOCTOWL_BETA] =
+    {
+        .size = 0x68,
+        .y_offset = 0x03,
+    },
+    [SPECIES_BURGELA] =
+    {
+        .size = 0x85,
+        .y_offset = 0x0e,
+    },
+    [SPECIES_TRICULES] =
+    {
+        .size = 0x66,
+        .y_offset = 0x09,
+    },
+    [SPECIES_JUNGELA] =
+    {
+        .size = 0x85,
+        .y_offset = 0x0e,
+    },
 };
 

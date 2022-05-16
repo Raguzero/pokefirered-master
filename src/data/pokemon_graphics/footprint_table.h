@@ -903,4 +903,7 @@ const u8 *const gMonFootprintTable[] =
     [SPECIES_GUARDIA] = gMonFootprint_Guardia,
     [SPECIES_BELLIGNAN] = gMonFootprint_Bellignan,
     [SPECIES_PORYGON_B] = gMonFootprint_PorygonB,
+    [SPECIES_TRICULES] = gMonFootprint_Tricules,
+    [SPECIES_BURGELA] = gMonFootprint_Burgela,
+    [SPECIES_JUNGELA] = gMonFootprint_Jungela,
 };

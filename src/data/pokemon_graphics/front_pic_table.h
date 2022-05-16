@@ -1278,6 +1278,11 @@ const struct CompressedSpriteSheet gMonFrontPicTable[] =
     SPECIES_SPRITE(REMORAID_BETA, gMonFrontPic_RemoraidBeta),
     SPECIES_SPRITE(BELLIGNAN, gMonFrontPic_Bellignan),
     SPECIES_SPRITE(PORYGON_B, gMonFrontPic_PorygonB),
+    SPECIES_SPRITE(HOOTHOOT_BETA, gMonFrontPic_HoothootBeta),
+    SPECIES_SPRITE(NOCTOWL_BETA, gMonFrontPic_NoctowlBeta),
+    SPECIES_SPRITE(TRICULES, gMonFrontPic_Tricules),
+    SPECIES_SPRITE(BURGELA, gMonFrontPic_Burgela),
+    SPECIES_SPRITE(JUNGELA, gMonFrontPic_Jungela),
 };
 /*
 const struct CompressedSpriteSheet gMonFrontPicTableFemale[] =

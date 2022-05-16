@@ -1280,6 +1280,11 @@ const struct CompressedSpritePalette gMonPaletteTable[] =
     SPECIES_PAL(REMORAID_BETA, gMonPalette_RemoraidBeta),
     SPECIES_PAL(BELLIGNAN, gMonPalette_Bellignan),
     SPECIES_PAL(PORYGON_B, gMonPalette_PorygonB),
+    SPECIES_PAL(HOOTHOOT_BETA, gMonPalette_HoothootBeta),
+    SPECIES_PAL(NOCTOWL_BETA, gMonPalette_NoctowlBeta),
+    SPECIES_PAL(TRICULES, gMonPalette_Tricules),
+    SPECIES_PAL(BURGELA, gMonPalette_Burgela),
+    SPECIES_PAL(JUNGELA, gMonPalette_Jungela),
 };
 /*
 const struct CompressedSpritePalette gMonPaletteTableFemale[] =

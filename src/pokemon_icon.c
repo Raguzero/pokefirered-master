@@ -1237,7 +1237,13 @@ const u8 *const gMonIconTable[] = {
     [SPECIES_CALYREX_SHADOW_RIDER] = gMonIcon_CalyrexShadowRider,*/
     [SPECIES_GIRAFARIG_BETA] = gMonIcon_GirafarigBeta,
     [SPECIES_GUARDIA] = gMonIcon_Guardia,
+    [SPECIES_REMORAID_BETA]   = gMonIcon_RemoraidBeta,
     [SPECIES_OCTILLERY_BETA]   = gMonIcon_OctilleryBeta,
+    [SPECIES_HOOTHOOT_BETA] = gMonIcon_HoothootBeta,
+    [SPECIES_NOCTOWL_BETA] = gMonIcon_NoctowlBeta,
+    [SPECIES_TRICULES] = gMonIcon_Tricules,
+    [SPECIES_BURGELA]   = gMonIcon_Burgela,
+    [SPECIES_JUNGELA]   = gMonIcon_Jungela,
 };
 /*
 const u8 *const gMonIconTableFemale[] =
@@ -2461,7 +2467,13 @@ const u8 gMonIconPaletteIndices[] = {
     [SPECIES_CALYREX_SHADOW_RIDER] = 0*/
     [SPECIES_GIRAFARIG_BETA]   = 1,
     [SPECIES_GUARDIA]  = 1,
+    [SPECIES_HOOTHOOT_BETA]    = 2,
+    [SPECIES_NOCTOWL_BETA]     = 2,
+    [SPECIES_REMORAID_BETA]    = 0,
     [SPECIES_OCTILLERY_BETA]   = 0,
+    [SPECIES_TRICULES]      = 2,
+    [SPECIES_BURGELA]     = 0,
+    [SPECIES_JUNGELA] = 0,
 };
 
 const u8 gMonIconPaletteIndicesFemale[] =
