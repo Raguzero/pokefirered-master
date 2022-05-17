@@ -984,6 +984,8 @@ extern const u8 gText_InBagVar1[];
 extern const u8 gText_Var1AndYouWantedVar2[];
 extern const u8 gText_HereYouGoThankYou[];
 extern const u8 gText_NoMoreRoomForThis[];
+extern const u8 gText_SoldOut[];
+extern const u8 gText_SoldOutLabel[];
 
 // pokedex_screen
 extern const u8 gText_PokedexTableOfContents[];
