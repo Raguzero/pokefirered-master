@@ -963,6 +963,7 @@ extern const u8 gText_MenuOption[];
 extern const u8 gText_FrameType[];
 extern const u8 gTextJP_Type[];
 extern const u8 gText_PickSwitchCancel[];
+extern const u8 gText_TextSpeedInstant[];
 
 // evolution_scene
 extern const u8 gText_PkmnIsEvolving[];
