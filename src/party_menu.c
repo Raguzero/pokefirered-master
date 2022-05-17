@@ -19,8 +19,6 @@
 #include "fieldmap.h"
 #include "fldeff.h"
 #include "graphics.h"
-#include "help_message.h"
-#include "help_system.h"
 #include "item.h"
 #include "item_menu.h"
 #include "item_use.h"
@@ -566,7 +564,6 @@ static bool8 ShowPartyMenu(void)
         ++gMain.state;
         break;
     case 19:
-        SetHelpContext(HELPCONTEXT_PARTY_MENU);
         ++gMain.state;
         break;
     case 20:
@@ -5884,21 +5881,18 @@ void OpenPartyMenuInTutorialBattle(u8 partyAction)
                       Task_HandleChooseMonInput,
                       SetCB2ToReshowScreenAfterMenu);
     }
-    ReshowBattleScreenDummy();
     UpdatePartyToBattleOrder();
 }
 
 void Pokedude_OpenPartyMenuInBattle(void)
 {
     InitPartyMenu(PARTY_MENU_TYPE_IN_BATTLE, GetPartyLayoutFromBattleType(), PARTY_ACTION_CHOOSE_MON, FALSE, PARTY_MSG_CHOOSE_MON, Task_PartyMenu_Pokedude, SetCB2ToReshowScreenAfterMenu);
-    ReshowBattleScreenDummy();
     UpdatePartyToBattleOrder();
 }
 
 void Pokedude_ChooseMonForInBattleItem(void)
 {
     InitPartyMenu(PARTY_MENU_TYPE_IN_BATTLE, GetPartyLayoutFromBattleType(), PARTY_ACTION_REUSABLE_ITEM, FALSE, PARTY_MSG_USE_ON_WHICH_MON, Task_PartyMenuFromBag_Pokedude, CB2_BagMenuFromBattle);
-    ReshowBattleScreenDummy();
     UpdatePartyToBattleOrder();
 }
 
@@ -5931,7 +5925,6 @@ void EnterPartyFromItemMenuInBattle(void)
                       Task_HandleChooseMonInput,
                       callback);
     }
-    ReshowBattleScreenDummy();
     UpdatePartyToBattleOrder();
 }
 

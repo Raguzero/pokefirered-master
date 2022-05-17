@@ -358,7 +358,6 @@ static void OpenBagAndChooseItem(void)
     if (!gPaletteFade.active)
     {
         gBattlerControllerFuncs[gActiveBattler] = CompleteWhenChoseItem;
-        ReshowBattleScreenDummy();
         FreeAllWindowBuffers();
         switch (gSpecialVar_0x8004)
         {

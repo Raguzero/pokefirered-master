@@ -16,7 +16,6 @@
 #include "region_map.h"
 #include "map_name_popup.h"
 #include "wild_encounter.h"
-#include "help_system.h"
 #include "pokemon_storage_system.h"
 #include "save.h"
 #include "quest_log_objects.h"
@@ -430,7 +429,6 @@ void TrySetUpQuestLogScenes_ElseContinueFromSave(u8 taskId)
 
     if (sNumScenes != 0)
     {
-        gHelpSystemEnabled = FALSE;
         Task_BeginQuestLogPlayback(taskId);
         DestroyTask(taskId);
     }
@@ -1186,7 +1184,6 @@ static void Task_EndQuestLog(u8 taskId)
         gTextFlags.autoScroll = FALSE;
         gGlobalFieldTintMode = QL_TINT_NONE;
         DisableWildEncounters(FALSE);
-        gHelpSystemEnabled = TRUE;
         DestroyTask(taskId);
         break;
     }

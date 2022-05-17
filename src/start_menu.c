@@ -8,7 +8,6 @@
 #include "party_menu.h"
 #include "save.h"
 #include "link_rfu.h"
-#include "help_message.h"
 #include "event_data.h"
 #include "fieldmap.h"
 #include "safari_zone.h"
@@ -33,11 +32,11 @@
 #include "trainer_card.h"
 #include "option_menu.h"
 #include "save_menu_util.h"
-#include "help_system.h"
 #include "dexnav.h"
 #include "constants/songs.h"
 #include "constants/field_weather.h"
 #include "rtc.h"
+#include "field_message_box.h"
 
 enum StartMenuOption
 {
@@ -338,10 +337,6 @@ static s8 DoDrawStartMenu(void)
         break;
     case 5:
         sStartMenuCursorPos = Menu_InitCursor(GetStartMenuWindowId(), 2, 0, 0, 15, sNumStartMenuItems, sStartMenuCursorPos);
-     /*   if (!MenuHelpers_LinkSomething() && InUnionRoom() != TRUE && gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_HELP)
-        {
-            DrawHelpMessageWindowWithText(sStartMenuDescPointers[sStartMenuOrder[sStartMenuCursorPos]]);
-        }*/
         CopyWindowToVram(GetStartMenuWindowId(), COPYWIN_MAP);
         return TRUE;
     }
@@ -422,19 +417,11 @@ static bool8 StartCB_HandleInput(void)
     {
         PlaySE(SE_SELECT);
         sStartMenuCursorPos = Menu_MoveCursor(-1);
-        if (!MenuHelpers_LinkSomething() && InUnionRoom() != TRUE && gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_HELP)
-        {
-            PrintTextOnHelpMessageWindow(sStartMenuDescPointers[sStartMenuOrder[sStartMenuCursorPos]], 2);
-        }
     }
     if (JOY_NEW(DPAD_DOWN))
     {
         PlaySE(SE_SELECT);
         sStartMenuCursorPos = Menu_MoveCursor(+1);
-        if (!MenuHelpers_LinkSomething() && InUnionRoom() != TRUE && gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_HELP)
-        {
-            PrintTextOnHelpMessageWindow(sStartMenuDescPointers[sStartMenuOrder[sStartMenuCursorPos]], 2);
-        }
     }
     if (JOY_NEW(A_BUTTON))
     {
@@ -447,9 +434,8 @@ static bool8 StartCB_HandleInput(void)
     }
     if (JOY_NEW(B_BUTTON | START_BUTTON))
     {
-        DestroySafariZoneStatsWindow();
-        DestroyHelpMessageWindow_();
         CloseStartMenu();
+        DestroySafariZoneStatsWindow();
         return TRUE;
     }
     return FALSE;
@@ -549,16 +535,15 @@ static bool8 StartMenuOptionCallback(void)
 static bool8 StartMenuExitCallback(void)
 {
     DestroySafariZoneStatsWindow();
-    DestroyHelpMessageWindow_();
+    //DestroyHelpMessageWindow_();
     CloseStartMenu();
     return TRUE;
 }
 
 static bool8 StartMenuSafariZoneRetireCallback(void)
 {
-    DestroySafariZoneStatsWindow();
-    DestroyHelpMessageWindow_();
     CloseStartMenu();
+    DestroySafariZoneStatsWindow();
     SafariZoneRetirePrompt();
     return TRUE;
 }
@@ -578,8 +563,6 @@ static bool8 StartMenuLinkPlayerCallback(void)
 
 static bool8 StartCB_Save1(void)
 {
-    BackupHelpContext();
-    SetHelpContext(HELPCONTEXT_SAVE);
     StartMenu_PrepareForSave();
     sStartMenuCallback = StartCB_Save2;
     return FALSE;
@@ -595,19 +578,16 @@ static bool8 StartCB_Save2(void)
         ClearDialogWindowAndFrameToTransparent(0, TRUE);
         ClearPlayerHeldMovementAndUnfreezeObjectEvents();
         ScriptContext2_Disable();
-        RestoreHelpContext();
         return TRUE;
     case SAVECB_RETURN_CANCEL:
         ClearDialogWindowAndFrameToTransparent(0, FALSE);
         DrawStartMenuInOneGo();
-        RestoreHelpContext();
         sStartMenuCallback = StartCB_HandleInput;
         break;
     case SAVECB_RETURN_ERROR:
         ClearDialogWindowAndFrameToTransparent(0, TRUE);
         ClearPlayerHeldMovementAndUnfreezeObjectEvents();
         ScriptContext2_Disable();
-        RestoreHelpContext();
         return TRUE;
     }
     return FALSE;
@@ -630,8 +610,6 @@ static u8 RunSaveDialogCB(void)
 
 void Field_AskSaveTheGame(void)
 {
-    BackupHelpContext();
-    SetHelpContext(HELPCONTEXT_SAVE);
     StartMenu_PrepareForSave();
     CreateTask(task50_save_game, 80);
 }
@@ -661,7 +639,6 @@ static void task50_save_game(u8 taskId)
     }
     DestroyTask(taskId);
     EnableBothScriptContexts();
-    RestoreHelpContext();
 }
 
 static void CloseSaveMessageWindow(void)
@@ -721,7 +698,6 @@ static u8 SaveDialogCB_PrintAskSaveText(void)
 {
     ClearStdWindowAndFrame(GetStartMenuWindowId(), FALSE);
     RemoveStartMenuWindow();
-    DestroyHelpMessageWindow(0);
     PrintSaveStats();
     PrintSaveTextWithFollowupFunc(gText_WouldYouLikeToSaveTheGame, SaveDialogCB_AskSavePrintYesNoMenu);
     return SAVECB_RETURN_CONTINUE;

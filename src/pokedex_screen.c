@@ -6,7 +6,6 @@
 #include "task.h"
 #include "new_menu_helpers.h"
 #include "event_data.h"
-#include "help_system.h"
 #include "menu_indicators.h"
 #include "overworld.h"
 #include "strings.h"
@@ -19,6 +18,7 @@
 #include "constants/songs.h"
 #include "pokedex_area_markers.h"
 #include "field_specials.h"
+#include "list_menu.h"
 
 enum TextMode {
     TEXT_LEFT,
@@ -937,7 +937,6 @@ void CB2_OpenPokedexFromStartMenu(void)
     SetGpuReg(REG_OFFSET_BLDALPHA, 0);
     SetGpuReg(REG_OFFSET_BLDY, 0);
     SetMainCallback2(CB2_PokedexScreen);
-    SetHelpContext(HELPCONTEXT_POKEDEX);
 }
 
 #define FREE_IF_NOT_NULL(ptr0) ({ void * ptr = (ptr0); if (ptr) Free(ptr); })

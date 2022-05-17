@@ -5,7 +5,6 @@
 #include "m4a.h"
 #include "scanline_effect.h"
 #include "graphics.h"
-#include "help_system.h"
 #include "intro.h"
 #include "load_save.h"
 #include "new_game.h"
@@ -590,12 +589,10 @@ static void SetTitleScreenScene_Run(s16 * data)
     switch (data[1])
     {
     case 0:
-        SetHelpContext(HELPCONTEXT_TITLE_SCREEN);
         CreateTask(Task_TitleScreen_BlinkPressStart, 0);
         CreateTask(Task_FlameOrLeafSpawner, 5);
         SetGpuRegsForTitleScreenRun();
         data[6] = CreateSlashSprite();
-        HelpSystem_Enable();
         data[1]++;
         // fallthrough
     case 1:
@@ -680,7 +677,6 @@ static void SetTitleScreenScene_Restart(s16 * data)
         }
         break;
     case 4:
-        HelpSystem_Disable();
         DestroyTask(FindTaskIdByFunc(Task_TitleScreenMain));
         SetMainCallback2(CB2_CopyrightScreen);
         break;

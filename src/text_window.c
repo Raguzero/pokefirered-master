@@ -3,8 +3,11 @@
 #include "text_window.h"
 #include "text_window_graphics.h"
 #include "quest_log.h"
+#include "menu.h"
+#include "malloc.h"
 
 extern const u16 gUnknown_841F1C8[];
+static const u8 gUnknown_84566A8[] = INCBIN_U8("graphics/unknown/unknown_84566a8.bin");
 static const u16 sTextWindowDexnavFrame[] = INCBIN_U16("graphics/text_window/dexnav_pal.gbapal");
 
 
@@ -174,4 +177,41 @@ void LoadDexNavWindowGfx(u8 windowId, u16 dstOffset, u8 palOffset)
 {
     LoadBgTiles(GetWindowAttribute(windowId, WINDOW_BG), sDexnavWindowFrame.tiles, 0x120, dstOffset);
     LoadPalette(sDexnavWindowFrame.palette, palOffset, 32);
+}
+
+void sub_8112F18(u8 windowId)
+{
+    const u8* ptr = gUnknown_84566A8;
+    u8* buffer;
+    u8 i, j;
+    u8 width, height;
+    u8 k;
+
+    width = (u8)GetWindowAttribute(windowId, WINDOW_WIDTH);
+    height = (u8)GetWindowAttribute(windowId, WINDOW_HEIGHT);
+
+    buffer = (u8 *)Alloc(32 * width * height);
+
+    if (buffer != NULL)
+    {
+        for (i = 0; i < height; i++)
+        {
+            for (j = 0; j < width; j++)
+            {
+                if (i == 0)
+                    k = 0;
+                else if (i == height - 1)
+                    k = 14;
+                else
+                    k = 5;
+                CpuCopy32(
+                    &ptr[k * 0x20],
+                    &buffer[(i * width + j) * 0x20],
+                    32
+                );
+            }
+        }
+        CopyToWindowPixelBuffer(windowId, buffer, width * height * 32, 0);
+        Free(buffer);
+    }
 }

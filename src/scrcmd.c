@@ -1276,14 +1276,12 @@ bool8 ScrCmd_loadhelp(struct ScriptContext * ctx)
 
     if (msg == NULL)
         msg = (const u8 *)ctx->data[0];
-    DrawHelpMessageWindowWithText(msg);
     CopyWindowToVram(GetStartMenuWindowId(), COPYWIN_MAP);
     return FALSE;
 }
 
 bool8 ScrCmd_unloadhelp(struct ScriptContext * ctx)
 {
-    DestroyHelpMessageWindow_();
     return FALSE;
 }
 
