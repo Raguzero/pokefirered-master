@@ -158,6 +158,10 @@ struct DisableStruct
     /*0x06*/ u16 encoredMove;
     /*0x08*/ u8 protectUses;
     /*0x09*/ u8 stockpileCounter;
+			 s8 stockpileDef;
+			 s8 stockpileSpDef;
+			 s8 stockpileBeforeDef;
+			 s8 stockpileBeforeSpDef;
     /*0x0A*/ u8 substituteHP;
     /*0x0B*/ u8 disableTimer : 4;
     /*0x0B*/ u8 disableTimerStartValue : 4;

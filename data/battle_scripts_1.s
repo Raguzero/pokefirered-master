@@ -85,7 +85,7 @@ gBattleScriptsForMoveEffects::
 	.4byte BattleScript_EffectHit
 	.4byte BattleScript_EffectSpecialDefenseDown2
 	.4byte BattleScript_EffectHit
-	.4byte BattleScript_EffectHit
+	.4byte BattleScript_EffectEvasionDown2
 	.4byte BattleScript_EffectReflect
 	.4byte BattleScript_EffectPoison
 	.4byte BattleScript_EffectParalyze
@@ -646,7 +646,9 @@ BattleScript_DoMultiHit::
 	waitmessage 1
 	addbyte gBattleScripting + 12, 1
 	moveendto 16
+	jumpifbyte CMP_COMMON_BITS, gMoveResultFlags, MOVE_RESULT_FOE_STURDY, BattleScript_ContinueDoMultiHit
 	jumpifbyte CMP_COMMON_BITS, gMoveResultFlags, MOVE_RESULT_FOE_ENDURED, BattleScript_MultiHitPrintStrings
+BattleScript_ContinueDoMultiHit::
 	decrementmultihit BattleScript_MultiHitLoop
 	goto BattleScript_MultiHitPrintStrings
 
@@ -1001,6 +1003,10 @@ BattleScript_EffectSpeedDown2::
 
 BattleScript_EffectSpecialDefenseDown2::
 	setstatchanger STAT_SPDEF, 2, TRUE
+	goto BattleScript_EffectStatDown
+	
+BattleScript_EffectEvasionDown2::
+	setstatchanger STAT_EVASION, 2, TRUE
 	goto BattleScript_EffectStatDown
 
 BattleScript_EffectReflect::
@@ -2118,11 +2124,30 @@ BattleScript_EffectStockpile::
 	attackcanceler
 	attackstring
 	ppreduce
-	stockpile
+	stockpile 0
 	attackanimation
 	waitanimation
 	printfromtable gStockpileUsedStringIds
 	waitmessage 0x40
+	jumpifmovehadnoeffect BattleScript_EffectStockpileEnd
+	jumpifstat BS_ATTACKER, CMP_LESS_THAN, STAT_DEF, 0xC, BattleScript_EffectStockpileDef
+	jumpifstat BS_ATTACKER, CMP_EQUAL, STAT_SPDEF, 0xC, BattleScript_EffectStockpileEnd
+	BattleScript_EffectStockpileDef:
+	setbyte sSTAT_ANIM_PLAYED, FALSE
+	playstatchangeanimation BS_ATTACKER, BIT_DEF | BIT_SPDEF, 0x0
+	setstatchanger STAT_DEF, 1, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, BattleScript_EffectStockpileSpDef
+	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 0x2, BattleScript_EffectStockpileSpDef
+	printfromtable gStatUpStringIds
+	waitmessage 0x40
+BattleScript_EffectStockpileSpDef::
+	setstatchanger STAT_SPDEF, 1, FALSE
+	statbuffchange MOVE_EFFECT_AFFECTS_USER | STAT_CHANGE_BS_PTR, BattleScript_EffectStockpileEnd
+	jumpifbyte CMP_EQUAL, cMULTISTRING_CHOOSER, 0x2, BattleScript_EffectStockpileEnd
+	printfromtable gStatUpStringIds
+	waitmessage 0x40
+BattleScript_EffectStockpileEnd:
+	stockpile 1
 	goto BattleScript_MoveEnd
 
 BattleScript_EffectSpitUp::
@@ -4401,6 +4426,9 @@ BattleScript_HangedOnMsg::
 	playanimation BS_TARGET, B_ANIM_HANGED_ON, NULL
 	printstring STRINGID_PKMNHUNGONWITHX
 	waitmessage 0x40
+    jumpifbyte CMP_EQUAL, gLastUsedItem, 196, BattleScript_HangedOnMsgEnd
+    removeitem BS_TARGET
+BattleScript_HangedOnMsgEnd:
 	return
 
 BattleScript_BerryConfuseHealEnd2::
@@ -4574,6 +4602,23 @@ BattleScript_QuiverDanceTrySpeed::
 	printfromtable gStatUpStringIds
 	waitmessage 0x40
 BattleScript_QuiverDanceEnd::
+	goto BattleScript_MoveEnd
+
+BattleScript_SturdyNewEffect::
+    printstring STRINGID_PKMNPROTECTEDBY
+    pause 0x40
+    return
+	
+BattleScript_MoveStatDrain_PPLoss::
+	ppreduce
+BattleScript_MoveStatDrain::
+	attackstring
+	pause 0x20
+	setgraphicalstatchangevalues
+	playanimation BS_TARGET, B_ANIM_STATS_CHANGE, sB_ANIM_ARG1
+	waitanimation
+	printfromtable gStatDrainStrings
+	waitmessage 0x40
 	goto BattleScript_MoveEnd
 	
 BattleScript_Protean::

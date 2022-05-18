@@ -2558,3 +2558,9 @@ u8 GetCurrentPpToMaxPpState(u8 currentPp, u8 maxPp)
 
     return 0;
 }
+
+const u16 gStatDrainStrings[] =
+{
+	STRINGID_SPEEDRAISEUSING,
+	STRINGID_SATKRAISEUSING,
+};

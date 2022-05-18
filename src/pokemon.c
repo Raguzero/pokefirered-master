@@ -3117,6 +3117,8 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         gBattleMovePower = (150 * gBattleMovePower) / 100;
     if (gBattleMoves[gCurrentMove].effect == EFFECT_EXPLOSION)
         defense /= 2;
+	if (gCurrentMove == MOVE_KNOCK_OFF && defender->item && !gWishFutureKnock.knockedOffMons[gBattlerTarget])
+		spAttack = (spAttack * 3) / 2;
 
     if (IS_TYPE_PHYSICAL(gBattleMoves[move]))
     {
@@ -4573,7 +4575,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
     s32 friendship;
     s32 cmdIndex;
     bool8 retVal = TRUE;
-    const u8 *itemEffect;
+    u8 *itemEffect;
     u8 idx = 6;
     u32 i;
     s8 friendshipDelta = 0;
@@ -4582,6 +4584,10 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
     u16 heldItem;
     u8 val;
     u32 evDelta;
+    u8 dummyItemEffect_SitrusBerry[7] = {
+        [4] = ITEM4_HEAL_HP,
+        [6] = 30,
+    };
 
     heldItem = GetMonData(mon, MON_DATA_HELD_ITEM, NULL);
     if (heldItem == ITEM_ENIGMA_BERRY)
@@ -4629,9 +4635,14 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
         else
             itemEffect = gSaveBlock1Ptr->enigmaBerry.itemEffect;
     }
+    else if (item == ITEM_SITRUS_BERRY)
+    {
+      itemEffect = dummyItemEffect_SitrusBerry;
+      itemEffect[6] = (GetMonData(mon, MON_DATA_MAX_HP, NULL) * 25) / 100;
+    }
     else
     {
-        itemEffect = gItemEffectTable[item - ITEM_POTION];
+        itemEffect = (u8*) gItemEffectTable[item - ITEM_POTION];
     }
 
     for (cmdIndex = 0; cmdIndex < 6; cmdIndex++)
