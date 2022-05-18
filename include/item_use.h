@@ -39,6 +39,7 @@ void ItemUseOutOfBattle_EscapeRope(u8 taskId);
 void ItemUseOutOfBattle_EnigmaBerry(u8 taskId);
 void ItemUseInBattle_EnigmaBerry(u8 taskId);
 void ItemUseOutOfBattle_Itemfinder(u8 taskId);
+void ItemUseOutOfBattle_FormChange(u8);
 void sub_80A1C44(u8 taskId);
 u8 CanUseEscapeRopeOnCurrMap(void);
 u8 CheckIfItemIsTMHMOrEvolutionStone(u16 itemId);

@@ -400,6 +400,9 @@ void (*gItemUseCB)(u8, TaskFunc);
 #include "data/pokemon/tutor_learnsets.h"
 #include "data/party_menu.h"
 
+// Text string printed when changing the form of certain species like Shaymin and Giratina
+const u8 ChangedForm[] = _("{STR_VAR_1} changed Forme!{PAUSE_UNTIL_PRESS}");
+
 void InitPartyMenu(u8 menuType, u8 layout, u8 partyAction, bool8 keepCursorPos, u8 messageId, TaskFunc task, MainCallback callback)
 {
     u16 i;
@@ -5349,6 +5352,57 @@ static bool8 MonCanEvolve(void)
         return FALSE;
     else*/
         return TRUE;
+}
+
+void ItemUseCB_FormChange(u8 taskId, TaskFunc task)
+{
+    struct Pokemon *mon = &gPlayerParty[gPartyMenu.slotId];
+    u16 item = gSpecialVar_ItemId;
+    u16 species = GetMonData(mon, MON_DATA_SPECIES);
+    u16 forme;
+    bool8 formeAvailable;
+
+    switch (item)
+    {
+    case ITEM_PSYCHE_ARMOR:
+        if (species == SPECIES_OCTILLERY)
+        {
+            forme = SPECIES_OCTILLERY_BETA;
+            formeAvailable = TRUE;
+        }
+        else if (species == SPECIES_OCTILLERY_BETA)
+        {
+            forme = SPECIES_OCTILLERY;
+            formeAvailable = TRUE;
+        }
+        break;
+    }
+
+    if (formeAvailable)
+    {
+
+        gPartyMenuUseExitCallback = TRUE;
+        PlaySE(SE_USE_ITEM);
+        PlayCry2(forme, 0, 0x7D, 0xA);
+        SetMonData(mon, MON_DATA_SPECIES, &forme);
+        DestroyMonIcon(&gSprites[sPartyMenuBoxes[gPartyMenu.slotId].monSpriteId]);
+        CreatePartyMonIconSpriteParameterized(forme, GetMonData(mon, MON_DATA_PERSONALITY), &sPartyMenuBoxes[gPartyMenu.slotId], 0, FALSE);
+        CalculateMonStats(mon);
+        GetMonNickname(mon, gStringVar1);
+        StringExpandPlaceholders(gStringVar4, ChangedForm);
+        DisplayPartyMenuMessage(gStringVar4, FALSE);
+        ScheduleBgCopyTilemapToVram(2);
+        gTasks[taskId].func = task;
+    }
+    else
+    {
+        gPartyMenuUseExitCallback = FALSE;
+        PlaySE(SE_SELECT);
+        DisplayPartyMenuMessage(gText_WontHaveEffect, TRUE);
+        ScheduleBgCopyTilemapToVram(2);
+        gTasks[taskId].func = task;
+        return;
+    }
 }
 
 u8 GetItemEffectType(u16 item)

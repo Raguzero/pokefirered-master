@@ -3707,7 +3707,7 @@
       "exitsBagOnUse": 0,
       "pocket": "POCKET_ITEMS",
       "type": 1,
-      "fieldUseFunc": "FieldUseFunc_OakStopsYou",
+      "fieldUseFunc": "ItemUseOutOfBattle_FormChange",
       "battleUsage": 0,
       "battleUseFunc": "NULL",
       "secondaryId": 0
