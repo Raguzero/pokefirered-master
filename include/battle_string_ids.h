@@ -411,4 +411,11 @@
 
 #define BATTLESTRINGS_COUNT     396
 
+// mental herb
+#define MULTI_CUREINFATUATION       0
+#define MULTI_CURETAUNT             1
+#define MULTI_CUREENCORE            2
+#define MULTI_CURETORMENT           3
+#define MULTI_CUREDISABLE           4
+
 #endif // GUARD_BATTLE_STRING_IDS_H

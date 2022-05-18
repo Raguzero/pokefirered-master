@@ -4376,6 +4376,19 @@ BattleScript_BerryCureChosenStatusRet::
 	updatestatusicon BS_SCRIPTING
 	removeitem BS_SCRIPTING
 	return
+	
+BattleScript_MentalHerbCureRet::
+	playanimation BS_ATTACKER, B_ANIM_ITEM_EFFECT, NULL
+	printfromtable gMentalHerbCureStringIds
+	waitmessage 0x40
+	updatestatusicon BS_SCRIPTING
+	removeitem BS_SCRIPTING
+	copybyte gBattlerAttacker, sFIELD_20	@ restore the original attacker just to be safe
+	return
+
+BattleScript_MentalHerbCureEnd2::
+	call BattleScript_MentalHerbCureRet
+	end2
 
 BattleScript_WhiteHerbEnd2::
 	call BattleScript_WhiteHerbRet
@@ -4640,6 +4653,11 @@ BattleScript_PerishBodyActivates::
 	printstring STRINGID_PERISHBODY
 	waitmessage 0x30
 	return
+	
+BattleScript_BufferEndTurn::
+	printstring STRINGID_BUFFERENDS
+	waitmessage 0x40
+	end2
 	
 BattleScript_SandSpitActivates::
 	printstring STRINGID_ASANDSTORMKICKEDUP
