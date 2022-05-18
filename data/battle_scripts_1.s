@@ -4648,6 +4648,15 @@ BattleScript_SandSpitActivates::
 	call BattleScript_HandleWeatherFormChanges
 	return
 	
+BattleScript_QuickClawActivation::
+	printstring STRINGID_EMPTYSTRING3
+	waitmessage 0x1
+	playanimation BS_ATTACKER, B_ANIM_ITEM_EFFECT, NULL
+	waitanimation
+	printstring STRINGID_CANACTFASTERTHANKSTO
+	waitmessage 0x40
+	end2
+	
 BattleScript_PowderMoveNoEffect::
 	attackstring
 	ppreduce

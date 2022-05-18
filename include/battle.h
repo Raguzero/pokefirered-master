@@ -222,6 +222,7 @@ struct ProtectStruct
     u32 flag_x80 : 1;           // 0x80
     u32 field3 : 8;
 
+	u32 quickclaw:1;    // also quick claw
     u32 physicalDmg;
     u32 specialDmg;
     u8 physicalBattlerId;
@@ -481,6 +482,7 @@ struct BattleStruct
     u16 castformPalette[MAX_BATTLERS_COUNT][16];
     u8 wishPerishSongState;
     u8 wishPerishSongBattlerId;
+	u8 quickClawBattlerId;
     u8 field_182;
     // align 4
     union {

@@ -3473,3 +3473,14 @@ bool32 IsBattlerAlive(u8 battlerId)
 	else
 		return TRUE;
 }
+
+
+u32 GetBattlerHoldEffect(u8 battlerId, bool32 checkNegating)
+{
+    gPotentialItemEffectBattler = battlerId;
+
+    if (gBattleMons[battlerId].item == ITEM_ENIGMA_BERRY)
+        return gEnigmaBerries[battlerId].holdEffect;
+    else
+        return ItemId_GetHoldEffect(gBattleMons[battlerId].item);
+}
