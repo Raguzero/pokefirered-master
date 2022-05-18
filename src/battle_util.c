@@ -982,7 +982,9 @@ u8 DoBattlerEndTurnEffects(void)
                      && gBattleMons[gActiveBattler].ability != ABILITY_INSOMNIA && !UproarWakeUpCheck(gActiveBattler))
                     {
                         CancelMultiTurnMoves(gActiveBattler);
-                        gBattleMons[gActiveBattler].status1 |= (Random() & 3) + 2;
+                        gBattleMons[gActiveBattler].status1 |= ((Random() % 3) + 2);
+					if (gBattleMons[gActiveBattler].ability == ABILITY_EARLY_BIRD && (gBattleMons[gActiveBattler].status1 == 3 || gBattleMons[gActiveBattler].status1 == 4))
+						gBattleMons[gActiveBattler].status1 = 7; // 3 | 4, pequeño parche para que la IA sepa cuándo despertará un poke con Early Bird
                         BtlController_EmitSetMonData(0, REQUEST_STATUS_BATTLE, 0, 4, &gBattleMons[gActiveBattler].status1);
                         MarkBattlerForControllerExec(gActiveBattler);
                         gEffectBattler = gActiveBattler;
@@ -1227,8 +1229,10 @@ u8 AtkCanceller_UnableToUseMove(void)
                         toSub = 2;
                     else
                         toSub = 1;
-                    if ((gBattleMons[gBattlerAttacker].status1 & STATUS1_SLEEP) < toSub)
-                        gBattleMons[gBattlerAttacker].status1 &= ~(STATUS1_SLEEP);
+					if (gBattleMons[gBattlerAttacker].status1 == 0x4)
+                        gBattleMons[gBattlerAttacker].status1 += (4 - toSub);
+					else if ((gBattleMons[gBattlerAttacker].status1 & 0x3) <= toSub)
+						gBattleMons[gBattlerAttacker].status1 &= ~(STATUS1_SLEEP);
                     else
                         gBattleMons[gBattlerAttacker].status1 -= toSub;
                     if (gBattleMons[gBattlerAttacker].status1 & STATUS1_SLEEP)
