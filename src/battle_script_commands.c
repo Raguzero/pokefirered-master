@@ -6581,6 +6581,11 @@ static void atk76_various(void)
         if (!IsFanfareTaskInactive())
             return;
         break;
+	case VARIOUS_PLAY_MOVE_ANIMATION:
+        BtlController_EmitMoveAnimation(0, T1_READ_16(gBattlescriptCurrInstr + 3), gBattleScripting.animTurn, 0, 0, gBattleMons[gActiveBattler].friendship, &gDisableStructs[gActiveBattler]); // before (in midele emerald) is: ......., &gDisableStructs[gActiveBattler], gMultiHitCounter);
+        MarkBattlerForControllerExec(gActiveBattler);
+        gBattlescriptCurrInstr += 5;
+        return;
 	case VARIOUS_HANDLE_TRAINER_SLIDE_MSG:
         if (gBattlescriptCurrInstr[3] == 0)
         {

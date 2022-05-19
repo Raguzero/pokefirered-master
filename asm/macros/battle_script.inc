@@ -1313,6 +1313,11 @@
 	various \battler, 12
 	.endm
 	
+    .macro playmoveanimation battler move
+	various \battler, VARIOUS_PLAY_MOVE_ANIMATION
+	.2byte \move
+	.endm
+	
 	.macro handletrainerslidemsg battler, field
 	various \battler, VARIOUS_HANDLE_TRAINER_SLIDE_MSG
 	.byte \field

@@ -81,10 +81,11 @@
 #define VARIOUS_RETURN_OPPONENT_MON2            10
 #define VARIOUS_CHECK_POKEFLUTE                 11
 #define VARIOUS_WAIT_FANFARE                    12
-#define VARIOUS_HANDLE_TRAINER_SLIDE_MSG		13
-#define VARIOUS_TRY_TRAINER_SLIDE_MSG_FIRST_OFF 14
-#define VARIOUS_TRY_TRAINER_SLIDE_MSG_LAST_ON 	15
-#define VARIOUS_TRY_FRISK                       16
+#define VARIOUS_PLAY_MOVE_ANIMATION             13
+#define VARIOUS_HANDLE_TRAINER_SLIDE_MSG		14
+#define VARIOUS_TRY_TRAINER_SLIDE_MSG_FIRST_OFF 15
+#define VARIOUS_TRY_TRAINER_SLIDE_MSG_LAST_ON 	16
+#define VARIOUS_TRY_FRISK                       17
 
 // atk80, dmg manipulation
 #define ATK80_DMG_CHANGE_SIGN                               0
