@@ -490,6 +490,8 @@ struct BattleStruct
         struct MultiBattlePokemonTx multiBattleMons[3];
     } multiBuffer;
     u8 padding_1E4[0x1C];
+	const u8 *trainerSlideMsg;
+    bool8 trainerSlideLowHpMsgDone;
 }; // size == 0x200 bytes
 
 extern struct BattleStruct *gBattleStruct;
@@ -547,6 +549,7 @@ struct BattleScripting
     u8 reshowMainState;
     u8 reshowHelperState;
     u8 field_23;
+    s32 savedDmg;
 };
 
 enum

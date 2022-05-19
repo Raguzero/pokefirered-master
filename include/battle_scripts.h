@@ -251,6 +251,8 @@ extern const u8 BattleScript_MentalHerbCureRet[];
 extern const u8 BattleScript_MentalHerbCureEnd2[];
 extern const u8 BattleScript_QuickClawActivation[];
 extern const u8 BattleScript_PowderMoveNoEffect[];
+extern const u8 BattleScript_TrainerSlideMsgRet[];
+extern const u8 BattleScript_TrainerSlideMsgEnd2[];
 
 extern const u8 *const gBattleScriptsForMoveEffects[];
 extern const u8 *const gBattlescriptsForBallThrow[];

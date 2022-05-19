@@ -2968,6 +2968,11 @@ void BattleTurnPassed(void)
     *(&gBattleStruct->absentBattlerFlags) = gAbsentBattlerFlags;
     gBattleMainFunc = HandleTurnActionSelectionState;
     gRandomTurnNumber = Random();
+	
+	if (ShouldDoTrainerSlide(GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT), gTrainerBattleOpponent_A, TRAINER_SLIDE_LAST_LOW_HP)) {
+        gBattleScripting.battler = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
+        BattleScriptExecute(BattleScript_TrainerSlideMsgEnd2);
+}
 }
 
 u8 IsRunningFromBattleImpossible(void)

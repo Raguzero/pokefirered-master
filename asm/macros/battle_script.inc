@@ -1249,6 +1249,16 @@
 	.byte \holdeffect
 	.4byte \param0
 	.endm
+	
+    .macro trainerslidein2 param0:req
+    .byte 0xf9
+    .byte \param0
+    .endm
+
+    .macro trainerslideout2 param0:req
+    .byte 0xfa
+    .byte \param0
+    .endm
 
 @ various command changed to more readable macros
 	.macro cancelmultiturnmoves battler:req
@@ -1301,6 +1311,19 @@
 
 	.macro waitfanfare battler:req
 	various \battler, 12
+	.endm
+	
+	.macro handletrainerslidemsg battler, field
+	various \battler, VARIOUS_HANDLE_TRAINER_SLIDE_MSG
+	.byte \field
+	.endm
+	
+	.macro trytrainerslidefirstdownmsg battler
+	various \battler, VARIOUS_TRY_TRAINER_SLIDE_MSG_FIRST_OFF
+	.endm
+	
+	.macro trytrainerslidelastonmsg battler
+	various \battler, VARIOUS_TRY_TRAINER_SLIDE_MSG_LAST_ON
 	.endm
 
 @ helpful macros
