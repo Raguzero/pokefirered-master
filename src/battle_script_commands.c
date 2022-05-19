@@ -1743,7 +1743,7 @@ static void atk06_typecalc(void)
         
 		while (TYPE_EFFECT_ATK_TYPE(i) != TYPE_ENDTABLE)
         {
-            if (TYPE_EFFECT_ATK_TYPE(i) == TYPE_FORESIGHT)
+            if (TYPE_EFFECT_ATK_TYPE(i) == TYPE_FORESIGHT || gBattleMons[gBattlerAttacker].ability == ABILITY_SCRAPPY)
             {
                 if (gBattleMons[gBattlerTarget].status2 & STATUS2_FORESIGHT)
                     break;
@@ -1813,7 +1813,7 @@ static void CheckWonderGuardAndLevitate(void)
     {
         if (TYPE_EFFECT_ATK_TYPE(i) == TYPE_FORESIGHT)
         {
-            if (gBattleMons[gBattlerTarget].status2 & STATUS2_FORESIGHT)
+            if (gBattleMons[gBattlerTarget].status2 & STATUS2_FORESIGHT || gBattleMons[gBattlerAttacker].ability == ABILITY_SCRAPPY)
                 break;
             i += 3;
             continue;
@@ -1956,7 +1956,7 @@ u8 TypeCalc(u16 move, u8 attacker, u8 defender)
         {
             if (TYPE_EFFECT_ATK_TYPE(i) == TYPE_FORESIGHT)
             {
-                if (gBattleMons[defender].status2 & STATUS2_FORESIGHT)
+                if (gBattleMons[defender].status2 & STATUS2_FORESIGHT || gBattleMons[attacker].ability == ABILITY_SCRAPPY)
                     break;
                 i += 3;
                 continue;
@@ -4827,7 +4827,7 @@ static void atk4A_typecalc2(void)
         {
             if (TYPE_EFFECT_ATK_TYPE(i) == TYPE_FORESIGHT)
             {
-                if (gBattleMons[gBattlerTarget].status2 & STATUS2_FORESIGHT)
+                if (gBattleMons[gBattlerTarget].status2 & STATUS2_FORESIGHT || gBattleMons[gBattlerAttacker].ability == ABILITY_SCRAPPY)
                 {
                     break;
                 }
