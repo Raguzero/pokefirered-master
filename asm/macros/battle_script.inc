@@ -1318,6 +1318,11 @@
 	.2byte \move
 	.endm
 	
+	.macro tryhealpulse battler:req, ptr:req
+	various \battler, VARIOUS_TRY_HEAL_PULSE
+	.4byte \ptr
+	.endm
+	
 	.macro handletrainerslidemsg battler, field
 	various \battler, VARIOUS_HANDLE_TRAINER_SLIDE_MSG
 	.byte \field

@@ -6599,6 +6599,20 @@ static void atk76_various(void)
         MarkBattlerForControllerExec(gActiveBattler);
         gBattlescriptCurrInstr += 5;
         return;
+    case VARIOUS_TRY_HEAL_PULSE:
+        if (gBattleMons[gBattlerTarget].maxHP == gBattleMons[gBattlerTarget].hp)
+        {
+            gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 3);
+        }
+        else
+        {
+            gBattleMoveDamage = -(gBattleMons[gBattlerTarget].maxHP / 2);
+
+            if (gBattleMoveDamage == 0)
+                gBattleMoveDamage = -1;
+            gBattlescriptCurrInstr += 7;
+        }
+        return;
 	case VARIOUS_HANDLE_TRAINER_SLIDE_MSG:
         if (gBattlescriptCurrInstr[3] == 0)
         {

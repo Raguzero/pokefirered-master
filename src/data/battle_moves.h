@@ -5207,7 +5207,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
      [MOVE_HEAL_PULSE] =
     {
-        .effect = EFFECT_HIT, // EFFECT_HEAL_PULSE
+        .effect = EFFECT_HEAL_PULSE,
         .power = 0,
         .type = TYPE_PSYCHIC,
         .accuracy = 0,
