@@ -5181,7 +5181,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
     [MOVE_LIGHT_OF_RUIN] =
     {
-        .effect = EFFECT_RECOIL, // EFFECT_RECOIL_50
+        .effect = EFFECT_RECOIL_50,
         .power = 140,
         .type = TYPE_FAIRY,
         .accuracy = 90,
@@ -5194,7 +5194,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
     [MOVE_HEAD_SMASH] =
     {
-        .effect = EFFECT_RECOIL, // EFFECT_RECOIL_50
+        .effect = EFFECT_RECOIL_50,
         .power = 150,
         .type = TYPE_ROCK,
         .accuracy = 80,
