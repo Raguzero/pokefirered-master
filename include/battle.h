@@ -251,6 +251,7 @@ struct SpecialStatus
     u8 field12;
     u8 field13;
 	u8 slowStarted:1;
+    u8 switchInAbilityDone:1;
 };
 
 extern struct SpecialStatus gSpecialStatuses[MAX_BATTLERS_COUNT];
@@ -492,6 +493,8 @@ struct BattleStruct
     u8 padding_1E4[0x1C];
 	const u8 *trainerSlideMsg;
     bool8 trainerSlideLowHpMsgDone;
+    u8 friskedBattler; // Frisk needs to identify 2 battlers in double battles.
+    bool8 friskedAbility; // If identifies two mons, show the ability pop-up only once.
 }; // size == 0x200 bytes
 
 extern struct BattleStruct *gBattleStruct;

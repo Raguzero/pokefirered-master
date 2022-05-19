@@ -4619,6 +4619,14 @@ BattleScript_QuiverDanceTrySpeed::
 	waitmessage 0x40
 BattleScript_QuiverDanceEnd::
 	goto BattleScript_MoveEnd
+	
+BattleScript_FriskMsg::
+	printstring STRINGID_FRISKACTIVATES
+	waitmessage 0x40
+	return
+BattleScript_FriskActivates::
+	tryfriskmsg BS_ATTACKER
+	end3
 
 BattleScript_SturdyNewEffect::
     printstring STRINGID_PKMNPROTECTEDBY

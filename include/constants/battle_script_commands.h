@@ -84,6 +84,7 @@
 #define VARIOUS_HANDLE_TRAINER_SLIDE_MSG		13
 #define VARIOUS_TRY_TRAINER_SLIDE_MSG_FIRST_OFF 14
 #define VARIOUS_TRY_TRAINER_SLIDE_MSG_LAST_ON 	15
+#define VARIOUS_TRY_FRISK                       16
 
 // atk80, dmg manipulation
 #define ATK80_DMG_CHANGE_SIGN                               0
