@@ -999,6 +999,11 @@ static const u16 sMovesForbiddenToCopy[] =
     MOVE_COVET,
     MOVE_TRICK,
     MOVE_FOCUS_PUNCH,
+    MOVE_MIDELE_POWER,
+    MOVE_DARK_THUNDER,
+    MOVE_MONADO_POWER,
+    MOVE_BRUTAL_BALL,
+    MOVE_HOLA_REINA,
     METRONOME_FORBIDDEN_END
 };
 
@@ -1624,7 +1629,7 @@ void AI_CalcDmg(u8 attacker, u8 defender)
         if ((type == TYPE_ELECTRIC && (ability == ABILITY_VOLT_ABSORB || ability == ABILITY_LIGHTNING_ROD || ability == ABILITY_MOTOR_DRIVE))
          || (type == TYPE_WATER && (ability == ABILITY_WATER_ABSORB || ability == ABILITY_DRY_SKIN))
          || (type == TYPE_FIRE && ability == ABILITY_FLASH_FIRE)
-         || (ability == ABILITY_SOUNDPROOF && (gCurrentMove == MOVE_SNORE || gCurrentMove == MOVE_UPROAR || gCurrentMove == MOVE_HYPER_VOICE || gCurrentMove == MOVE_OVERDRIVE || gCurrentMove == MOVE_BOOMBURST))) 
+         || (ability == ABILITY_SOUNDPROOF && (gCurrentMove == MOVE_SNORE || gCurrentMove == MOVE_UPROAR || gCurrentMove == MOVE_HYPER_VOICE || gCurrentMove == MOVE_OVERDRIVE || gCurrentMove == MOVE_BOOMBURST || gCurrentMove == MOVE_BUG_BUZZ))) 
 		 {
             gBattleMoveDamage = 0;
             return;
