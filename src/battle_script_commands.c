@@ -1254,10 +1254,10 @@ static bool8 AccuracyCalcHelper(u16 move)
         return TRUE;
     }
     gHitMarker &= ~HITMARKER_IGNORE_UNDERWATER;
-    if ((WEATHER_HAS_EFFECT &&
-         (((gBattleWeather & WEATHER_RAIN_ANY) && gBattleMoves[move].effect == EFFECT_THUNDER)
-          || ((gBattleWeather & WEATHER_HAIL_ANY) && move == MOVE_BLIZZARD)))
-     || (gBattleMoves[move].effect == EFFECT_ALWAYS_HIT || gBattleMoves[move].effect == EFFECT_VITAL_THROW))
+	// Fix BLIZZARD in HAIL WEATHER bug 
+    if ((WEATHER_HAS_EFFECT && (((gBattleWeather & WEATHER_RAIN_ANY) && gBattleMoves[move].effect == EFFECT_THUNDER)
+     || ((gBattleWeather & WEATHER_HAIL_ANY) && move == MOVE_BLIZZARD)))
+     || (gBattleMoves[move].effect == EFFECT_ALWAYS_HIT || gBattleMoves[move].effect == EFFECT_VITAL_THROW || gCurrentMove == MOVE_STRUGGLE)) // Struggle perfect accuracy like current gens
     {
         JumpIfMoveFailed(7, move);
         return TRUE;
@@ -1549,8 +1549,8 @@ void PrepareDynamicMoveTypeAndDamageForAI_CalcDmg(u8 attacker, u8 defender)
             monAttacker = &gEnemyParty[gBattlerPartyIndexes[attacker]];
 
         *dynamicMoveType = monAttacker->box.hpType;
-		if (gCurrentMove == MOVE_HIDDEN_POWER && gBattleMons[attacker].ability == ABILITY_TECHNICIAN)
-        gDynamicBasePower = 60;
+		//if (gCurrentMove == MOVE_HIDDEN_POWER && gBattleMons[attacker].ability == ABILITY_TECHNICIAN)
+        //gDynamicBasePower = 60;
     }
     else if (gCurrentMove == MOVE_WEATHER_BALL)
     {
@@ -1989,14 +1989,14 @@ u8 TypeCalc(u16 move, u8 attacker, u8 defender)
 		
 
 	// Solid Rock
-	if (gMoveResultFlags & MOVE_RESULT_SUPER_EFFECTIVE && (gBattleMons[gBattlerTarget].ability == ABILITY_SOLID_ROCK))
+	if (flags & MOVE_RESULT_SUPER_EFFECTIVE && (gBattleMons[defender].ability == ABILITY_SOLID_ROCK))
 	{
         gBattleMoveDamage = gBattleMoveDamage * 15;
         gBattleMoveDamage = gBattleMoveDamage / 20;
 	}
 	
 	// Tinted Lens
-	if ((gMoveResultFlags & MOVE_RESULT_NOT_VERY_EFFECTIVE) && gBattleMons[gBattlerAttacker].ability == ABILITY_TINTED_LENS)
+	if ((flags & MOVE_RESULT_NOT_VERY_EFFECTIVE) && gBattleMons[attacker].ability == ABILITY_TINTED_LENS)
         gBattleMoveDamage = gBattleMoveDamage *= 2;
 		
     return flags;
@@ -3001,7 +3001,8 @@ void SetMoveEffect(bool8 primary, u8 certain)
                     gBattlescriptCurrInstr = sMoveEffectBS_Ptrs[gBattleCommunication[MOVE_EFFECT_BYTE]];
                     for (gBattleCommunication[MULTISTRING_CHOOSER] = 0; ; ++gBattleCommunication[MULTISTRING_CHOOSER])
                     {
-                        if (gBattleCommunication[MULTISTRING_CHOOSER] > 4 || gTrappingMoves[gBattleCommunication[MULTISTRING_CHOOSER]] == gCurrentMove)
+						// Increase this number when increasing gTrappingMoves  > 4 to > 5 for new wrap THUNDER CAGE
+                        if (gBattleCommunication[MULTISTRING_CHOOSER] > 5 || gTrappingMoves[gBattleCommunication[MULTISTRING_CHOOSER]] == gCurrentMove)
                             break;
                     }
                 }
@@ -3764,6 +3765,9 @@ static void atk23_getexp(void)
                     {
                         gBattleStruct->expGetterBattlerId = 0;
                     }
+			    // EXP GEN 5 STYLE (Corregida la superacion de 65535 exp, que solo pasa con poke intercambio a bajisimo nivel + huevo suerte + blissey(o algun otro que da mucha exp) altisimo nivel) 
+					if (gBattleMoveDamage > 65535)
+						gBattleMoveDamage = 65535; // trunca en 65 535 para evitar bugs  
                     PREPARE_MON_NICK_WITH_PREFIX_BUFFER(gBattleTextBuff1, gBattleStruct->expGetterBattlerId, gBattleStruct->expGetterMonId);
                     // buffer 'gained' or 'gained a boosted'
                     PREPARE_STRING_BUFFER(gBattleTextBuff2, i);
@@ -3802,10 +3806,7 @@ static void atk23_getexp(void)
             if (gBattleBufferB[gActiveBattler][0] == CONTROLLER_TWORETURNVALUES && gBattleBufferB[gActiveBattler][1] == RET_VALUE_LEVELED_UP)
             {
                 if (gBattleTypeFlags & BATTLE_TYPE_TRAINER && gBattlerPartyIndexes[gActiveBattler] == gBattleStruct->expGetterMonId)
-                    HandleLowHpMusicChange(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], gActiveBattler);
-			    // EXP GEN 5 STYLE (Corregida la superacion de 65535 exp, que solo pasa con poke intercambio a bajisimo nivel + huevo suerte + blissey(o algun otro que da mucha exp) altisimo nivel) 
-					if (gBattleMoveDamage > 65535)
-						gBattleMoveDamage = 65535; // trunca en 65 535 para evitar bugs                
+                    HandleLowHpMusicChange(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], gActiveBattler);              
                 PREPARE_MON_NICK_WITH_PREFIX_BUFFER(gBattleTextBuff1, gActiveBattler, gBattleStruct->expGetterMonId);
                 PREPARE_BYTE_NUMBER_BUFFER(gBattleTextBuff2, 3, GetMonData(&gPlayerParty[gBattleStruct->expGetterMonId], MON_DATA_LEVEL));
                 BattleScriptPushCursor();
@@ -3835,8 +3836,8 @@ static void atk23_getexp(void)
                     gBattleMons[2].maxHP = GetMonData(&gPlayerParty[gBattleStruct->expGetterMonId], MON_DATA_MAX_HP);
                     gBattleMons[2].attack = GetMonData(&gPlayerParty[gBattleStruct->expGetterMonId], MON_DATA_ATK);
                     gBattleMons[2].defense = GetMonData(&gPlayerParty[gBattleStruct->expGetterMonId], MON_DATA_DEF);
-                    // Duplicated again, but this time there's no Sp Defense
-                    gBattleMons[2].speed = GetMonData(&gPlayerParty[gBattleStruct->expGetterMonId], MON_DATA_SPEED);
+                    // FIX BUG: DUPLICATE STAT SPEED MENTION. IN DOUBLE BATTLES, THE GAME FORGETS THAT YOU MUST UPDATE THE STAT SDEF OF THE SECOND POKEMON ON YOUR FIELD WHEN IT LEVELS UP
+                    gBattleMons[2].spDefense = GetMonData(&gPlayerParty[gBattleStruct->expGetterMonId], MON_DATA_SPDEF);
                     gBattleMons[2].speed = GetMonData(&gPlayerParty[gBattleStruct->expGetterMonId], MON_DATA_SPEED);
                     gBattleMons[2].spAttack = GetMonData(&gPlayerParty[gBattleStruct->expGetterMonId], MON_DATA_SPATK);
                 }
@@ -9775,8 +9776,9 @@ static void atkEF_handleballthrow(void)
                     break;
                 case ITEM_TIMER_BALL:
                     ballMultiplier = gBattleResults.battleTurnCounter + 10;
-                    if (ballMultiplier > 40)
-                        ballMultiplier = 40;
+					// overflow en el u8 ballMultiplier si el número de turnos supera los 245
+					if (gBattleResults.battleTurnCounter > 30)
+						ballMultiplier = 40;
                     break;
                 case ITEM_LUXURY_BALL:
                 case ITEM_PREMIER_BALL:

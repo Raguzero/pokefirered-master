@@ -2410,7 +2410,7 @@ static void BufferMonMoveI(u8 i)
 
     sMonSummaryScreen->numMoves++;
 
-    if (sMonSummaryScreen->moveIds[i] == MOVE_HIDDEN_POWER)
+    if (sMonSummaryScreen->moveIds[i] == MOVE_HIDDEN_POWER || sMonSummaryScreen->moveIds[i] == MOVE_MONADO_POWER)
     {
         struct Pokemon *mon = &sMonSummaryScreen->currentMon;
         u8 type = mon->box.hpType;

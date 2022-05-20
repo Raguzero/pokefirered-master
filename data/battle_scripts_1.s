@@ -629,6 +629,7 @@ BattleScript_MultiHitLoop::
 	jumpifstatus BS_ATTACKER, STATUS1_SLEEP, BattleScript_MultiHitPrintStrings
 BattleScript_DoMultiHit::
 	movevaluescleanup
+	trysetdestinybondtohappen @ Fix bug multihits moves vs Destiny Bond
 	copybyte cEFFECT_CHOOSER, sMULTIHIT_EFFECT
 	critcalc
 	damagecalc
@@ -1443,6 +1444,7 @@ BattleScript_TripleKickLoop::
 BattleScript_DoTripleKickAttack::
 	accuracycheck BattleScript_TripleKickNoMoreHits, ACC_CURR_MOVE
 	movevaluescleanup
+	trysetdestinybondtohappen @ Fix bug multihits moves vs Destiny Bond
 	addbyte sTRIPLE_KICK_POWER, 10
 	addbyte gBattleScripting + 12, 1
 	copyhword gDynamicBasePower, sTRIPLE_KICK_POWER
@@ -1986,6 +1988,7 @@ BattleScript_EffectBeatUp::
 	setbyte gBattleCommunication, 0
 BattleScript_BeatUpLoop::
 	movevaluescleanup
+	trysetdestinybondtohappen @ Fix bug multihits moves vs Destiny Bond
 	trydobeatup BattleScript_BeatUpEnd, BattleScript_ButItFailed
 	printstring STRINGID_PKMNATTACK
 	critcalc
