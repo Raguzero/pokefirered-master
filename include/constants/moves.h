@@ -371,57 +371,59 @@
 #define MOVE_SHADOW_SNEAK 367
 #define MOVE_ROCK_POLISH 368
 #define MOVE_BOOMBURST 369
-#define MOVE_OVERDRIVE 370
-#define MOVE_LIGHT_OF_RUIN 371
+#define MOVE_OVERDRIVE 370 // Descripción????
+#define MOVE_LIGHT_OF_RUIN 371 // Descripción????
 #define MOVE_HEAD_SMASH 372
 #define MOVE_HEAL_PULSE 373
-#define MOVE_MIDELE_POWER 374
+#define MOVE_MIDELE_POWER 374 // NOT IMPLEMENTED  // Descripción????
 #define MOVE_GUNK_SHOT 375
-#define MOVE_THUNDER_CAGE 376
-#define MOVE_DRAGON_ENERGY 377
+#define MOVE_THUNDER_CAGE 376 // Descripción????
+#define MOVE_DRAGON_ENERGY 377 // Descripción????
 #define MOVE_ELECTROWEB 378
-#define MOVE_GRAV_APPLE 379
-#define MOVE_APPLE_ACID 380
-#define MOVE_ACCELEROCK 381
-#define MOVE_DARK_THUNDER 382
+#define MOVE_GRAV_APPLE 379 // Descripción????
+#define MOVE_APPLE_ACID 380 // Descripción????
+#define MOVE_ACCELEROCK 381 // Descripción????
+#define MOVE_DARK_THUNDER 382 // Descripción????
 #define MOVE_DRILL_RUN 383
 #define MOVE_LEAF_STORM 384
-#define MOVE_SHORE_UP 385
+#define MOVE_SHORE_UP 385 // Descripción????
 #define MOVE_DRAGON_HAMMER 386
 #define MOVE_MONADO_POWER 387
-#define MOVE_BRUTAL_BALL 388
-#define MOVE_SEISMIC_PUNCH 389
-#define MOVE_HOLA_REINA    390
-#define MOVE_DRAGON_PULSE    391
-#define MOVE_BUG_BUZZ    392
-#define MOVE_GIGA_IMPACT    393
-#define MOVE_WILD_CHARGE    394
-#define MOVE_PLAY_ROUGH    395
-#define MOVE_AURA_SPHERE    396
-#define MOVE_FLARE_BLITZ    397
-#define MOVE_SHADOW_CLAW    398
-#define MOVE_SEED_BOMB    399
-#define MOVE_EARTH_POWER    400
-#define MOVE_ICE_SHARD    401
-#define MOVE_AQUA_JET    402
-#define MOVE_POISON_JAB    403
-#define MOVE_POWER_GEM    404
-#define MOVE_METEOR_BEAM    405
-#define MOVE_MIRROR_SHOT    406
-#define MOVE_FLASH_CANNON    407
-#define MOVE_STEEL_BEAM    408
-#define MOVE_POWER_WHIP    409
-#define MOVE_FOCUS_BLAST    410
-#define MOVE_VACUUM_WAVE    411
-#define MOVE_BULLET_PUNCH    412
-#define MOVE_JUNGLE_HEALING    413 // ??
-#define MOVE_SUCKER_PUNCH    414 // ??
-#define MOVE_PSYCHO_CUT_O_ZEN_HEADBUTT    415 // ??
-#define MOVE_AIR_SLASH_O_HURRICANE    416 // ??
+#define MOVE_BRUTAL_BALL 388  // Descripción????
+#define MOVE_SEISMIC_PUNCH 389  // Descripción????
+#define MOVE_HOLA_REINA    390 // Descripción????
+#define MOVE_DRAGON_PULSE    391 // Descripción????
+#define MOVE_BUG_BUZZ    392 // Descripción????
+#define MOVE_GIGA_IMPACT    393 // Descripción????
+#define MOVE_WILD_CHARGE    394 // NOT IMPLEMENTED  // Descripción????
+#define MOVE_PLAY_ROUGH    395 // Descripción????
+#define MOVE_AURA_SPHERE    396 // Descripción????
+#define MOVE_FLARE_BLITZ    397 // NOT IMPLEMENTED
+#define MOVE_SHADOW_CLAW    398 // Descripción????
+#define MOVE_SEED_BOMB    399 // Descripción????
+#define MOVE_EARTH_POWER    400 // Descripción????
+#define MOVE_ICE_SHARD    401 // Descripción????
+#define MOVE_AQUA_JET    402 // Descripción????
+#define MOVE_POISON_JAB    403 // Descripción????
+#define MOVE_POWER_GEM    404 // Descripción????
+#define MOVE_METEOR_BEAM    405 // NOT IMPLEMENTED   // Descripción????
+#define MOVE_MIRROR_SHOT    406 // Descripción????
+#define MOVE_FLASH_CANNON    407 // Descripción????
+#define MOVE_STEEL_BEAM    408 // NOT IMPLEMENTED  // Descripción????
+#define MOVE_POWER_WHIP    409  // Descripción????
+#define MOVE_FOCUS_BLAST    410  // Descripción????
+#define MOVE_VACUUM_WAVE    411  // Descripción????
+#define MOVE_BULLET_PUNCH    412  // Descripción????
+#define MOVE_JUNGLE_HEALING    413 // NOT IMPLEMENTED  // Descripción????
+#define MOVE_SUCKER_PUNCH    414 // NOT IMPLEMENTED
+#define MOVE_PSYCHO_CUT_O_ZEN_HEADBUTT    415 // NOT IMPLEMENTED
+#define MOVE_AIR_SLASH_O_HURRICANE    416 // NOT IMPLEMENTED
+#define MOVE_RAZOR_SHELL    417 // NOT IMPLEMENTED
+#define MOVE_DUAL_WINGBEAT    418 // NOT IMPLEMENTED
 
-#define LAST_MOVE_INDEX     MOVE_JUNGLE_HEALING
+#define LAST_MOVE_INDEX     MOVE_DUAL_WINGBEAT
 
-#define MOVES_COUNT 417
+#define MOVES_COUNT 419
 
 #define MOVETUTOR_MEGA_PUNCH    0
 #define MOVETUTOR_SWORDS_DANCE  1
@@ -444,5 +446,6 @@
 
 // NUEVO: Poder de Hidden Power
 #define MOVE_HIDDEN_POWER_DMG 70
+#define MOVE_MONADO_POWER_DMG 100
 
 #endif  // GUARD_CONSTANTS_MOVES_H

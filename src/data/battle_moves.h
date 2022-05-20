@@ -1788,7 +1788,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
                     .secondaryEffectChance = 20,
                     .target = MOVE_TARGET_SELECTED,
                     .priority = 0,
-                    .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGSROCK_AFFECTED | FLAG_SHEER_FORCE_BOOST,
+                    .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_SHEER_FORCE_BOOST,
                     .category = CATEGORY_PHYSICAL,
             },
 
@@ -3267,7 +3267,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
                     .effect = EFFECT_VITAL_THROW,
                     .power = 70,
                     .type = TYPE_FIGHTING,
-                    .accuracy = 100,
+                    .accuracy = 0,
                     .pp = 10,
                     .secondaryEffectChance = 0,
                     .target = MOVE_TARGET_SELECTED,
@@ -5362,7 +5362,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
     [MOVE_SHORE_UP] =
     {
-        .effect = EFFECT_RESTORE_HP, //EFFECT_SHORE_UP
+        .effect = EFFECT_SHORE_UP,
         .power = 0,
         .type = TYPE_GROUND,
         .accuracy = 0,
@@ -5389,7 +5389,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     [MOVE_MONADO_POWER] =
     {
         .effect = EFFECT_HIDDEN_POWER,
-        .power = 100, // MOVE_MONADO_POWER_DMG
+        .power = MOVE_MONADO_POWER_DMG,
         .type = TYPE_NORMAL,
         .accuracy = 100,
         .pp = 10,
