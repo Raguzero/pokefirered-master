@@ -3430,8 +3430,36 @@ u8 GetWhoStrikesFirst(u8 battler1, u8 battler2, bool8 ignoreChosenMoves)
         holdEffect = ItemId_GetHoldEffect(gBattleMons[battler1].item);
         holdEffectParam = ItemId_GetHoldEffectParam(gBattleMons[battler1].item);
     }
+	if (gBattleMons[battler1].item == ITEM_STICK && gBattleMons[battler1].species == SPECIES_FARFETCHD)
+        speedBattler1 *= 1.5;
+	
+	if (gBattleMons[battler1].item == ITEM_EVERSTONE && gBattleMons[battler1].species == SPECIES_EEVEE)
+        speedBattler1 *= 1.5;
+	
+	if (gBattleMons[battler1].item == ITEM_YELLOW_FLUTE && gBattleMons[battler1].species == SPECIES_SPINDA)
+        speedBattler1 *= 1.5;
+	
+	if (gBattleMons[battler1].item == ITEM_BLUE_FLUTE && gBattleMons[battler1].species == SPECIES_DELIBIRD)
+        speedBattler1 *= 1.5;
+	
+	if (gBattleMons[battler1].item == ITEM_RED_FLUTE && (gBattleMons[battler1].species == SPECIES_VOLBEAT || gBattleMons[battler1].species == SPECIES_ILLUMISE))
+        speedBattler1 *= 1.5;
+	
+	if (gBattleMons[battler1].item == ITEM_TINY_MUSHROOM && (gBattleMons[battler1].species == SPECIES_PARAS || gBattleMons[battler1].species == SPECIES_PARASECT))
+        speedBattler1 *= 1.5;
+	
+	if (gBattleMons[battler1].item == ITEM_POKE_DOLL && gBattleMons[battler1].species == SPECIES_DELCATTY)
+        speedBattler1 *= 1.5;
+
+	if (gBattleMons[battler1].item == ITEM_NANAB_BERRY && gBattleMons[battler1].species == SPECIES_TROPIUS)
+        speedBattler1 *= 1.5;
+
 	if (gBattleMons[battler1].item == ITEM_CHOICE_SCARF)
         speedBattler1 *= 1.5;
+	 	if (gBattleMons[battler1].ability == ABILITY_FORECAST && ((gBattleWeather & WEATHER_RAIN_ANY)
+	|| (gBattleWeather & WEATHER_SUN_ANY) || (gBattleWeather & WEATHER_HAIL_ANY))
+	&& gBattleMons[battler1].species == SPECIES_CASTFORM)
+           speedBattler1 *= 1.5;
     if (holdEffect == HOLD_EFFECT_MACHO_BRACE)
         speedBattler1 /= 2;
 	if (gBattleMons[battler1].ability == ABILITY_SLOW_START && gDisableStructs[battler1].slowStartTimer <= 4)
@@ -3458,8 +3486,37 @@ u8 GetWhoStrikesFirst(u8 battler1, u8 battler2, bool8 ignoreChosenMoves)
         holdEffect = ItemId_GetHoldEffect(gBattleMons[battler2].item);
         holdEffectParam = ItemId_GetHoldEffectParam(gBattleMons[battler2].item);
     }
+
+	if (gBattleMons[battler2].item == ITEM_STICK && gBattleMons[battler2].species == SPECIES_FARFETCHD)
+        speedBattler2 *= 1.5;
+	
+	if (gBattleMons[battler2].item == ITEM_EVERSTONE && gBattleMons[battler2].species == SPECIES_EEVEE)
+        speedBattler2 *= 1.5;
+	
+	if (gBattleMons[battler2].item == ITEM_YELLOW_FLUTE && gBattleMons[battler2].species == SPECIES_SPINDA)
+        speedBattler2 *= 1.5;
+	
+	if (gBattleMons[battler2].item == ITEM_BLUE_FLUTE && gBattleMons[battler2].species == SPECIES_DELIBIRD)
+        speedBattler2 *= 1.5;
+	
+	if (gBattleMons[battler2].item == ITEM_RED_FLUTE && (gBattleMons[battler2].species == SPECIES_VOLBEAT || gBattleMons[battler2].species == SPECIES_ILLUMISE))
+        speedBattler2 *= 1.5;
+	
+	if (gBattleMons[battler2].item == ITEM_TINY_MUSHROOM && (gBattleMons[battler2].species == SPECIES_PARAS || gBattleMons[battler2].species == SPECIES_PARASECT))
+        speedBattler2 *= 1.5;
+	
+	if (gBattleMons[battler2].item == ITEM_POKE_DOLL && gBattleMons[battler2].species == SPECIES_DELCATTY)
+        speedBattler2 *= 1.5;
+
+	if (gBattleMons[battler2].item == ITEM_NANAB_BERRY && gBattleMons[battler2].species == SPECIES_TROPIUS)
+        speedBattler2 *= 1.5;
+	
 	if (gBattleMons[battler2].item == ITEM_CHOICE_SCARF)
         speedBattler2 *= 1.5;
+	if (gBattleMons[battler2].ability == ABILITY_FORECAST && ((gBattleWeather & WEATHER_RAIN_ANY)
+	|| (gBattleWeather & WEATHER_SUN_ANY) || (gBattleWeather & WEATHER_HAIL_ANY))
+	&& gBattleMons[battler2].species == SPECIES_CASTFORM)
+            speedBattler2 *= 1.5;
     if (holdEffect == HOLD_EFFECT_MACHO_BRACE)
         speedBattler2 /= 2;
 	if (gBattleMons[battler2].ability == ABILITY_SLOW_START && gDisableStructs[battler2].slowStartTimer <= 4)

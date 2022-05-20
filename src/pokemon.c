@@ -3044,8 +3044,48 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         spAttack *= 2;
     if (defenderHoldEffect == HOLD_EFFECT_DEEP_SEA_SCALE && defender->species == SPECIES_CLAMPERL)
         spDefense *= 2;
+    if (attackerHoldEffect == HOLD_EFFECT_PREVENT_EVOLVE && attacker->species == SPECIES_EEVEE)
+        spAttack *= 1.5, attack *= 1.5;
+    if (defenderHoldEffect == HOLD_EFFECT_PREVENT_EVOLVE && defender->species == SPECIES_EEVEE)
+        spDefense *= 1.5, defense *= 1.5;
+    if (attackerHoldEffect == HOLD_EFFECT_YELLOW_FLUTE && attacker->species == SPECIES_SPINDA)
+        spAttack *= 1.5, attack *= 1.5;
+    if (defenderHoldEffect == HOLD_EFFECT_YELLOW_FLUTE && defender->species == SPECIES_SPINDA)
+        spDefense *= 1.5, defense *= 1.5;
+    if (attackerHoldEffect == HOLD_EFFECT_BLUE_FLUTE && attacker->species == SPECIES_DELIBIRD)
+        spAttack *= 1.5;
+    if (defenderHoldEffect == HOLD_EFFECT_RED_FLUTE && (defender->species == SPECIES_VOLBEAT || defender->species == SPECIES_ILLUMISE))
+        spDefense *= 1.5, defense *= 1.5;
+    if (defenderHoldEffect == HOLD_EFFECT_HEART_SCALE && defender->species == SPECIES_LUVDISC)
+        defense *= 2, spDefense *= 2;
+    if (attackerHoldEffect == HOLD_EFFECT_HEART_SCALE && attacker->species == SPECIES_LUVDISC)
+        spAttack *= 2;	
+    if (attackerHoldEffect == HOLD_EFFECT_LUCKY_PUNCH && (attacker->species == SPECIES_LEDYBA || attacker->species == SPECIES_LEDIAN))
+        spAttack *= 2, attack *= 2;
+    if (attackerHoldEffect == HOLD_EFFECT_TINY_MUSHROOM && (attacker->species == SPECIES_PARAS || attacker->species == SPECIES_PARASECT))
+        spAttack *= 1.5, attack *= 1.5;
+    if (defenderHoldEffect == HOLD_EFFECT_BIG_MUSHROOM && (defender->species == SPECIES_PARAS || defender->species == SPECIES_PARASECT))
+        defense *= 2, spDefense *= 2;
+    if (defenderHoldEffect == HOLD_EFFECT_HAPPINESS_UP && (defender->species == SPECIES_WIGGLYTUFF))
+        defense *= 1.5, spDefense *= 1.5;
+    if (defenderHoldEffect == HOLD_EFFECT_REPEL && (defender->species == SPECIES_CHIMECHO))
+        defense *= 1.5, spDefense *= 1.5;
+    if (attackerHoldEffect == HOLD_EFFECT_CAN_ALWAYS_RUN && (attacker->species == SPECIES_BEAUTIFLY || attacker->species == SPECIES_DUSTOX))
+        spAttack *= 1.5;
+    if (defenderHoldEffect == HOLD_EFFECT_CAN_ALWAYS_RUN && (defender->species == SPECIES_BEAUTIFLY || defender->species == SPECIES_DUSTOX))
+        spDefense *= 1.5;
+    if (attackerHoldEffect == HOLD_EFFECT_POKE_DOLL && attacker->species == SPECIES_DELCATTY)
+        spAttack *= 1.5;
+    if (defenderHoldEffect == HOLD_EFFECT_POKE_DOLL && defender->species == SPECIES_DELCATTY)
+        spDefense *= 1.5;
+    if (defenderHoldEffect == HOLD_EFFECT_FLUFFY_TAIL && defender->species == SPECIES_FURRET)
+        spDefense *= 3;	
     if (attackerHoldEffect == HOLD_EFFECT_LIGHT_BALL && attacker->species == SPECIES_PIKACHU)
         spAttack *= 2, attack *= 2;
+    if (attackerHoldEffect == HOLD_EFFECT_STICK && attacker->species == SPECIES_FARFETCHD)
+        attack *= 1.5;
+    if (attackerHoldEffect == HOLD_EFFECT_NANAB_BERRY && attacker->species == SPECIES_TROPIUS)
+        attack *= 1.5;
     if (defenderHoldEffect == HOLD_EFFECT_METAL_POWDER && defender->species == SPECIES_DITTO)
         defense *= 2;
     if (attackerHoldEffect == HOLD_EFFECT_THICK_CLUB && (attacker->species == SPECIES_CUBONE || attacker->species == SPECIES_MAROWAK))
@@ -3063,6 +3103,11 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         gBattleMovePower = (200 * gBattleMovePower) / 100;
     if (defender->ability == ABILITY_FLUFFY && ((gBattleMoves[move].flags & FLAG_MAKES_CONTACT)))
        spAttack /= 2, attack /= 2;
+  	if (attacker->ability == ABILITY_FORECAST && ((gBattleWeather & WEATHER_SUN_ANY)
+		|| (gBattleWeather & WEATHER_RAIN_ANY)
+	    || (gBattleWeather & WEATHER_HAIL_ANY))
+		&& attacker->species == SPECIES_CASTFORM)
+       spAttack = (150 * spAttack) / 100;
     if (attacker->ability == ABILITY_TOUGH_CLAWS && ((gBattleMoves[move].flags & FLAG_MAKES_CONTACT)))
 		gBattleMovePower = (130 * gBattleMovePower) / 100;
 	if (attacker->ability == ABILITY_SHEER_FORCE && ((gBattleMoves[move].flags & FLAG_SHEER_FORCE_BOOST)))

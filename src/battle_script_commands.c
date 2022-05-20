@@ -1464,14 +1464,14 @@ static void atk04_critcalc(void)
                 + (gBattleMoves[gCurrentMove].effect == EFFECT_POISON_TAIL)
 				+ (gBattleMoves[gCurrentMove].effect == EFFECT_RAZOR_WIND)
                 + (holdEffect == HOLD_EFFECT_SCOPE_LENS)
-                + 2 * (holdEffect == HOLD_EFFECT_LUCKY_PUNCH && gBattleMons[gBattlerAttacker].species == SPECIES_CHANSEY)
-                + 2 * (holdEffect == HOLD_EFFECT_STICK && gBattleMons[gBattlerAttacker].species == SPECIES_FARFETCHD);
+                + 2 * (holdEffect == HOLD_EFFECT_LUCKY_PUNCH && (gBattleMons[gBattlerAttacker].species == SPECIES_LEDYBA || gBattleMons[gBattlerAttacker].species == SPECIES_LEDIAN))
+                + 2 * (holdEffect == HOLD_EFFECT_STICK && (gBattleMons[gBattlerAttacker].species == SPECIES_FARFETCHD || gBattleMons[gBattlerAttacker].species == SPECIES_FARFETCHD_GALARIAN || gBattleMons[gBattlerAttacker].species == SPECIES_SIRFETCHD || gBattleMons[gBattlerAttacker].species == SPECIES_LUXWAN));
     if (critChance >= NELEMS(sCriticalHitChance))
         critChance = NELEMS(sCriticalHitChance) - 1;
     if ((gBattleMons[gBattlerTarget].ability != ABILITY_BATTLE_ARMOR && gBattleMons[gBattlerTarget].ability != ABILITY_SHELL_ARMOR)
      && !(gStatuses3[gBattlerAttacker] & STATUS3_CANT_SCORE_A_CRIT)
      && !(gBattleTypeFlags & BATTLE_TYPE_OLD_MAN_TUTORIAL)
-     && !(Random() % sCriticalHitChance[critChance])
+     && ((item == ITEM_NUGGET && gBattleMons[gBattlerAttacker].species == SPECIES_PERSIAN) || !(Random() % sCriticalHitChance[critChance]))
      && (!(gBattleTypeFlags & BATTLE_TYPE_FIRST_BATTLE) || BtlCtrl_OakOldMan_TestState2Flag(1))
      && !(gBattleTypeFlags & BATTLE_TYPE_POKEDUDE))
         gCritMultiplier = 2;
