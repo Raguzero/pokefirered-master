@@ -1413,3 +1413,6 @@ const u8 gText_GentleNature[] = _("GENTLE");
 const u8 gText_SassyNature[] = _("SASSY");
 const u8 gText_CarefulNature[] = _("CAREFUL");
 const u8 gText_QuirkyNature[] = _("QUIRKY");
+
+// NICKNAMES
+const u8 gText_Nickname_Catermano[] = _("CATERMANO");

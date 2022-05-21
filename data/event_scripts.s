@@ -9,6 +9,7 @@
 #include "constants/metatile_labels.h"
 #include "constants/pokemon.h"
 #include "constants/moves.h"
+#include "constants/nicknames.h"
 #include "constants/songs.h"
 #include "constants/species.h"
 #include "constants/trainer_classes.h"

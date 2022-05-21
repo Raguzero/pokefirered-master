@@ -1632,4 +1632,7 @@ extern const u8 gText_SassyNature[];
 extern const u8 gText_CarefulNature[];
 extern const u8 gText_QuirkyNature[];
 
+// NICKNAMES
+extern const u8 gText_Nickname_Catermano[];
+
 #endif //GUARD_STRINGS_H
