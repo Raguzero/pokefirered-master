@@ -383,7 +383,7 @@
 #define MOVE_GRAV_APPLE 379 // Descripción????
 #define MOVE_APPLE_ACID 380 // Descripción????
 #define MOVE_ACCELEROCK 381 // Descripción????
-#define MOVE_DARK_THUNDER 382 // Descripción????
+#define MOVE_DARK_THUNDER 382
 #define MOVE_DRILL_RUN 383
 #define MOVE_LEAF_STORM 384
 #define MOVE_SHORE_UP 385 // Descripción????
@@ -391,7 +391,7 @@
 #define MOVE_MONADO_POWER 387
 #define MOVE_BRUTAL_BALL 388  // Descripción????
 #define MOVE_SEISMIC_PUNCH 389  // Descripción????
-#define MOVE_HOLA_REINA    390 // Descripción????
+#define MOVE_HOLA_REINA    390
 #define MOVE_DRAGON_PULSE    391 // Descripción????
 #define MOVE_BUG_BUZZ    392 // Descripción????
 #define MOVE_GIGA_IMPACT    393 // Descripción????
@@ -440,6 +440,23 @@
 #define MOVETUTOR_EXPLOSION    12
 #define MOVETUTOR_ROCK_SLIDE   13
 #define MOVETUTOR_SUBSTITUTE   14
+#define MOVETUTOR_DYNAMIC_PUNCH 15
+#define MOVETUTOR_ROLLOUT 16
+#define MOVETUTOR_PSYCH_UP 17
+#define MOVETUTOR_MOVE_SNORE 18
+#define MOVETUTOR_ICY_WIND     19
+#define MOVETUTOR_ENDURE       20
+#define MOVETUTOR_MUD_SLAP 21
+#define MOVETUTOR_ICE_PUNCH 22
+#define MOVETUTOR_SWAGGER 23
+#define MOVETUTOR_SLEEP_TALK   24
+#define MOVETUTOR_SWIFT   25
+#define MOVETUTOR_DEFENSE_CURL   26
+#define MOVETUTOR_THUNDER_PUNCH 27
+#define MOVETUTOR_FIRE_PUNCH   28
+#define MOVETUTOR_FURY_CUTTER   29
+#define MOVETUTOR_SEISMIC_PUNCH   30
+
 #define MOVETUTOR_FRENZY_PLANT 15
 #define MOVETUTOR_BLAST_BURN   16
 #define MOVETUTOR_HYDRO_CANNON 17
