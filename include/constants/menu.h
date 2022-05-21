@@ -74,6 +74,7 @@
 #define MULTICHOICE_MIDELE_NATURES_1             67
 #define MULTICHOICE_MIDELE_NATURES_2             68
 #define MULTICHOICE_MIDELE_EV_STATS              69
+#define MULTICHOICE_CUSTOM                       70 // Populate from gCustomVar0 up to gCustomVar6
 
 #define LISTMENU_BADGES                    0
 #define LISTMENU_SILPHCO_FLOORS            1

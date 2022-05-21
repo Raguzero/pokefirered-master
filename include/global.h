@@ -113,6 +113,13 @@ extern u8 gStringVar1[];
 extern u8 gStringVar2[];
 extern u8 gStringVar3[];
 extern u8 gStringVar4[];
+extern u8 gCustomStr0[];
+extern u8 gCustomStr1[];
+extern u8 gCustomStr2[];
+extern u8 gCustomStr3[];
+extern u8 gCustomStr4[];
+extern u8 gCustomStr5[];
+extern u8 gCustomStr6[];
 
 #define ROUND_BITS_TO_BYTES(numBits)(((numBits) / 8) + (((numBits) % 8) ? 1 : 0))
 

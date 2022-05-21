@@ -124,6 +124,13 @@
 #define PLACEHOLDER_ID_ARCHIE        0xB
 #define PLACEHOLDER_ID_GROUDON       0xC
 #define PLACEHOLDER_ID_KYOGRE        0xD
+#define PLACEHOLDER_ID_CUSTOM_STR_0  0xE
+#define PLACEHOLDER_ID_CUSTOM_STR_1  0xF
+#define PLACEHOLDER_ID_CUSTOM_STR_2  0x10
+#define PLACEHOLDER_ID_CUSTOM_STR_3  0x11
+#define PLACEHOLDER_ID_CUSTOM_STR_4  0x12
+#define PLACEHOLDER_ID_CUSTOM_STR_5  0x13
+#define PLACEHOLDER_ID_CUSTOM_STR_6  0x14
 
 // battle placeholders are located in battle_message.h
 #define EXT_CTRL_CODE_COLOR                   0x1
@@ -263,6 +270,13 @@ extern u8 gStringVar1[];
 extern u8 gStringVar2[];
 extern u8 gStringVar3[];
 extern u8 gStringVar4[];
+extern u8 gCustomStr0[];
+extern u8 gCustomStr1[];
+extern u8 gCustomStr2[];
+extern u8 gCustomStr3[];
+extern u8 gCustomStr4[];
+extern u8 gCustomStr5[];
+extern u8 gCustomStr6[];
 
 extern const u8 gKeypadIconTiles[];
 

@@ -1447,6 +1447,12 @@
 	.2byte \item
 	.2byte \quantity
 	.endm
+	
+	.macro buffercustomstring byte:req, pointer:req
+	.byte 0xd5
+	.byte \byte
+	.4byte \pointer
+	.endm
 
 
 @ Supplementary

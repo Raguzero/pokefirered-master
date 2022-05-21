@@ -1587,6 +1587,17 @@ u8 *const sScriptStringVars[] =
     gStringVar3,
 };
 
+u8 *const sScriptCustomStringVars[] =
+{
+    gCustomStr0,
+    gCustomStr1,
+    gCustomStr2,
+    gCustomStr3,
+    gCustomStr4,
+    gCustomStr5,
+    gCustomStr6,
+};
+
 bool8 ScrCmd_bufferspeciesname(struct ScriptContext * ctx)
 {
     u8 stringVarIndex = ScriptReadByte(ctx);
@@ -1706,6 +1717,15 @@ bool8 ScrCmd_bufferstring(struct ScriptContext * ctx)
     const u8 *text = (u8 *)ScriptReadWord(ctx);
 
     StringCopy(sScriptStringVars[stringVarIndex], text);
+    return FALSE;
+}
+
+bool8 ScrCmd_buffercustomstring(struct ScriptContext * ctx)
+{
+    u8 stringVarIndex = ScriptReadByte(ctx);
+    const u8 *text = (u8 *)ScriptReadWord(ctx);
+
+    StringCopy(sScriptCustomStringVars[stringVarIndex], text);
     return FALSE;
 }
 

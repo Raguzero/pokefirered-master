@@ -13,6 +13,7 @@
 #include "constants/songs.h"
 #include "constants/seagallop.h"
 #include "constants/menu.h"
+#include "string_util.h"
 
 struct MultichoiceListStruct
 {
@@ -564,6 +565,16 @@ static const struct MenuAction sScriptMultiChoiceMenu_MideleEVStats[] =
     {gText_Exit}
 };
 
+static const struct MenuAction sScriptMultiChoiceMenu_CustomOptions[] = {
+    { gCustomStr0 },
+    { gCustomStr1 },
+    { gCustomStr2 },
+    { gCustomStr3 },
+    { gCustomStr4 },
+    { gCustomStr5 },
+    { gCustomStr6 },
+};
+
 static const struct MenuAction sScriptMultiChoiceMenu_Exit[] = {
     { gOtherText_Exit }
 };
@@ -638,7 +649,8 @@ const struct MultichoiceListStruct gScriptMultiChoiceMenus[] = {
     { sScriptMultiChoiceMenu_MideleHiddenPowerTypes, NELEMS(sScriptMultiChoiceMenu_MideleHiddenPowerTypes) },
     { sScriptMultiChoiceMenu_MideleNatures1, NELEMS(sScriptMultiChoiceMenu_MideleNatures1) },
     { sScriptMultiChoiceMenu_MideleNatures2, NELEMS(sScriptMultiChoiceMenu_MideleNatures2) },
-    { sScriptMultiChoiceMenu_MideleEVStats, NELEMS(sScriptMultiChoiceMenu_MideleEVStats) }
+    { sScriptMultiChoiceMenu_MideleEVStats, NELEMS(sScriptMultiChoiceMenu_MideleEVStats) },
+    { sScriptMultiChoiceMenu_CustomOptions, NELEMS(sScriptMultiChoiceMenu_CustomOptions) }
 };
 
 // From Cool to Berries goes unused
@@ -791,11 +803,12 @@ static void DrawVerticalMultichoiceMenu(u8 left, u8 top, u8 mcId, u8 ignoreBpres
     u8 count;
     u8 windowId;
     const struct MenuAction * list;
+    #define CUSTOM_STRINGS_TOTAL 7
 
     if ((ignoreBpress & 2) || QuestLog_SchedulePlaybackCB(QLPlaybackCB_DestroyScriptMenuMonPicSprites) != TRUE)
     {
         ignoreBpress &= 1;
-        count = gScriptMultiChoiceMenus[mcId].count;
+        count = (mcId == MULTICHOICE_CUSTOM) ? VarGet(VAR_TMP_CUSTOM_MENU_SIZE) : gScriptMultiChoiceMenus[mcId].count;
         list = gScriptMultiChoiceMenus[mcId].list;
         strWidth = 0;
         for (i = 0; i < count; i++)

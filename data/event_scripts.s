@@ -1360,3 +1360,6 @@ Text_TestMsg:: @ 81ACD45
 	.include "data/text/pokedude.inc"
 	.include "data/scripts/dexnav.inc"
 	.include "data/scripts/pokemon_center_move_tutor.inc"
+	
+Text_CustomMenuOption_Empty::
+    .string "$"

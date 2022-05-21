@@ -1049,6 +1049,27 @@ s32 GetStringWidth(u8 fontId, const u8 *str, s16 letterSpacing)
                 case PLACEHOLDER_ID_STRING_VAR_3:
                     bufferPointer = gStringVar3;
                     break;
+                case PLACEHOLDER_ID_CUSTOM_STR_0:
+                    bufferPointer = gCustomStr0;
+                    break;
+                case PLACEHOLDER_ID_CUSTOM_STR_1:
+                    bufferPointer = gCustomStr1;
+                    break;
+                case PLACEHOLDER_ID_CUSTOM_STR_2:
+                    bufferPointer = gCustomStr2;
+                    break;
+                case PLACEHOLDER_ID_CUSTOM_STR_3:
+                    bufferPointer = gCustomStr3;
+                    break;
+                case PLACEHOLDER_ID_CUSTOM_STR_4:
+                    bufferPointer = gCustomStr4;
+                    break;
+                case PLACEHOLDER_ID_CUSTOM_STR_5:
+                    bufferPointer = gCustomStr5;
+                    break;
+                case PLACEHOLDER_ID_CUSTOM_STR_6:
+                    bufferPointer = gCustomStr6;
+                    break;
                 default:
                     return 0;
             }

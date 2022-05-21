@@ -6,6 +6,13 @@ EWRAM_DATA u8 gStringVar2[20] = {};
 EWRAM_DATA u8 gStringVar3[20] = {};
 EWRAM_DATA u8 gStringVar4[1000] = {};
 EWRAM_DATA u8 gUnknownStringVar[16] = {0};
+EWRAM_DATA u8 gCustomStr0[32] = {};
+EWRAM_DATA u8 gCustomStr1[32] = {};
+EWRAM_DATA u8 gCustomStr2[32] = {};
+EWRAM_DATA u8 gCustomStr3[32] = {};
+EWRAM_DATA u8 gCustomStr4[32] = {};
+EWRAM_DATA u8 gCustomStr5[32] = {};
+EWRAM_DATA u8 gCustomStr6[32] = {};
 
 static const u8 sDigits[] = __("0123456789ABCDEF");
 
@@ -159,6 +166,17 @@ s32 StringCompareN(const u8 *str1, const u8 *str2, u32 n)
     }
 
     return *str1 - *str2;
+}
+
+bool8 IsStringLengthAtLeast(const u8 *str, s32 n)
+{
+    u8 i;
+
+    for (i = 0; i < n; i++)
+        if (str[i] && str[i] != EOS)
+            return TRUE;
+
+    return FALSE;
 }
 
 u8 *ConvertIntToDecimalStringN(u8 *dest, s32 value, enum StringConvertMode mode, u8 n)
@@ -379,6 +397,41 @@ static u8 *ExpandPlaceholder_StringVar3(void)
     return gStringVar3;
 }
 
+static u8 *ExpandPlaceholder_CustomStr0(void)
+{
+    return gCustomStr0;
+}
+
+static u8 *ExpandPlaceholder_CustomStr1(void)
+{
+    return gCustomStr1;
+}
+
+static u8 *ExpandPlaceholder_CustomStr2(void)
+{
+    return gCustomStr2;
+}
+
+static u8 *ExpandPlaceholder_CustomStr3(void)
+{
+    return gCustomStr3;
+}
+
+static u8 *ExpandPlaceholder_CustomStr4(void)
+{
+    return gCustomStr4;
+}
+
+static u8 *ExpandPlaceholder_CustomStr5(void)
+{
+    return gCustomStr5;
+}
+
+static u8 *ExpandPlaceholder_CustomStr6(void)
+{
+    return gCustomStr6;
+}
+
 static u8 *ExpandPlaceholder_KunChan(void)
 {
     if (gSaveBlock2Ptr->playerGender == MALE)
@@ -485,6 +538,13 @@ u8 *GetExpandedPlaceholder(u32 id)
         [PLACEHOLDER_ID_ARCHIE]       = ExpandPlaceholder_Archie,
         [PLACEHOLDER_ID_GROUDON]      = ExpandPlaceholder_Groudon,
         [PLACEHOLDER_ID_KYOGRE]       = ExpandPlaceholder_Kyogre,
+        [PLACEHOLDER_ID_CUSTOM_STR_0] = ExpandPlaceholder_CustomStr0,
+        [PLACEHOLDER_ID_CUSTOM_STR_1] = ExpandPlaceholder_CustomStr1,
+        [PLACEHOLDER_ID_CUSTOM_STR_2] = ExpandPlaceholder_CustomStr2,
+        [PLACEHOLDER_ID_CUSTOM_STR_3] = ExpandPlaceholder_CustomStr3,
+        [PLACEHOLDER_ID_CUSTOM_STR_4] = ExpandPlaceholder_CustomStr4,
+        [PLACEHOLDER_ID_CUSTOM_STR_5] = ExpandPlaceholder_CustomStr5,
+        [PLACEHOLDER_ID_CUSTOM_STR_6] = ExpandPlaceholder_CustomStr6,
     };
 
     if (id >= NELEMS(funcs))
