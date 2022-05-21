@@ -2801,21 +2801,21 @@ AI_CV_Thief_EncourageItemsToSteal:
     .byte HOLD_EFFECT_CHOICE_BAND
     .byte HOLD_EFFECT_CHOICE_SCARF
     .byte HOLD_EFFECT_CHOICE_SPECS
-	@.byte HOLD_EFFECT_RESTORE_PCT_HP @ SITRUS BERRY UPDATE GEN    undefined reference
-    @.byte HOLD_EFFECT_HEART_SCALE    undefined reference
+	.byte HOLD_EFFECT_RESTORE_PCT_HP @ SITRUS BERRY UPDATE GEN 
+    .byte HOLD_EFFECT_HEART_SCALE    
     .byte HOLD_EFFECT_STICK
-    @.byte HOLD_EFFECT_TINY_MUSHROOM   undefined reference
-    @.byte HOLD_EFFECT_BIG_MUSHROOM  undefined reference
-    @.byte HOLD_EFFECT_PREVENT_EVOLVE @ EVERSTONE   undefined reference
-    @.byte HOLD_EFFECT_YELLOW_FLUTE  undefined reference
-    @.byte HOLD_EFFECT_BLUE_FLUTE   undefined reference
-    @.byte HOLD_EFFECT_RED_FLUTE   undefined reference
+    .byte HOLD_EFFECT_TINY_MUSHROOM   
+    .byte HOLD_EFFECT_BIG_MUSHROOM  
+    .byte HOLD_EFFECT_PREVENT_EVOLVE @ EVERSTONE  
+    .byte HOLD_EFFECT_YELLOW_FLUTE  
+    .byte HOLD_EFFECT_BLUE_FLUTE   
+    .byte HOLD_EFFECT_RED_FLUTE   
     .byte HOLD_EFFECT_LUCKY_PUNCH
-    @.byte HOLD_EFFECT_POKE_DOLL  undefined reference
-    @.byte HOLD_EFFECT_FLUFFY_TAIL   undefined reference
-    @.byte HOLD_EFFECT_CAN_ALWAYS_RUN @ SMOKE BALL   undefined reference
-    @.byte HOLD_EFFECT_REPEL @ CLEANSE TAG   undefined reference
-    @.byte HOLD_EFFECT_HAPPINESS_UP @ SOOTHE BELL   undefined reference
+    .byte HOLD_EFFECT_POKE_DOLL  
+    .byte HOLD_EFFECT_FLUFFY_TAIL   
+    .byte HOLD_EFFECT_CAN_ALWAYS_RUN @ SMOKE BALL 
+    .byte HOLD_EFFECT_REPEL @ CLEANSE TAG
+    .byte HOLD_EFFECT_HAPPINESS_UP @ SOOTHE BELL 
 	.byte HOLD_EFFECT_DEEP_SEA_SCALE
 	.byte HOLD_EFFECT_DEEP_SEA_TOOTH
 	.byte HOLD_EFFECT_SOUL_DEW
