@@ -437,7 +437,6 @@ PalletTown_EventScript_FatMan:: @ 816582F
 	//msgbox PalletTown_Text_CanStoreItemsAndMonsInPC, MSGBOX_NPC
 	//end
 //BattleFrontier_Lounge5_EventScript_Midele_NatureChanger1::
-	clearflag FLAG_RYU_RANDOMBATTLE // Test random battle desactivado, borrar luego
 	lock
 	faceplayer
 	msgbox BattleFrontier_Lounge5_Text_Midele_NatureChanger1_Greeting, MSGBOX_YESNO
@@ -606,7 +605,6 @@ BattleFrontier_Lounge5_Text_Midele_NatureChanger_Done::
 PalletTown_EventScript_OaksLabSign:: @ 8165838
 	lockall
 	famechecker FAMECHECKER_OAK, 0
-	special GiveAllMons // DEBUG, BORRAR MAS TARDE
 	msgbox PalletTown_Text_OakPokemonResearchLab
 	releaseall
 	end
@@ -666,10 +664,83 @@ PalletTown_EventScript_SignLadyStartShowSign:: @ 81658C2
 EventScript_Debug_Pallet_Town::
 	faceplayer
 	lock
+	msgbox Debug_Text
+	buffercustomstring 0, Text_Placeholder_Option1_TeamMons
+	buffercustomstring 1, Text_Placeholder_Option2_CajaMons
+	buffercustomstring 2, Text_Placeholder_Option3_AllItems
+	buffercustomstring 3, Text_Placeholder_Option4_ActiveFlagsAdventure
+	buffercustomstring 4, Text_Placeholder_Option5_DisableFlagsAdventure
+	buffercustomstring 5, Text_Placeholder_Option6_ActiveFlagRandomBattleCC
+	buffercustomstring 6, Text_Placeholder_Option7_DisableFlagRandomBattleCC
+	setvar VAR_TMP_CUSTOM_MENU_SIZE 7
+	multichoice 0, 0, MULTICHOICE_CUSTOM, FALSE
+	switch VAR_RESULT
+	case 0, EventScript_TeamMons
+	case 1, EventScript_CajaMons
+	case 2, EventScript_AllItems
+	case 3, EventScript_ActiveFlagsAdventure
+	case 4, EventScript_DisableFlagsAdventure
+	case 5, EventScript_ActiveFlagRandomBattleCC
+	case 6, EventScript_DisableFlagRandomBattleCC
+	case 127, EventScript_End
+	release
+	end
+	
+Debug_Text:
+	.string "Bienvenido al DEBUG. Elige una opción\n"
+	.string "o pulsa B para cancelar$"
+	
+Text_Placeholder_Option1_TeamMons:
+	.string "TEAM MONS$"
+	
+Text_Placeholder_Option2_CajaMons:
+	.string "CAJA MONS$"
+	
+Text_Placeholder_Option3_AllItems:
+	.string "ALL ITEMS$"
+	
+Text_Placeholder_Option4_ActiveFlagsAdventure:
+	.string "ACTIVEFLAGADVENT$"
+	
+Text_Placeholder_Option5_DisableFlagsAdventure:
+	.string "DISABLEFLAGADVEN$"
+	
+Text_Placeholder_Option6_ActiveFlagRandomBattleCC:
+	.string "ACTIVERANDOMCC$"
+	
+Text_Placeholder_Option7_DisableFlagRandomBattleCC:
+	.string "DISABLERANDOMCC$"
+	
+EventScript_End:
+	release
+	end
+
+EventScript_TeamMons::	
+	givecustommon SPECIES_OCTILLERY_BETA, 100, ITEM_CHOICE_SPECS, ITEM_MASTER_BALL, NATURE_MODEST, 0, 252, 252, 252, 252, 252, 252, 31, 31, 31, 31, 31, 31, MOVE_SURF, MOVE_WATERFALL, MOVE_FLASH_CANNON, MOVE_MONADO_POWER, TRUE, 0
+	givecustommon SPECIES_RAYQUAZA, 100, ITEM_NONE, ITEM_MASTER_BALL, NATURE_NAIVE, 0, 252, 252, 252, 252, 252, 252, 31, 31, 31, 31, 31, 31, MOVE_FLY, MOVE_HOLA_REINA, MOVE_STRENGTH, MOVE_ROCK_SMASH, TRUE, 0
+    givemon SPECIES_AERODACTYL, 99, ITEM_NONE
+	givecustommon SPECIES_VENUSAUR, 100, ITEM_NONE, ITEM_MASTER_BALL, NATURE_ADAMANT, 0, 252, 252, 252, 252, 252, 252, 31, 31, 31, 31, 31, 31, MOVE_CUT, MOVE_FLASH, MOVE_DARK_THUNDER, MOVE_MIDELE_POWER, TRUE, 0
+    givemon SPECIES_NOCTOWL_BETA, 99, ITEM_NONE
+    givemon SPECIES_EEVEE, 99, ITEM_NONE,
+    release
+    end
+	
+EventScript_CajaMons::
+	special GiveAllMons
+	release
+	end
+
+EventScript_AllItems::
+	special GiveAllItems
+	release
+	end
+
+EventScript_ActiveFlagsAdventure::	
     setflag FLAG_SYS_POKEMON_GET
     setflag FLAG_SYS_POKEDEX_GET
+	special SetUnlockedPokedexFlags
+	special EnableNationalPokedex
 	setflag FLAG_SYS_DEXNAV_GET
-	setflag FLAG_RYU_RANDOMBATTLE
 	setflag FLAG_SYS_B_DASH @ RUNNING SHOES
     clearflag FLAG_HIDE_OAK_IN_HIS_LAB
     setvar VAR_MAP_SCENE_PALLET_TOWN_OAK, 1
@@ -747,117 +818,99 @@ EventScript_Debug_Pallet_Town::
     setflag FLAG_WORLD_MAP_SEVEN_ISLAND_TANOBY_RUINS_MONEAN_CHAMBER
     setflag FLAG_WORLD_MAP_THREE_ISLAND_DUNSPARCE_TUNNEL
     setflag FLAG_WORLD_MAP_SEVEN_ISLAND_SEVAULT_CANYON_TANOBY_KEY
-    additem ITEM_POKE_BALL, 99
-    additem ITEM_GREAT_BALL, 99
-    additem ITEM_ULTRA_BALL, 99
-    additem ITEM_MASTER_BALL, 99
-    additem ITEM_REPEL, 99
-	additem ITEM_ESCAPE_ROPE, 99
-    additem ITEM_FIRE_STONE, 99
-    additem ITEM_WATER_STONE, 99
-    additem ITEM_THUNDER_STONE, 99
-    additem ITEM_LEAF_STONE, 99
-    additem ITEM_SUN_STONE, 99
-    additem ITEM_MOON_STONE, 99
-	additem ITEM_DAWN_STONE, 99
-	additem ITEM_DUSK_STONE, 99
-	additem ITEM_SHINY_STONE, 99
-	additem ITEM_ICE_STONE, 99
-	additem ITEM_KINGS_ROCK, 99
-	additem ITEM_DEEP_SEA_TOOTH, 99
-	additem ITEM_DEEP_SEA_SCALE, 99
-	additem ITEM_DRAGON_SCALE, 99
-	additem ITEM_METAL_COAT, 99
-	additem ITEM_UP_GRADE, 99
-    additem ITEM_RARE_CANDY, 99
-	additem ITEM_ABILITY_CAPSULE, 99
-	additem ITEM_SACRED_ASH, 99
-	additem ITEM_FULL_RESTORE, 99
-	additem ITEM_NUGGET, 99
-	additem ITEM_NUGGET, 99
-	additem ITEM_NUGGET, 99
-	additem ITEM_LEFTOVERS, 99
-	additem ITEM_CHOICE_SCARF, 99
-	additem ITEM_CHOICE_SPECS, 99
-    additem ITEM_HM01, 1
-    additem ITEM_HM02, 1
-    additem ITEM_HM03, 1
-    additem ITEM_HM04, 1
-    additem ITEM_HM05, 1
-    additem ITEM_HM06, 1
-    additem ITEM_HM07, 1
-    additem ITEM_HM08, 1
-    additem ITEM_TM01, 1
-    additem ITEM_TM02, 1
-    additem ITEM_TM03, 1
-    additem ITEM_TM04, 1
-    additem ITEM_TM05, 1
-    additem ITEM_TM06, 1
-    additem ITEM_TM07, 1
-    additem ITEM_TM08, 1
-    additem ITEM_TM09, 1
-    additem ITEM_TM10, 1
-    additem ITEM_TM11, 1
-    additem ITEM_TM12, 1
-    additem ITEM_TM13, 1
-    additem ITEM_TM14, 1
-    additem ITEM_TM15, 1
-    additem ITEM_TM16, 1
-    additem ITEM_TM17, 1
-    additem ITEM_TM18, 1
-    additem ITEM_TM19, 1
-    additem ITEM_TM20, 1
-    additem ITEM_TM21, 1
-    additem ITEM_TM22, 1
-    additem ITEM_TM23, 1
-    additem ITEM_TM24, 1
-    additem ITEM_TM25, 1
-    additem ITEM_TM26, 1
-    additem ITEM_TM27, 1
-    additem ITEM_TM28, 1
-    additem ITEM_TM29, 1
-    additem ITEM_TM30, 1
-    additem ITEM_TM31, 1
-    additem ITEM_TM32, 1
-    additem ITEM_TM33, 1
-    additem ITEM_TM34, 1
-    additem ITEM_TM35, 1
-    additem ITEM_TM36, 1
-    additem ITEM_TM37, 1
-    additem ITEM_TM38, 1
-    additem ITEM_TM39, 1
-    additem ITEM_TM40, 1
-    additem ITEM_TM41, 1
-    additem ITEM_TM42, 1
-    additem ITEM_TM43, 1
-    additem ITEM_TM44, 1
-    additem ITEM_TM45, 1
-    additem ITEM_TM46, 1
-    additem ITEM_TM47, 1
-    additem ITEM_TM48, 1
-    additem ITEM_TM49, 1
-    additem ITEM_TM50, 1
-    additem ITEM_TOWN_MAP, 1
-    additem ITEM_EXP_SHARE, 1
-    additem ITEM_BICYCLE, 1
-    additem ITEM_SILPH_SCOPE, 1
-	additem ITEM_POKE_FLUTE, 1
-	additem ITEM_VS_SEEKER, 1
-	additem ITEM_FAME_CHECKER, 1
-	additem ITEM_SITRUS_BERRY, 99
-	additem ITEM_BERRY_POUCH, 1
-	additem ITEM_POWDER_JAR, 1
-    additem ITEM_OLD_ROD, 1
-    additem ITEM_GOOD_ROD, 1
-    additem ITEM_SUPER_ROD, 1
-	additem ITEM_COIN_CASE, 1
-	additem ITEM_ITEMFINDER, 1
-    givemon SPECIES_RAICHU, 100, ITEM_NONE
-    givemon SPECIES_ESPEON, 100, ITEM_NONE
-    givemon SPECIES_SHEDINJA, 100, ITEM_NONE
-    givemon SPECIES_AERODACTYL, 99, ITEM_NONE
-    givemon SPECIES_RAYQUAZA, 99, ITEM_NONE
-    givemon SPECIES_GROUDON, 99, ITEM_NONE
-    givemon SPECIES_KYOGRE, 100, ITEM_NONE,
-    release
-    end
+	release
+	end
+	
+EventScript_DisableFlagsAdventure::	
+    clearflag FLAG_SYS_POKEMON_GET
+    clearflag FLAG_SYS_POKEDEX_GET
+	clearflag FLAG_SYS_DEXNAV_GET
+	clearflag FLAG_SYS_B_DASH @ RUNNING SHOES
+    setflag FLAG_HIDE_OAK_IN_HIS_LAB
+    setvar VAR_MAP_SCENE_PALLET_TOWN_OAK, 0
+    clearflag FLAG_HIDE_OAK_IN_PALLET_TOWN
+    clearflag FLAG_OPENED_START_MENU
+    clearflag FLAG_VISITED_OAKS_LAB
+    setvar VAR_STARTER_MON, 0                              @ Chose Charmander
+    clearflag FLAG_BEAT_RIVAL_IN_OAKS_LAB
+    clearflag FLAG_HIDE_RIVAL_IN_LAB
+    clearflag FLAG_GOT_POKEBALLS_FROM_OAK_AFTER_22_RIVAL
+    clearflag FLAG_PALLET_LADY_NOT_BLOCKING_SIGN
+    setvar VAR_MAP_SCENE_PALLET_TOWN_PROFESSOR_OAKS_LAB, 0 @ Parcel delivery done
+    setvar VAR_MAP_SCENE_PALLET_TOWN_RIVALS_HOUSE, 0       @ Obtained the Town Map
+    setvar RECEIVED_TOWN_MAP, FALSE
+    clearflag FLAG_HIDE_TOWN_MAP
+    setvar VAR_MAP_SCENE_ROUTE22, 0                        @ Ready to fight the Rival in Route 22
+    setvar VAR_MAP_SCENE_VIRIDIAN_CITY_MART, 0             @ Parcel delivery done
+    clearflag FLAG_HIDE_POKEDEX
+    setvar VAR_MAP_SCENE_VIRIDIAN_CITY_OLD_MAN, 0          @ Old Man's catching tutorial done
+    setvar VAR_MAP_SCENE_PEWTER_CITY, 0                    @ Received the Running Shoes in Pewter City
+    clearflag FLAG_BADGE01_GET
+    clearflag FLAG_BADGE02_GET
+    clearflag FLAG_BADGE03_GET
+    clearflag FLAG_BADGE04_GET
+    clearflag FLAG_BADGE05_GET
+    clearflag FLAG_BADGE06_GET
+    clearflag FLAG_BADGE07_GET
+    clearflag FLAG_BADGE08_GET
+    clearflag FLAG_WORLD_MAP_PALLET_TOWN
+    clearflag FLAG_WORLD_MAP_VIRIDIAN_CITY
+    clearflag FLAG_WORLD_MAP_PEWTER_CITY
+    clearflag FLAG_WORLD_MAP_CERULEAN_CITY
+    clearflag FLAG_WORLD_MAP_LAVENDER_TOWN
+    clearflag FLAG_WORLD_MAP_VERMILION_CITY
+    clearflag FLAG_WORLD_MAP_CELADON_CITY
+    clearflag FLAG_WORLD_MAP_FUCHSIA_CITY
+    clearflag FLAG_WORLD_MAP_CINNABAR_ISLAND
+    clearflag FLAG_WORLD_MAP_INDIGO_PLATEAU_EXTERIOR
+    clearflag FLAG_WORLD_MAP_SAFFRON_CITY
+    clearflag FLAG_WORLD_MAP_ONE_ISLAND
+    clearflag FLAG_WORLD_MAP_TWO_ISLAND
+    clearflag FLAG_WORLD_MAP_THREE_ISLAND
+    clearflag FLAG_WORLD_MAP_FOUR_ISLAND
+    clearflag FLAG_WORLD_MAP_FIVE_ISLAND
+    clearflag FLAG_WORLD_MAP_SEVEN_ISLAND
+    clearflag FLAG_WORLD_MAP_SIX_ISLAND
+    clearflag FLAG_WORLD_MAP_ROUTE4_POKEMON_CENTER_1F
+    clearflag FLAG_WORLD_MAP_ROUTE10_POKEMON_CENTER_1F
+    clearflag FLAG_WORLD_MAP_VIRIDIAN_FOREST
+    clearflag FLAG_WORLD_MAP_MT_MOON_1F
+    clearflag FLAG_WORLD_MAP_SSANNE_EXTERIOR
+    clearflag FLAG_WORLD_MAP_UNDERGROUND_PATH_NORTH_SOUTH_TUNNEL
+    clearflag FLAG_WORLD_MAP_UNDERGROUND_PATH_EAST_WEST_TUNNEL
+    clearflag FLAG_WORLD_MAP_DIGLETTS_CAVE_B1F
+    clearflag FLAG_WORLD_MAP_VICTORY_ROAD_1F
+    clearflag FLAG_WORLD_MAP_ROCKET_HIDEOUT_B1F
+    clearflag FLAG_WORLD_MAP_SILPH_CO_1F
+    clearflag FLAG_WORLD_MAP_POKEMON_MANSION_1F
+    clearflag FLAG_WORLD_MAP_SAFARI_ZONE_CENTER
+    clearflag FLAG_WORLD_MAP_POKEMON_LEAGUE_LORELEIS_ROOM
+    clearflag FLAG_WORLD_MAP_ROCK_TUNNEL_1F
+    clearflag FLAG_WORLD_MAP_SEAFOAM_ISLANDS_1F
+    clearflag FLAG_WORLD_MAP_POKEMON_TOWER_1F
+    clearflag FLAG_WORLD_MAP_CERULEAN_CAVE_1F
+    clearflag FLAG_WORLD_MAP_POWER_PLANT
+    clearflag FLAG_WORLD_MAP_MT_EMBER_EXTERIOR
+    clearflag FLAG_WORLD_MAP_THREE_ISLAND_BERRY_FOREST
+    clearflag FLAG_WORLD_MAP_FOUR_ISLAND_ICEFALL_CAVE_ENTRANCE
+    clearflag FLAG_WORLD_MAP_FIVE_ISLAND_ROCKET_WAREHOUSE
+    clearflag FLAG_WORLD_MAP_TRAINER_TOWER_LOBBY
+    clearflag FLAG_WORLD_MAP_SIX_ISLAND_DOTTED_HOLE_1F
+    clearflag FLAG_WORLD_MAP_FIVE_ISLAND_LOST_CAVE_ENTRANCE
+    clearflag FLAG_WORLD_MAP_SIX_ISLAND_PATTERN_BUSH
+    clearflag FLAG_WORLD_MAP_SIX_ISLAND_ALTERING_CAVE
+    clearflag FLAG_WORLD_MAP_SEVEN_ISLAND_TANOBY_RUINS_MONEAN_CHAMBER
+    clearflag FLAG_WORLD_MAP_THREE_ISLAND_DUNSPARCE_TUNNEL
+    clearflag FLAG_WORLD_MAP_SEVEN_ISLAND_SEVAULT_CANYON_TANOBY_KEY
+	release
+	end
+	
+EventScript_ActiveFlagRandomBattleCC::
+	setflag FLAG_RYU_RANDOMBATTLE  // Test random battle activado
+	release
+	end	
+
+EventScript_DisableFlagRandomBattleCC::
+	clearflag FLAG_RYU_RANDOMBATTLE // Test random battle desactivado
+	release
+	end

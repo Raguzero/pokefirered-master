@@ -6558,3 +6558,26 @@ bool8 GiveAllMons(void)
     }
     return TRUE;
 }
+
+void GiveAllItems(void) {
+    u16 i;
+    for (i = ITEM_NONE; i <= ITEM_G_PROTEIN; i++) {
+        AddBagItem(i, 99);
+    }
+	
+    for (i = ITEM_G_IRON; i <= ITEM_LEVEL_CAP; i++) {
+        AddPCItem(i, 99);
+    }
+	
+    for (i = ITEM_CHERI_BERRY; i <= ITEM_ENIGMA_BERRY; i++) {
+        AddBagItem(i, 99);
+    }
+	
+    for (i = ITEM_MACH_BIKE; i <= ITEM_SUPER_ROD; i++) {
+        AddBagItem(i, 1);
+    }
+	
+    for (i = ITEM_TM01; i <= ITEM_SAPPHIRE; i++) {
+        AddBagItem(i, 1);
+    }
+}
