@@ -216,6 +216,7 @@ gScriptCmdTable:: @ 815F9B4
 	.4byte ScrCmd_bufferitemnameplural
 	.4byte ScrCmd_buffercustomstring
 	.4byte ScrCmd_givecustommon
+	.4byte ScrCmd_setwildbattlecustom
 
 gScriptCmdTableEnd:: @ 815FD08
 	.4byte ScrCmd_nop
