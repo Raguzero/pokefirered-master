@@ -619,7 +619,8 @@ SECTIONS {
         src/move_descriptions.o(.rodata);
 		src/day_night.o(.rodata);
 		src/dexnav.o(.rodata);
-		src/text_window.o(.rodata)
+		src/text_window.o(.rodata);
+        src/script_pokemon_util.o(.rodata);
 
         /* These should not be moved to C files */
         src/mystery_event_msg.o(.rodata);
