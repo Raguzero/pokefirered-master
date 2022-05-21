@@ -5,15 +5,15 @@ VictoryRoad_2F_EventScript_DoubleEdgeTutor:: @ 81C47AE
 	msgbox Text_DoubleEdgeTeach, MSGBOX_YESNO
 	compare VAR_RESULT, NO
 	goto_if_eq EventScript_DoubleEdgeDeclined
-	call EventScript_CanOnlyBeLearnedOnce
-	compare VAR_RESULT, NO
-	goto_if_eq EventScript_DoubleEdgeDeclined
+	//call EventScript_CanOnlyBeLearnedOnce
+	//compare VAR_RESULT, NO
+	//goto_if_eq EventScript_DoubleEdgeDeclined
 	msgbox Text_DoubleEdgeWhichMon
 	setvar VAR_0x8005, MOVETUTOR_DOUBLE_EDGE
 	call EventScript_ChooseMoveTutorMon
 	compare VAR_RESULT, FALSE
 	goto_if_eq EventScript_DoubleEdgeDeclined
-	setflag FLAG_TUTOR_DOUBLE_EDGE
+	//setflag FLAG_TUTOR_DOUBLE_EDGE
 	goto EventScript_DoubleEdgeTaught
 	end
 
@@ -34,15 +34,15 @@ EventScript_ThunderWaveTutor:: @ 81C4816
 	msgbox Text_ThunderWaveTeach, MSGBOX_YESNO
 	compare VAR_RESULT, NO
 	goto_if_eq EventScript_ThunderWaveDeclined
-	call EventScript_CanOnlyBeLearnedOnce
-	compare VAR_RESULT, NO
-	goto_if_eq EventScript_ThunderWaveDeclined
+	//call EventScript_CanOnlyBeLearnedOnce
+	//compare VAR_RESULT, NO
+	//goto_if_eq EventScript_ThunderWaveDeclined
 	msgbox Text_ThunderWaveWhichMon
 	setvar VAR_0x8005, MOVETUTOR_THUNDER_WAVE
 	call EventScript_ChooseMoveTutorMon
 	compare VAR_RESULT, FALSE
 	goto_if_eq EventScript_ThunderWaveDeclined
-	setflag FLAG_TUTOR_THUNDER_WAVE
+	//setflag FLAG_TUTOR_THUNDER_WAVE
 	goto EventScript_ThunderWaveTaught
 	end
 
@@ -63,15 +63,15 @@ RockTunnel_B1F_EventScript_RockSlideTutor:: @ 81C487E
 	msgbox Text_RockSlideTeach, MSGBOX_YESNO
 	compare VAR_RESULT, NO
 	goto_if_eq EventScript_RockSlideDeclined
-	call EventScript_CanOnlyBeLearnedOnce
-	compare VAR_RESULT, NO
-	goto_if_eq EventScript_RockSlideDeclined
+	//call EventScript_CanOnlyBeLearnedOnce
+	//compare VAR_RESULT, NO
+	//goto_if_eq EventScript_RockSlideDeclined
 	msgbox Text_RockSlideWhichMon
 	setvar VAR_0x8005, MOVETUTOR_ROCK_SLIDE
 	call EventScript_ChooseMoveTutorMon
 	compare VAR_RESULT, FALSE
 	goto_if_eq EventScript_RockSlideDeclined
-	setflag FLAG_TUTOR_ROCK_SLIDE
+	//setflag FLAG_TUTOR_ROCK_SLIDE
 	goto EventScript_RockSlideTaught
 	end
 
@@ -92,15 +92,15 @@ MtEmber_Exterior_EventScript_ExplosionTutor:: @ 81C48E6
 	msgbox Text_ExplosionTeach, MSGBOX_YESNO
 	compare VAR_RESULT, NO
 	goto_if_eq EventScript_ExplosionDeclined
-	call EventScript_CanOnlyBeLearnedOnce
-	compare VAR_RESULT, NO
-	goto_if_eq EventScript_ExplosionDeclined
+	//call EventScript_CanOnlyBeLearnedOnce
+	//compare VAR_RESULT, NO
+	//goto_if_eq EventScript_ExplosionDeclined
 	msgbox Text_ExplosionWhichMon
 	setvar VAR_0x8005, MOVETUTOR_EXPLOSION
 	call EventScript_ChooseMoveTutorMon
 	compare VAR_RESULT, FALSE
 	goto_if_eq EventScript_ExplosionDeclined
-	setflag FLAG_TUTOR_EXPLOSION
+	//setflag FLAG_TUTOR_EXPLOSION
 	goto EventScript_ExplosionTaught
 	end
 
@@ -121,15 +121,15 @@ Route4_EventScript_MegaPunchTutor:: @ 81C494E
 	msgbox Text_MegaPunchTeach, MSGBOX_YESNO
 	compare VAR_RESULT, NO
 	goto_if_eq EventScript_MegaPunchDeclined
-	call EventScript_CanOnlyBeLearnedOnce
-	compare VAR_RESULT, NO
-	goto_if_eq EventScript_MegaPunchDeclined
+	//call EventScript_CanOnlyBeLearnedOnce
+	//compare VAR_RESULT, NO
+	//goto_if_eq EventScript_MegaPunchDeclined
 	msgbox Text_MegaPunchWhichMon
 	setvar VAR_0x8005, MOVETUTOR_MEGA_PUNCH
 	call EventScript_ChooseMoveTutorMon
 	compare VAR_RESULT, FALSE
 	goto_if_eq EventScript_MegaPunchDeclined
-	setflag FLAG_TUTOR_MEGA_PUNCH
+	//setflag FLAG_TUTOR_MEGA_PUNCH
 	goto EventScript_MegaPunchTaught
 	end
 
@@ -150,15 +150,15 @@ Route4_EventScript_MegaKickTutor:: @ 81C49B6
 	msgbox Text_MegaKickTeach, MSGBOX_YESNO
 	compare VAR_RESULT, NO
 	goto_if_eq EventScript_MegaKickDeclined
-	call EventScript_CanOnlyBeLearnedOnce
-	compare VAR_RESULT, NO
-	goto_if_eq EventScript_MegaKickDeclined
+	//call EventScript_CanOnlyBeLearnedOnce
+	//compare VAR_RESULT, NO
+	//goto_if_eq EventScript_MegaKickDeclined
 	msgbox Text_MegaKickWhichMon
 	setvar VAR_0x8005, MOVETUTOR_MEGA_KICK
 	call EventScript_ChooseMoveTutorMon
 	compare VAR_RESULT, FALSE
 	goto_if_eq EventScript_MegaKickDeclined
-	setflag FLAG_TUTOR_MEGA_KICK
+	//setflag FLAG_TUTOR_MEGA_KICK
 	goto EventScript_MegaKickTaught
 	end
 
@@ -179,15 +179,15 @@ EventScript_DreamEaterTutor:: @ 81C4A1E
 	msgbox Text_DreamEaterTeach, MSGBOX_YESNO
 	compare VAR_RESULT, NO
 	goto_if_eq EventScript_DreamEaterDeclined
-	call EventScript_CanOnlyBeLearnedOnce
-	compare VAR_RESULT, NO
-	goto_if_eq EventScript_DreamEaterDeclined
+	//call EventScript_CanOnlyBeLearnedOnce
+	//compare VAR_RESULT, NO
+	//goto_if_eq EventScript_DreamEaterDeclined
 	msgbox Text_DreamEaterWhichMon
 	setvar VAR_0x8005, MOVETUTOR_DREAM_EATER
 	call EventScript_ChooseMoveTutorMon
 	compare VAR_RESULT, FALSE
 	goto_if_eq EventScript_DreamEaterDeclined
-	setflag FLAG_TUTOR_DREAM_EATER
+	//setflag FLAG_TUTOR_DREAM_EATER
 	goto EventScript_DreamEaterTaught
 	end
 
@@ -208,15 +208,15 @@ EventScript_SoftboiledTutor:: @ 81C4A86
 	msgbox Text_SoftboiledTeach, MSGBOX_YESNO
 	compare VAR_RESULT, NO
 	goto_if_eq EventScript_SoftboiledDeclined
-	call EventScript_CanOnlyBeLearnedOnce
-	compare VAR_RESULT, NO
-	goto_if_eq EventScript_SoftboiledDeclined
+	//call EventScript_CanOnlyBeLearnedOnce
+	//compare VAR_RESULT, NO
+	//goto_if_eq EventScript_SoftboiledDeclined
 	msgbox Text_SoftboiledWhichMon
 	setvar VAR_0x8005, MOVETUTOR_SOFT_BOILED
 	call EventScript_ChooseMoveTutorMon
 	compare VAR_RESULT, FALSE
 	goto_if_eq EventScript_SoftboiledDeclined
-	setflag FLAG_TUTOR_SOFT_BOILED
+	//setflag FLAG_TUTOR_SOFT_BOILED
 	goto EventScript_SoftboiledTaught
 	end
 
@@ -237,15 +237,15 @@ FuchsiaCity_EventScript_SubstituteTutor:: @ 81C4AEE
 	msgbox Text_SubstituteTeach, MSGBOX_YESNO
 	compare VAR_RESULT, NO
 	goto_if_eq EventScript_SubstituteDeclined
-	call EventScript_CanOnlyBeLearnedOnce
-	compare VAR_RESULT, NO
-	goto_if_eq EventScript_SubstituteDeclined
+	//call EventScript_CanOnlyBeLearnedOnce
+	//compare VAR_RESULT, NO
+	//goto_if_eq EventScript_SubstituteDeclined
 	msgbox Text_SubstituteWhichMon
 	setvar VAR_0x8005, MOVETUTOR_SUBSTITUTE
 	call EventScript_ChooseMoveTutorMon
 	compare VAR_RESULT, FALSE
 	goto_if_eq EventScript_SubstituteDeclined
-	setflag FLAG_TUTOR_SUBSTITUTE
+	//setflag FLAG_TUTOR_SUBSTITUTE
 	goto EventScript_SubstituteTaught
 	end
 
@@ -266,15 +266,15 @@ SevenIsland_EventScript_SwordsDanceTutor:: @ 81C4B56
 	msgbox Text_SwordsDanceTeach, MSGBOX_YESNO
 	compare VAR_RESULT, NO
 	goto_if_eq EventScript_SwordsDanceDeclined
-	call EventScript_CanOnlyBeLearnedOnce
-	compare VAR_RESULT, NO
-	goto_if_eq EventScript_SwordsDanceDeclined
+	//call EventScript_CanOnlyBeLearnedOnce
+	//compare VAR_RESULT, NO
+	//goto_if_eq EventScript_SwordsDanceDeclined
 	msgbox Text_SwordsDanceWhichMon
 	setvar VAR_0x8005, MOVETUTOR_SWORDS_DANCE
 	call EventScript_ChooseMoveTutorMon
 	compare VAR_RESULT, FALSE
 	goto_if_eq EventScript_SwordsDanceDeclined
-	setflag FLAG_TUTOR_SWORDS_DANCE
+	//setflag FLAG_TUTOR_SWORDS_DANCE
 	goto EventScript_SwordsDanceTaught
 	end
 
@@ -295,15 +295,15 @@ PewterCity_Museum_1F_EventScript_SeismicTossTutor:: @ 81C4BBE
 	msgbox Text_SeismicTossTeach, MSGBOX_YESNO
 	compare VAR_RESULT, NO
 	goto_if_eq EventScript_SeismicTossDeclined
-	call EventScript_CanOnlyBeLearnedOnce
-	compare VAR_RESULT, NO
-	goto_if_eq EventScript_SeismicTossDeclined
+	//call EventScript_CanOnlyBeLearnedOnce
+	//compare VAR_RESULT, NO
+	//goto_if_eq EventScript_SeismicTossDeclined
 	msgbox Text_SeismicTossWhichMon
 	setvar VAR_0x8005, MOVETUTOR_SEISMIC_TOSS
 	call EventScript_ChooseMoveTutorMon
 	compare VAR_RESULT, FALSE
 	goto_if_eq EventScript_SeismicTossDeclined
-	setflag FLAG_TUTOR_SEISMIC_TOSS
+	//setflag FLAG_TUTOR_SEISMIC_TOSS
 	goto EventScript_SeismicTossTaught
 	end
 
@@ -324,15 +324,15 @@ EventScript_CounterTutor:: @ 81C4C26
 	msgbox Text_CounterTeach, MSGBOX_YESNO
 	compare VAR_RESULT, NO
 	goto_if_eq EventScript_CounterDeclined
-	call EventScript_CanOnlyBeLearnedOnce
-	compare VAR_RESULT, NO
-	goto_if_eq EventScript_CounterDeclined
+	//call EventScript_CanOnlyBeLearnedOnce
+	//compare VAR_RESULT, NO
+	//goto_if_eq EventScript_CounterDeclined
 	msgbox Text_CounterWhichMon
 	setvar VAR_0x8005, MOVETUTOR_COUNTER
 	call EventScript_ChooseMoveTutorMon
 	compare VAR_RESULT, FALSE
 	goto_if_eq EventScript_CounterDeclined
-	setflag FLAG_TUTOR_COUNTER
+	//setflag FLAG_TUTOR_COUNTER
 	goto EventScript_CounterTaught
 	end
 
@@ -353,15 +353,15 @@ EventScript_MetronomeTutor:: @ 81C4C8E
 	msgbox Text_MetronomeTeach, MSGBOX_YESNO
 	compare VAR_RESULT, NO
 	goto_if_eq EventScript_MetronomeDeclined
-	call EventScript_CanOnlyBeLearnedOnce
-	compare VAR_RESULT, NO
-	goto_if_eq EventScript_MetronomeDeclined
+	//call EventScript_CanOnlyBeLearnedOnce
+	//compare VAR_RESULT, NO
+	//goto_if_eq EventScript_MetronomeDeclined
 	msgbox Text_MetronomeWhichMon
 	setvar VAR_0x8005, MOVETUTOR_METRONOME
 	call EventScript_ChooseMoveTutorMon
 	compare VAR_RESULT, FALSE
 	goto_if_eq EventScript_MetronomeDeclined
-	setflag FLAG_TUTOR_METRONOME
+	//setflag FLAG_TUTOR_METRONOME
 	goto EventScript_MetronomeTaught
 	end
 
@@ -380,18 +380,18 @@ EventScript_MimicTutor:: @ 81C4CF6
 	msgbox Text_MimicTeach, MSGBOX_YESNO
 	compare VAR_RESULT, NO
 	goto_if_eq EventScript_MimicDeclined
-	call EventScript_CanOnlyBeLearnedOnce
-	compare VAR_RESULT, NO
-	goto_if_eq EventScript_MimicDeclined
+	//call EventScript_CanOnlyBeLearnedOnce
+	//compare VAR_RESULT, NO
+	//goto_if_eq EventScript_MimicDeclined
 	msgbox Text_MimicWhichMon
 	setvar VAR_0x8005, MOVETUTOR_MIMIC
 	call EventScript_ChooseMoveTutorMon
 	lock
 	faceplayer
-	compare VAR_RESULT, 0
+	compare VAR_RESULT, FALSE
 	goto_if_eq EventScript_MimicDeclined
-	removeitem ITEM_POKE_DOLL, 1
-	setflag FLAG_TUTOR_MIMIC
+	//removeitem ITEM_POKE_DOLL, 1
+	//setflag FLAG_TUTOR_MIMIC
 	goto EventScript_MimicTaught
 	end
 
@@ -424,15 +424,15 @@ FourIsland_House1_EventScript_BodySlamTutor:: @ 81C4D84
 	msgbox Text_BodySlamTeach, MSGBOX_YESNO
 	compare VAR_RESULT, NO
 	goto_if_eq EventScript_BodySlamDeclined
-	call EventScript_CanOnlyBeLearnedOnce
-	compare VAR_RESULT, NO
-	goto_if_eq EventScript_BodySlamDeclined
+	//call EventScript_CanOnlyBeLearnedOnce
+	//compare VAR_RESULT, NO
+	//goto_if_eq EventScript_BodySlamDeclined
 	msgbox Text_BodySlamWhichMon
 	setvar VAR_0x8005, MOVETUTOR_BODY_SLAM
 	call EventScript_ChooseMoveTutorMon
 	compare VAR_RESULT, FALSE
 	goto_if_eq EventScript_BodySlamDeclined
-	setflag FLAG_TUTOR_BODY_SLAM
+	//setflag FLAG_TUTOR_BODY_SLAM
 	goto EventScript_BodySlamTaught
 	end
 
