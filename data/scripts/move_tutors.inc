@@ -472,9 +472,6 @@ TwoIsland_CapeBrink_House_EventScript_StarterTutor:: @ 81C4DEC
 	msgbox Text_AllowMeToTeachMonUltimateMove, MSGBOX_YESNO
 	compare VAR_RESULT, NO
 	goto_if_eq CapeBrinkTutor_EventScript_DeclineMove
-	call EventScript_CanOnlyBeLearnedOnce
-	compare VAR_RESULT, NO
-	goto_if_eq CapeBrinkTutor_EventScript_DeclineMove
 	msgbox Text_LetMeConferUltimateMove
 	closemessage
 	fadescreen FADE_TO_BLACK
@@ -493,6 +490,31 @@ CapeBrinkTutor_EventScript_MoveJustTaught:: @ 81C4E97
 
 CapeBrinkTutor_EventScript_TaughtAllMoves:: @ 81C4EA1
 	msgbox Text_FeelRejuvenated
+	getfirstpartymonname 0
+	specialvar VAR_RESULT, CapeBrinkGetMoveToTeachLeadPokemon
+	compare VAR_RESULT, FALSE
+	goto_if_eq CapeBrinkTutor_EventScript_NoLeadStarter2
+	copyvar VAR_0x8009, VAR_0x8005
+	compare VAR_FACING, DIR_NORTH
+	call_if_eq CapeBrinkTutor_EventScript_JumpInPlaceDown
+	compare VAR_FACING, DIR_SOUTH
+	call_if_eq CapeBrinkTutor_EventScript_JumpInPlaceUp
+	compare VAR_FACING, DIR_EAST
+	call_if_eq CapeBrinkTutor_EventScript_JumpInPlaceLeft
+	compare VAR_FACING, DIR_WEST
+	call_if_eq CapeBrinkTutor_EventScript_JumpInPlaceRight
+	msgbox Text_RightPokemon, MSGBOX_YESNO
+	compare VAR_RESULT, NO
+	goto_if_eq CapeBrinkTutor_EventScript_DeclineMove
+	msgbox Text_LetMeConferUltimateMove
+	closemessage
+	fadescreen FADE_TO_BLACK
+	goto CapeBrinkTutor_EventScript_ChooseMon
+	release
+	end
+
+CapeBrinkTutor_EventScript_NoLeadStarter2::
+	msgbox Text_NotTheRightPokemon
 	release
 	end
 
