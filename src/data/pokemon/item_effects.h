@@ -390,6 +390,57 @@ static const u8 sItemEffect_SitrusBerry[7] = {
     [4] = ITEM4_HEAL_HP,
     [6] = 30,
 };
+
+const u8 gItemEffect_PomegBerry[10] = {
+    [4] = ITEM4_EV_HP,
+    [5] = ITEM5_FRIENDSHIP_ALL,
+    [6] = 201,
+    [7] = 10,
+    [8] = 5,
+    [9] = 2,
+};
+
+const u8 gItemEffect_KelpsyBerry[10] = {
+    [4] = ITEM4_EV_ATK,
+    [5] = ITEM5_FRIENDSHIP_ALL,
+    [6] = 201,
+    [7] = 10,
+    [8] = 5,
+    [9] = 2,
+};
+
+const u8 gItemEffect_QualotBerry[10] = {
+    [5] = ITEM5_EV_DEF | ITEM5_FRIENDSHIP_ALL,
+    [6] = 201,
+    [7] = 10,
+    [8] = 5,
+    [9] = 2,
+};
+
+const u8 gItemEffect_HondewBerry[10] = {
+    [5] = ITEM5_EV_SPATK | ITEM5_FRIENDSHIP_ALL,
+    [6] = 201,
+    [7] = 10,
+    [8] = 5,
+    [9] = 2,
+};
+
+const u8 gItemEffect_GrepaBerry[10] = {
+    [5] = ITEM5_EV_SPDEF | ITEM5_FRIENDSHIP_ALL,
+    [6] = 201,
+    [7] = 10,
+    [8] = 5,
+    [9] = 2,
+};
+
+const u8 gItemEffect_TamatoBerry[10] = {
+    [5] = ITEM5_EV_SPEED | ITEM5_FRIENDSHIP_ALL,
+    [6] = 201,
+    [7] = 10,
+    [8] = 5,
+    [9] = 2,
+};
+
 /*
 static const u8 gItemEffect_GHPUp[10] = {
     [4] = ITEM4_EV_HP,
@@ -526,6 +577,12 @@ const u8 *const gItemEffectTable[] =
     [ITEM_PERSIM_BERRY - ITEM_POTION] = sItemEffect_PersimBerry,
     [ITEM_LUM_BERRY - ITEM_POTION] = sItemEffect_LumBerry,
     [ITEM_SITRUS_BERRY - ITEM_POTION] = sItemEffect_SitrusBerry,
+    [ITEM_POMEG_BERRY - ITEM_POTION] = gItemEffect_PomegBerry,
+    [ITEM_KELPSY_BERRY - ITEM_POTION] = gItemEffect_KelpsyBerry,
+    [ITEM_QUALOT_BERRY - ITEM_POTION] = gItemEffect_QualotBerry,
+    [ITEM_HONDEW_BERRY - ITEM_POTION] = gItemEffect_HondewBerry,
+    [ITEM_GREPA_BERRY - ITEM_POTION] = gItemEffect_GrepaBerry,
+    [ITEM_TAMATO_BERRY - ITEM_POTION] = gItemEffect_TamatoBerry,
   /*  [ITEM_G_HP_UP - ITEM_POTION] = gItemEffect_GHPUp,
     [ITEM_G_PROTEIN - ITEM_POTION] = gItemEffect_GProtein,
     [ITEM_G_IRON - ITEM_POTION] = gItemEffect_GIron,

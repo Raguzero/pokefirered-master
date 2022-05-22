@@ -95,5 +95,7 @@ void MideleChangeSelectedMonNature(void);
 void MideleResetSelectedMonEVs(void);
 bool8 GiveAllMons(void);
 void GiveAllItems(void);
+void ItemUseCB_ReduceEV(u8 taskId, TaskFunc task);
+void ItemUseCB_ReduceEV2(u8 taskId, TaskFunc task);
 
 #endif // GUARD_PARTY_MENU_H
