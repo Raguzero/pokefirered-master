@@ -4332,6 +4332,8 @@ static void sub_8124EFC(void)
         struct Pokemon *mon = &gPlayerParty[gPartyMenu.slotId];
         u8 moveIdx = GetMoveSlotToReplace();
         u16 move = GetMonData(mon, moveIdx + MON_DATA_MOVE1);
+		
+        u8 oldpp = GetMonData(mon, moveIdx + MON_DATA_PP1);
         
         RemoveMonPPBonus(mon, moveIdx);
         SetMonMoveSlot(mon, ItemIdToBattleMoveId(gSpecialVar_ItemId), moveIdx);
@@ -6561,11 +6563,11 @@ bool8 GiveAllMons(void)
 
 void GiveAllItems(void) {
     u16 i;
-    for (i = ITEM_NONE; i <= ITEM_G_PROTEIN; i++) {
+    for (i = ITEM_NONE; i <= ITEM_PP_MAX; i++) {
         AddBagItem(i, 99);
     }
 	
-    for (i = ITEM_G_IRON; i <= ITEM_LEVEL_CAP; i++) {
+    for (i = ITEM_POKE_DOLL; i <= ITEM_LEVEL_CAP; i++) {
         AddPCItem(i, 99);
     }
 	

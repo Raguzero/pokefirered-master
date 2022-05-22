@@ -25,7 +25,7 @@
 #endif
 
 #define PC_ITEMS_COUNT      30
-#define BAG_ITEMS_COUNT     42
+#define BAG_ITEMS_COUNT     64
 #define BAG_KEYITEMS_COUNT  30
 #define BAG_POKEBALLS_COUNT 13
 #define BAG_TMHM_COUNT      58
