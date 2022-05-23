@@ -4828,16 +4828,16 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
                         dataSigned = GetMonData(mon, sGetMonDataEVConstants[i], NULL);
                         if(itemEffect[idx] != 201)
                         {
-                            if (evCount >= 510)
+                            if (evCount >= MAX_TOTAL_EVS)
                                 return TRUE;
-                            if (dataSigned < 100)
+                            if (dataSigned < EV_ITEM_RAISE_LIMIT)
                             {
-                                if (dataSigned + itemEffect[idx] > 100)
-                                    evDelta = 100 - (dataSigned + itemEffect[idx]) + itemEffect[idx];
+                                if (dataSigned + itemEffect[idx] > EV_ITEM_RAISE_LIMIT)
+                                    evDelta = EV_ITEM_RAISE_LIMIT - (dataSigned + itemEffect[idx]) + itemEffect[idx];
                                 else
                                     evDelta = itemEffect[idx];
-                                if (evCount + evDelta > 510)
-                                    evDelta += 510 - (evCount + evDelta);
+                                if (evCount + evDelta > MAX_TOTAL_EVS)
+                                    evDelta += MAX_TOTAL_EVS - (evCount + evDelta);
                                 dataSigned += evDelta;
                             }
                         }
@@ -5030,16 +5030,16 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
                         dataSigned = GetMonData(mon, sGetMonDataEVConstants[i + 2], NULL);
                         if(itemEffect[idx] != 201)
                         {
-                            if (evCount >= 510)
+                            if (evCount >= MAX_TOTAL_EVS)
                                 return TRUE;
-                            if (dataSigned < 100)
+                            if (dataSigned < EV_ITEM_RAISE_LIMIT)
                             {
-                                if (dataSigned + itemEffect[idx] > 100)
-                                    evDelta = 100 - (dataSigned + itemEffect[idx]) + itemEffect[idx];
+                                if (dataSigned + itemEffect[idx] > EV_ITEM_RAISE_LIMIT)
+                                    evDelta = EV_ITEM_RAISE_LIMIT - (dataSigned + itemEffect[idx]) + itemEffect[idx];
                                 else
                                     evDelta = itemEffect[idx];
-                                if (evCount + evDelta > 510)
-                                    evDelta += 510 - (evCount + evDelta);
+                                if (evCount + evDelta > MAX_TOTAL_EVS)
+                                    evDelta += MAX_TOTAL_EVS - (evCount + evDelta);
                                 dataSigned += evDelta;
                             }
                         }
@@ -5326,10 +5326,10 @@ bool8 PokemonItemUseNoEffect(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mo
                     {
                     case 0: // EV_HP
                     case 1: // EV_ATK
-                        if (GetMonEVCount(mon) >= 510)
+                        if (GetMonEVCount(mon) >= MAX_TOTAL_EVS)
                             return TRUE;
                         data = GetMonData(mon, sGetMonDataEVConstants[i], NULL);
-                        if (data < 100)
+                        if (data < EV_ITEM_RAISE_LIMIT)
                         {
                             idx++;
                             retVal = FALSE;
@@ -5403,10 +5403,10 @@ bool8 PokemonItemUseNoEffect(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mo
                     case 1: // EV_SPEED
                     case 2: // EV_SPDEF
                     case 3: // EV_SPATK
-                        if (GetMonEVCount(mon) >= 510)
+                        if (GetMonEVCount(mon) >= MAX_TOTAL_EVS)
                             return TRUE;
                         data = GetMonData(mon, sGetMonDataEVConstants[i + 2], NULL);
-                        if (data < 100)
+                        if (data < EV_ITEM_RAISE_LIMIT)
                         {
                             retVal = FALSE;
                             idx++;
@@ -6168,9 +6168,9 @@ void MonGainEVs(struct Pokemon *mon, u16 defeatedSpecies)
         if (totalEVs + (s16)evIncrease > MAX_TOTAL_EVS)
             evIncrease = ((s16)evIncrease + MAX_TOTAL_EVS) - (totalEVs + evIncrease);
 
-        if (evs[i] + (s16)evIncrease > 252)
+        if (evs[i] + (s16)evIncrease > EV_ITEM_RAISE_LIMIT)
         {
-            int val1 = (s16)evIncrease + 252;
+            int val1 = (s16)evIncrease + EV_ITEM_RAISE_LIMIT;
             int val2 = evs[i] + evIncrease;
             evIncrease = val1 - val2;
         }

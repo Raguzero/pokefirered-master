@@ -218,6 +218,8 @@
 
 #define PARTY_SIZE 6
 #define MAX_TOTAL_EVS 510
+#define EV_ITEM_RAISE_LIMIT 252
+
 #define UNOWN_FORM_COUNT 28
 #define BOX_NAME_LENGTH 8
 
