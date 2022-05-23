@@ -2560,3 +2560,13 @@ static void Task_WingFlapSound(u8 taskId)
     if (data[0] == gSpecialVar_0x8004 - 1)
         DestroyTask(taskId);
 }
+
+void CheckSaveFileSize(void)//used in debug menu from time to time as a special to check saveblock space and buffer to strings for output.
+{
+    u32 size = (sizeof(struct SaveBlock1));
+    u32 size2 = (sizeof(struct SaveBlock2));
+    u32 size3 = (sizeof(struct PokemonStorage));
+    ConvertIntToDecimalStringN(gStringVar1, size, STR_CONV_MODE_LEFT_ALIGN, 6);
+    ConvertIntToDecimalStringN(gStringVar2, size2, STR_CONV_MODE_LEFT_ALIGN, 6);
+    ConvertIntToDecimalStringN(gStringVar3, size3, STR_CONV_MODE_LEFT_ALIGN, 6);
+}

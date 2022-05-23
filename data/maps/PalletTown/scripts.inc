@@ -712,8 +712,13 @@ Text_Placeholder_Option7_DisableFlagRandomBattleCC:
 	.string "DISABLERANDOMCC$"
 	
 EventScript_End:
+    callnative(CheckSaveFileSize)
+    msgbox SaveFileStructMsg
 	release
 	end
+
+SaveFileStructMsg:
+    .string "SaveBlock1 size is {STR_VAR_1}/15872 bytes.\nSaveBlock2 size is {STR_VAR_2}/3968 bytes.\pPokemonStorage is {STR_VAR_3} bytes long.\nMax size is 35712 bytes.$"
 
 EventScript_TeamMons::	
 	givecustommon SPECIES_OCTILLERY_BETA, 100, ITEM_CHOICE_SPECS, ITEM_MASTER_BALL, NATURE_MODEST, 0, 252, 252, 252, 252, 252, 252, 31, 31, 31, 31, 31, 31, MOVE_SURF, MOVE_WATERFALL, MOVE_FLASH_CANNON, MOVE_MONADO_POWER, TRUE, 0
