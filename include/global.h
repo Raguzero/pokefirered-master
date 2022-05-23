@@ -829,7 +829,6 @@ struct SaveBlock1
     /*0x0EE0*/ u8 flags[NUM_FLAG_BYTES];
     /*0x1000*/ u16 vars[VARS_COUNT];
     /*0x1200*/ u32 gameStats[NUM_GAME_STATS];
-    /*0x1300*/ struct QuestLog questLog[QUEST_LOG_SCENE_COUNT];
     /*0x2CA0*/ u16 easyChatProfile[6];
     /*0x2CAC*/ u16 easyChatBattleStart[6];
     /*0x2CB8*/ u16 easyChatBattleWon[6];
