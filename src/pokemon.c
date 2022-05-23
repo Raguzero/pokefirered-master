@@ -5027,7 +5027,6 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
                     case 2: // EV_SPDEF
                     case 3: // EV_SPATK
                         evCount = GetMonEVCount(mon);
-                        if (evCount >= 510)
                         dataSigned = GetMonData(mon, sGetMonDataEVConstants[i + 2], NULL);
                         if(itemEffect[idx] != 201)
                         {
