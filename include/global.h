@@ -323,7 +323,6 @@ struct SaveBlock2
     /*0xAF0*/ struct BerryCrush berryCrush;
     /*0xB00*/ struct PokemonJumpResults pokeJump;
     /*0xB10*/ struct BerryPickingResults berryPick;
-    /*0xB20*/ //u8 filler_B20[0x400];
     /*0xF20*/ u32 encryptionKey;
 }; // size: 0xF24
 
@@ -820,8 +819,6 @@ struct SaveBlock1
     /*0x0464*/ struct ItemSlot bagPocket_TMHM[BAG_TMHM_COUNT];
     /*0x054c*/ struct ItemSlot bagPocket_Berries[BAG_BERRIES_COUNT];
     /*0x05F8*/ u8 seen1[DEX_FLAGS_NO];
-    /*0x062C*/ u16 berryBlenderRecords[3]; // unused
-    /*0x0632*/ u8 field_632[6]; // unused?
     /*0x0638*/ u16 trainerRematchStepCounter;
     /*0x063A*/ u8 ALIGNED(2) trainerRematches[100];
     /*0x06A0*/ struct ObjectEvent objectEvents[OBJECT_EVENTS_COUNT];
@@ -844,17 +841,14 @@ struct SaveBlock1
     /*0x30D0*/ struct Roamer roamer;
     /*0x30EC*/ struct EnigmaBerry enigmaBerry;
     /*0x3120*/ struct MEventBuffers mysteryEventBuffers;
-    /*0x348C*/ u8 filler_348C[400];
     /*0x361C*/ struct RamScript ramScript;
     /*0x3A08*/ u8 filler3A08[16];
     /*0x3A18*/ u8 seen2[DEX_FLAGS_NO];
     /*0x3A4C*/ u8 rivalName[PLAYER_NAME_LENGTH + 1];
     /*0x3A54*/ struct FameCheckerSaveData fameChecker[NUM_FAMECHECKER_PERSONS];
-    /*0x3A94*/ u8 filler3A94[0x40];
     /*0x3AD4*/ u8 registeredTexts[UNION_ROOM_KB_ROW_COUNT][21];
     /*0x3BA8*/ struct TrainerNameRecord trainerNameRecords[20];
     /*0x3C98*/ struct DaycareMon route5DayCareMon;
-    /*0x3D24*/ u8 filler3D24[0x10];
     /*0x3D34*/ u32 towerChallengeId;
     /*0x3D38*/ struct TrainerTower trainerTower[NUM_TOWER_CHALLENGE_TYPES];
 			   u8 dexNavSearchLevels[SPECIES_EGG]; // O ES u8 dexNavSearchLevels[NUM_SPECIES]; ???
