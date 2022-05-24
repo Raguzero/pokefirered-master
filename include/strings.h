@@ -1635,8 +1635,14 @@ extern const u8 gText_QuirkyNature[];
 // NICKNAMES
 extern const u8 gText_Nickname_Catermano[];
 
+// REDUCE EV BERRY
 extern const u8 gText_PkmnFriendlyBaseVar2Fell[];
 extern const u8 gText_PkmnFriendlyBaseVar2CantFall[];
 extern const u8 gText_PkmnAdoresBaseVar2Fell[];
+
+// SWEET HEART
+extern const u8 gText_FriendshipIncreased[];
+// SECRET POTION
+extern const u8 gText_IVsIncreased[];
 
 #endif //GUARD_STRINGS_H

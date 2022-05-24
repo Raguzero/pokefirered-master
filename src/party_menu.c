@@ -4432,6 +4432,12 @@ static void GetMedicineItemEffectMessage(u16 item)
     case ITEM_EFFECT_HEAL_PP:
         StringExpandPlaceholders(gStringVar4, gText_PPWasRestored);
         break;
+    case ITEM_EFFECT_FRIENDSHIP:
+        StringExpandPlaceholders(gStringVar4, gText_FriendshipIncreased);
+        break;
+    case ITEM_EFFECT_IVS:
+        StringExpandPlaceholders(gStringVar4, gText_IVsIncreased);
+        break;
     default:
         StringExpandPlaceholders(gStringVar4, gText_WontHaveEffect);
         break;
@@ -5447,6 +5453,9 @@ u8 GetItemEffectType(u16 item)
         else
             return ITEM_EFFECT_CURE_ALL_STATUS;
     }
+    // Check if effects [4] or [5] are in use
+  if (itemEffect[4] | itemEffect[5] | 0) 
+  {
     if (itemEffect[4] & (ITEM4_REVIVE | ITEM4_HEAL_HP))
         return ITEM_EFFECT_HEAL_HP;
     else if (itemEffect[4] & ITEM4_EV_ATK)
@@ -5471,6 +5480,19 @@ u8 GetItemEffectType(u16 item)
         return ITEM_EFFECT_HEAL_PP;
     else
         return ITEM_EFFECT_NONE;
+}
+
+    if (itemEffect[6] & ITEM6_FRIENDSHIP) 
+	{
+        return ITEM_EFFECT_FRIENDSHIP;
+    }
+	
+    if (itemEffect[6] & ITEM6_IVS)
+    {
+        return ITEM_EFFECT_IVS;
+    }
+
+    return ITEM_EFFECT_NONE;
 }
 
 static void TryTutorSelectedMon(u8 taskId)

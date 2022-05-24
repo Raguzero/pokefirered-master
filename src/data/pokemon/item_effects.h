@@ -490,7 +490,7 @@ static const u8 gItemEffect_GZinc[10] = {
     [8] = 3,
     [9] = 2,
 };
-/*
+
 static const u8 gItemEffect_SweetHeart[10] = {
     [6] = ITEM6_FRIENDSHIP,
     [7] = 255, // amistad que establece el objeto al usarse
@@ -499,7 +499,7 @@ static const u8 gItemEffect_SweetHeart[10] = {
 static const u8 gItemEffect_SecretPotion[10] = {
     [6] = ITEM6_IVS,
     [7] = 31, // IVs que establece el objeto al usarse
-};*/
+};
 
 const u8 *const gItemEffectTable[] =
 {
@@ -588,8 +588,8 @@ const u8 *const gItemEffectTable[] =
     [ITEM_G_CARBOS - ITEM_POTION] = gItemEffect_GCarbos,
     [ITEM_G_CALCIUM - ITEM_POTION] = gItemEffect_GCalcium,
     [ITEM_G_ZINC - ITEM_POTION] = gItemEffect_GZinc,
-    [ITEM_GOLDEN_CANDY - ITEM_POTION] = sItemEffect_RareCandy,
-   /* [ITEM_SWEET_HEART - ITEM_POTION] = gItemEffect_SweetHeart,
-    [ITEM_SECRET_POTION - ITEM_POTION] = gItemEffect_SecretPotion,*/
+    //[ITEM_GOLDEN_CANDY - ITEM_POTION] = sItemEffect_RareCandy,
+	[ITEM_SWEET_HEART - ITEM_POTION] = gItemEffect_SweetHeart,
+    [ITEM_SECRET_POTION - ITEM_POTION] = gItemEffect_SecretPotion,
     [LAST_BERRY_INDEX - ITEM_POTION] = NULL,
 };
