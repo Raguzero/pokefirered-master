@@ -100,39 +100,56 @@ PalletTown_RivalsHouse_EventScript_RateMonFriendship:: @ 8168E46
 	case 5, PalletTown_RivalsHouse_EventScript_MonFriendshipHigher
 	case 6, PalletTown_RivalsHouse_EventScript_MonFriendshipHighest
 	end
+	
+PalletTown_RivalsHouse_EventScript_TellNumber::
+	msgbox PalletTown_RivalsHouse_Text_TellNumber, MSGBOX_DEFAULT
+	release
+	end
+	
+PalletTown_RivalsHouse_Text_TellNumber::
+	.string "If I had to represent your POKéMON's\n"
+	.string "friendship as a number, I'd say it's\l"
+	.string "{STR_VAR_1}...$"
 
 PalletTown_RivalsHouse_EventScript_MonFriendshipLowest:: @ 8168EA6
 	msgbox PalletTown_RivalsHouse_Text_WhyWouldMonHateYouSoMuch
+	goto PalletTown_RivalsHouse_EventScript_TellNumber
 	release
 	end
 
 PalletTown_RivalsHouse_EventScript_MonFriendshipLower:: @ 8168EB0
 	msgbox PalletTown_RivalsHouse_Text_DontLikeWayItGlaresAtYou
+	goto PalletTown_RivalsHouse_EventScript_TellNumber
 	release
 	end
 
 PalletTown_RivalsHouse_EventScript_MonFriendshipLow:: @ 8168EBA
 	msgbox PalletTown_RivalsHouse_Text_NotFamiliarWithYouYet
+	goto PalletTown_RivalsHouse_EventScript_TellNumber
 	release
 	end
 
 PalletTown_RivalsHouse_EventScript_MonFriendshipMid:: @ 8168EC4
 	msgbox PalletTown_RivalsHouse_Text_ItsWarmingUpToYou
+	goto PalletTown_RivalsHouse_EventScript_TellNumber
 	release
 	end
 
 PalletTown_RivalsHouse_EventScript_MonFriendshipHigh:: @ 8168ECE
 	msgbox PalletTown_RivalsHouse_Text_ItsQuiteFriendly
+	goto PalletTown_RivalsHouse_EventScript_TellNumber
 	release
 	end
 
 PalletTown_RivalsHouse_EventScript_MonFriendshipHigher:: @ 8168ED8
 	msgbox PalletTown_RivalsHouse_Text_ItLooksVeryHappy
+	goto PalletTown_RivalsHouse_EventScript_TellNumber
 	release
 	end
 
 PalletTown_RivalsHouse_EventScript_MonFriendshipHighest:: @ 8168EE2
 	msgbox PalletTown_RivalsHouse_Text_CouldntLoveYouMore
+	goto PalletTown_RivalsHouse_EventScript_TellNumber
 	release
 	end
 

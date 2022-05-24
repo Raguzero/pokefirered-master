@@ -181,7 +181,10 @@ u16 GetWeekCount(void)
 u8 GetLeadMonFriendship(void)
 {
     struct Pokemon * pokemon = &gPlayerParty[GetLeadMonIndex()];
-    if (GetMonData(pokemon, MON_DATA_FRIENDSHIP) == 255)
+	
+    ConvertIntToDecimalStringN(gStringVar1, GetMonData(pokemon, MON_DATA_FRIENDSHIP), STR_CONV_MODE_LEFT_ALIGN, 3);
+	
+    if (GetMonData(pokemon, MON_DATA_FRIENDSHIP) == MAX_FRIENDSHIP)
         return 6;
     else if (GetMonData(pokemon, MON_DATA_FRIENDSHIP) >= 200)
         return 5;

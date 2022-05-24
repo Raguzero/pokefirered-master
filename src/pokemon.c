@@ -2059,13 +2059,13 @@ static const u8 sStatsToRaise[] =
 
 static const s8 sFriendshipEventDeltas[][3] = 
 {
-    [FRIENDSHIP_EVENT_GROW_LEVEL]           = { 5,  3,  2 },
-    [FRIENDSHIP_EVENT_VITAMIN]              = { 5,  3,  2 },
-    [FRIENDSHIP_EVENT_BATTLE_ITEM]          = { 1,  1,  0 },
-    [FRIENDSHIP_EVENT_LEAGUE_BATTLE]        = { 3,  2,  1 },
-    [FRIENDSHIP_EVENT_LEARN_TMHM]           = { 1,  1,  0 },
-    [FRIENDSHIP_EVENT_WALKING]              = { 1,  1,  1 },
-    [FRIENDSHIP_EVENT_MASSAGE]              = { 3,  3,  3 },
+    [FRIENDSHIP_EVENT_GROW_LEVEL]           = { 10,  6,  4 },
+    [FRIENDSHIP_EVENT_VITAMIN]              = { 10,  6,  4 },
+    [FRIENDSHIP_EVENT_BATTLE_ITEM]          = { 0,  0,  0 },
+    [FRIENDSHIP_EVENT_LEAGUE_BATTLE]        = { 6,  4,  2 },
+    [FRIENDSHIP_EVENT_LEARN_TMHM]           = { 0,  0,  0 },
+    [FRIENDSHIP_EVENT_WALKING]              = { 2,  2,  2 },
+    [FRIENDSHIP_EVENT_MASSAGE]              = { 6,  6,  6 },
     [FRIENDSHIP_EVENT_FAINT_SMALL]          = {-1, -1, -1 },
     [FRIENDSHIP_EVENT_FAINT_OUTSIDE_BATTLE] = {-5, -5, -10 },
     [FRIENDSHIP_EVENT_FAINT_LARGE]          = {-5, -5, -10 },
@@ -5097,8 +5097,8 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
                             }
                             if (friendship < 0)
                                 friendship = 0;
-                            if (friendship > 255)
-                                friendship = 255;
+                            if (friendship > MAX_FRIENDSHIP)
+                                friendship = MAX_FRIENDSHIP;
                             SetMonData(mon, MON_DATA_FRIENDSHIP, &friendship);
 							retVal = FALSE;
                         }
@@ -5123,8 +5123,8 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
                             }
                             if (friendship < 0)
                                 friendship = 0;
-                            if (friendship > 255)
-                                friendship = 255;
+                            if (friendship > MAX_FRIENDSHIP)
+                                friendship = MAX_FRIENDSHIP;
                             SetMonData(mon, MON_DATA_FRIENDSHIP, &friendship);
 							retVal = FALSE;
                         }
@@ -5148,8 +5148,8 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
                             }
                             if (friendship < 0)
                                 friendship = 0;
-                            if (friendship > 255)
-                                friendship = 255;
+                            if (friendship > MAX_FRIENDSHIP)
+                                friendship = MAX_FRIENDSHIP;
                             SetMonData(mon, MON_DATA_FRIENDSHIP, &friendship);
 							retVal = FALSE;
                         }
@@ -6171,8 +6171,8 @@ void AdjustFriendship(struct Pokemon *mon, u8 event)
         // Clamp to u8
         if (friendship < 0)
             friendship = 0;
-        if (friendship > 255)
-            friendship = 255;
+        if (friendship > MAX_FRIENDSHIP)
+            friendship = MAX_FRIENDSHIP;
 
         SetMonData(mon, MON_DATA_FRIENDSHIP, &friendship);
     }

@@ -1,3 +1,7 @@
+#define FRIENDSHIP_VITAMIN_INCREASE_LOW  10
+#define FRIENDSHIP_VITAMIN_INCREASE_MED  6
+#define FRIENDSHIP_VITAMIN_INCREASE_HIGH 4
+
 static const u8 sItemEffect_Potion[7] = {
     [4] = ITEM4_HEAL_HP,
     [6] = 20,
@@ -164,42 +168,42 @@ static const u8 sItemEffect_HPUp[10] = {
     [4] = ITEM4_EV_HP,
     [5] = ITEM5_FRIENDSHIP_ALL,
     [6] = 10,
-    [7] = 5,
-    [8] = 3,
-    [9] = 2,
+    [7] = FRIENDSHIP_VITAMIN_INCREASE_LOW,
+    [8] = FRIENDSHIP_VITAMIN_INCREASE_MED,
+    [9] = FRIENDSHIP_VITAMIN_INCREASE_HIGH,
 };
 
 static const u8 sItemEffect_Protein[10] = {
     [4] = ITEM4_EV_ATK,
     [5] = ITEM5_FRIENDSHIP_ALL,
     [6] = 10,
-    [7] = 5,
-    [8] = 3,
-    [9] = 2,
+    [7] = FRIENDSHIP_VITAMIN_INCREASE_LOW,
+    [8] = FRIENDSHIP_VITAMIN_INCREASE_MED,
+    [9] = FRIENDSHIP_VITAMIN_INCREASE_HIGH,
 };
 
 static const u8 sItemEffect_Iron[10] = {
     [5] = ITEM5_EV_DEF | ITEM5_FRIENDSHIP_ALL,
     [6] = 10,
-    [7] = 5,
-    [8] = 3,
-    [9] = 2,
+    [7] = FRIENDSHIP_VITAMIN_INCREASE_LOW,
+    [8] = FRIENDSHIP_VITAMIN_INCREASE_MED,
+    [9] = FRIENDSHIP_VITAMIN_INCREASE_HIGH,
 };
 
 static const u8 sItemEffect_Carbos[10] = {
     [5] = ITEM5_EV_SPEED | ITEM5_FRIENDSHIP_ALL,
     [6] = 10,
-    [7] = 5,
-    [8] = 3,
-    [9] = 2,
+    [7] = FRIENDSHIP_VITAMIN_INCREASE_LOW,
+    [8] = FRIENDSHIP_VITAMIN_INCREASE_MED,
+    [9] = FRIENDSHIP_VITAMIN_INCREASE_HIGH,
 };
 
 static const u8 sItemEffect_Calcium[10] = {
     [5] = ITEM5_EV_SPATK | ITEM5_FRIENDSHIP_ALL,
     [6] = 10,
-    [7] = 5,
-    [8] = 3,
-    [9] = 2,
+    [7] = FRIENDSHIP_VITAMIN_INCREASE_LOW,
+    [8] = FRIENDSHIP_VITAMIN_INCREASE_MED,
+    [9] = FRIENDSHIP_VITAMIN_INCREASE_HIGH,
 };
 
 static const u8 sItemEffect_RareCandy[10] = {
@@ -207,32 +211,32 @@ static const u8 sItemEffect_RareCandy[10] = {
     [4] = ITEM4_REVIVE | ITEM4_HEAL_HP,
     [5] = ITEM5_FRIENDSHIP_ALL,
     [6] = 0xFD,
-    [7] = 5,
-    [8] = 3,
-    [9] = 2,
+    [7] = FRIENDSHIP_VITAMIN_INCREASE_LOW,
+    [8] = FRIENDSHIP_VITAMIN_INCREASE_MED,
+    [9] = FRIENDSHIP_VITAMIN_INCREASE_HIGH,
 };
 
 static const u8 sItemEffect_PPUp[9] = {
     [4] = ITEM4_PP_UP,
     [5] = ITEM5_FRIENDSHIP_ALL,
-    [6] = 5,
-    [7] = 3,
-    [8] = 2,
+    [6] = FRIENDSHIP_VITAMIN_INCREASE_LOW,
+    [7] = FRIENDSHIP_VITAMIN_INCREASE_MED,
+    [8] = FRIENDSHIP_VITAMIN_INCREASE_HIGH,
 };
 
 static const u8 sItemEffect_Zinc[10] = {
     [5] = ITEM5_EV_SPDEF | ITEM5_FRIENDSHIP_ALL,
     [6] = 10,
-    [7] = 5,
-    [8] = 3,
-    [9] = 2,
+    [7] = FRIENDSHIP_VITAMIN_INCREASE_LOW,
+    [8] = FRIENDSHIP_VITAMIN_INCREASE_MED,
+    [9] = FRIENDSHIP_VITAMIN_INCREASE_HIGH,
 };
 
 static const u8 sItemEffect_PPMax[9] = {
     [5] = ITEM5_PP_MAX | ITEM5_FRIENDSHIP_ALL,
-    [6] = 5,
-    [7] = 3,
-    [8] = 2,
+    [6] = FRIENDSHIP_VITAMIN_INCREASE_LOW,
+    [7] = FRIENDSHIP_VITAMIN_INCREASE_MED,
+    [8] = FRIENDSHIP_VITAMIN_INCREASE_HIGH,
 };
 
 static const u8 sItemEffect_GuardSpec[8] = {
@@ -445,50 +449,50 @@ static const u8 gItemEffect_GHPUp[10] = {
     [4] = ITEM4_EV_HP,
     [5] = ITEM5_FRIENDSHIP_ALL,
     [6] = 252,
-    [7] = 5,
-    [8] = 3,
-    [9] = 2,
+    [7] = FRIENDSHIP_VITAMIN_INCREASE_LOW,
+    [8] = FRIENDSHIP_VITAMIN_INCREASE_MED,
+    [9] = FRIENDSHIP_VITAMIN_INCREASE_HIGH,
 };
 
 static const u8 gItemEffect_GProtein[10] = {
     [4] = ITEM4_EV_ATK,
     [5] = ITEM5_FRIENDSHIP_ALL,
     [6] = 252,
-    [7] = 5,
-    [8] = 3,
-    [9] = 2,
+    [7] = FRIENDSHIP_VITAMIN_INCREASE_LOW,
+    [8] = FRIENDSHIP_VITAMIN_INCREASE_MED,
+    [9] = FRIENDSHIP_VITAMIN_INCREASE_HIGH,
 };
 
 static const u8 gItemEffect_GIron[10] = {
     [5] = ITEM5_EV_DEF | ITEM5_FRIENDSHIP_ALL,
     [6] = 252,
-    [7] = 5,
-    [8] = 3,
-    [9] = 2,
+    [7] = FRIENDSHIP_VITAMIN_INCREASE_LOW,
+    [8] = FRIENDSHIP_VITAMIN_INCREASE_MED,
+    [9] = FRIENDSHIP_VITAMIN_INCREASE_HIGH,
 };
 
 static const u8 gItemEffect_GCarbos[10] = {
     [5] = ITEM5_EV_SPEED | ITEM5_FRIENDSHIP_ALL,
     [6] = 252,
-    [7] = 5,
-    [8] = 3,
-    [9] = 2,
+    [7] = FRIENDSHIP_VITAMIN_INCREASE_LOW,
+    [8] = FRIENDSHIP_VITAMIN_INCREASE_MED,
+    [9] = FRIENDSHIP_VITAMIN_INCREASE_HIGH,
 };
 
 static const u8 gItemEffect_GCalcium[10] = {
     [5] = ITEM5_EV_SPATK | ITEM5_FRIENDSHIP_ALL,
     [6] = 252,
-    [7] = 5,
-    [8] = 3,
-    [9] = 2,
+    [7] = FRIENDSHIP_VITAMIN_INCREASE_LOW,
+    [8] = FRIENDSHIP_VITAMIN_INCREASE_MED,
+    [9] = FRIENDSHIP_VITAMIN_INCREASE_HIGH,
 };
 
 static const u8 gItemEffect_GZinc[10] = {
     [5] = ITEM5_EV_SPDEF | ITEM5_FRIENDSHIP_ALL,
     [6] = 252,
-    [7] = 5,
-    [8] = 3,
-    [9] = 2,
+    [7] = FRIENDSHIP_VITAMIN_INCREASE_LOW,
+    [8] = FRIENDSHIP_VITAMIN_INCREASE_MED,
+    [9] = FRIENDSHIP_VITAMIN_INCREASE_HIGH,
 };
 
 static const u8 gItemEffect_SweetHeart[10] = {
