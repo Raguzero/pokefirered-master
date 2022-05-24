@@ -18,7 +18,6 @@ enum
 {
     MENUITEM_TEXTSPEED = 0,
     MENUITEM_BATTLESCENE,
-    MENUITEM_BATTLESTYLE,
     MENUITEM_SOUND,
     MENUITEM_BUTTONMODE,
     MENUITEM_FRAMETYPE,
@@ -130,13 +129,12 @@ static const struct BgTemplate sOptionMenuBgTemplates[] =
 };
 
 static const u16 sOptionMenuPalette[] = INCBIN_U16("graphics/misc/unk_83cc2e4.gbapal");
-static const u16 sOptionMenuItemCounts[MENUITEM_COUNT] = {4, 2, 2, 2, 2, 10, 0};
+static const u16 sOptionMenuItemCounts[MENUITEM_COUNT] = {4, 2, 2, 2, 10, 0};
 
 static const u8 *const sOptionMenuItemsNames[MENUITEM_COUNT] =
 {
     [MENUITEM_TEXTSPEED]   = gText_TextSpeed,
     [MENUITEM_BATTLESCENE] = gText_BattleScene,
-    [MENUITEM_BATTLESTYLE] = gText_BattleStyle,
     [MENUITEM_SOUND]       = gText_Sound,
     [MENUITEM_BUTTONMODE]  = gText_ButtonMode,
     [MENUITEM_FRAMETYPE]   = gText_Frame,
@@ -155,12 +153,6 @@ static const u8 *const sBattleSceneOptions[] =
 {
     gText_BattleSceneOn, 
     gText_BattleSceneOff
-};
-
-static const u8 *const sBattleStyleOptions[] =
-{
-    gText_BattleStyleShift,
-    gText_BattleStyleSet
 };
 
 static const u8 *const sSoundOptions[] =
@@ -207,7 +199,6 @@ void CB2_OptionsMenuFromStartMenu(void)
     sOptionMenuPtr->cursorPos = 0;
     sOptionMenuPtr->option[MENUITEM_TEXTSPEED] = gSaveBlock2Ptr->optionsTextSpeed;
     sOptionMenuPtr->option[MENUITEM_BATTLESCENE] = gSaveBlock2Ptr->optionsBattleSceneOff;
-    sOptionMenuPtr->option[MENUITEM_BATTLESTYLE] = gSaveBlock2Ptr->optionsBattleStyle;
     sOptionMenuPtr->option[MENUITEM_SOUND] = gSaveBlock2Ptr->optionsSound;
     sOptionMenuPtr->option[MENUITEM_BUTTONMODE] = gSaveBlock2Ptr->optionsButtonMode;
     sOptionMenuPtr->option[MENUITEM_FRAMETYPE] = gSaveBlock2Ptr->optionsWindowFrameType;
@@ -481,9 +472,6 @@ static void BufferOptionMenuString(u8 selection)
     case MENUITEM_BATTLESCENE:
         AddTextPrinterParameterized3(1, 2, x, y, dst, -1, sBattleSceneOptions[sOptionMenuPtr->option[selection]]);
         break;
-    case MENUITEM_BATTLESTYLE:
-        AddTextPrinterParameterized3(1, 2, x, y, dst, -1, sBattleStyleOptions[sOptionMenuPtr->option[selection]]);
-        break;
     case MENUITEM_SOUND:
         AddTextPrinterParameterized3(1, 2, x, y, dst, -1, sSoundOptions[sOptionMenuPtr->option[selection]]);
         break;
@@ -510,7 +498,6 @@ static void CloseAndSaveOptionMenu(u8 taskId)
     FreeAllWindowBuffers();
     gSaveBlock2Ptr->optionsTextSpeed = sOptionMenuPtr->option[MENUITEM_TEXTSPEED];
     gSaveBlock2Ptr->optionsBattleSceneOff = sOptionMenuPtr->option[MENUITEM_BATTLESCENE];
-    gSaveBlock2Ptr->optionsBattleStyle = sOptionMenuPtr->option[MENUITEM_BATTLESTYLE];
     gSaveBlock2Ptr->optionsSound = sOptionMenuPtr->option[MENUITEM_SOUND];
     gSaveBlock2Ptr->optionsButtonMode = sOptionMenuPtr->option[MENUITEM_BUTTONMODE];
     gSaveBlock2Ptr->optionsWindowFrameType = sOptionMenuPtr->option[MENUITEM_FRAMETYPE];
