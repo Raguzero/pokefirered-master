@@ -11565,3 +11565,63 @@ static const struct TrainerMonNoItemDefaultMoves sTrainerMons_CueBallPaxton[] = 
         .species = SPECIES_MUK,
     },
 };
+
+static const struct TrainerMonCustomMidele sTrainerMons_Debug[] = {
+    {
+    .iv = 31,
+    .lvl = 9,
+    .species = SPECIES_DRATINI,
+	.nature = NATURE_TIMID,
+	.heldItem = ITEM_LEFTOVERS,
+	.initial_status1 = STATUS1_SLEEP,
+	.hpType = TYPE_ROCK,
+	.ability = 1,
+	.evs = {224, 0, 0, 0, 0, 0},
+    .moves = {MOVE_HIDDEN_POWER, MOVE_SLEEP_TALK, MOVE_FLAMETHROWER, MOVE_DRAGON_BREATH}
+    },
+    {
+        .iv = 31,
+        .lvl = 9,
+        .species = SPECIES_SQUIRTLE,
+		.nature = NATURE_RELAXED,
+		.friendship = 255,
+		.hpType = TYPE_ICE,
+        .moves = {MOVE_FRUSTRATION, MOVE_TAIL_WHIP, MOVE_HIDDEN_POWER, MOVE_NONE},
+    },
+    {
+        .iv = 31,
+        .lvl = 9,
+        .species = SPECIES_SQUIRTLE,
+		.nature = NATURE_RELAXED,
+		.friendship = 255,
+		.hpType = TYPE_ICE,
+        .moves = {MOVE_FRUSTRATION, MOVE_TAIL_WHIP, MOVE_HIDDEN_POWER, MOVE_NONE},
+    },
+    {
+        .iv = 31,
+        .lvl = 9,
+        .species = SPECIES_SQUIRTLE,
+		.nature = NATURE_RELAXED,
+		.friendship = 255,
+		.hpType = TYPE_ICE,
+        .moves = {MOVE_FRUSTRATION, MOVE_TAIL_WHIP, MOVE_HIDDEN_POWER, MOVE_NONE},
+    },
+    {
+        .iv = 31,
+        .lvl = 9,
+        .species = SPECIES_SQUIRTLE,
+		.nature = NATURE_RELAXED,
+		.friendship = 255,
+		.hpType = TYPE_ICE,
+        .moves = {MOVE_FRUSTRATION, MOVE_TAIL_WHIP, MOVE_HIDDEN_POWER, MOVE_NONE},
+    },
+    {
+        .iv = 31,
+        .lvl = 9,
+        .species = SPECIES_SQUIRTLE,
+		.nature = NATURE_RELAXED,
+		.friendship = 255,
+		.hpType = TYPE_ICE,
+        .moves = {MOVE_FRUSTRATION, MOVE_TAIL_WHIP, MOVE_HIDDEN_POWER, MOVE_NONE},
+    },
+};

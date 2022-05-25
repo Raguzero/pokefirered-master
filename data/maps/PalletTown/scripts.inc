@@ -670,8 +670,8 @@ EventScript_Debug_Pallet_Town::
 	buffercustomstring 2, Text_Placeholder_Option3_AllItems
 	buffercustomstring 3, Text_Placeholder_Option4_ActiveFlagsAdventure
 	buffercustomstring 4, Text_Placeholder_Option5_DisableFlagsAdventure
-	buffercustomstring 5, Text_Placeholder_Option6_ActiveFlagRandomBattleCC
-	buffercustomstring 6, Text_Placeholder_Option7_DisableFlagRandomBattleCC
+	buffercustomstring 5, Text_Placeholder_Option6_IndividualRandomBattleCC
+	buffercustomstring 6, Text_Placeholder_Option7_DoblesRandomBattleCC
 	setvar VAR_TMP_CUSTOM_MENU_SIZE 7
 	multichoice 0, 0, MULTICHOICE_CUSTOM, FALSE
 	switch VAR_RESULT
@@ -680,8 +680,8 @@ EventScript_Debug_Pallet_Town::
 	case 2, EventScript_AllItems
 	case 3, EventScript_ActiveFlagsAdventure
 	case 4, EventScript_DisableFlagsAdventure
-	case 5, EventScript_ActiveFlagRandomBattleCC
-	case 6, EventScript_DisableFlagRandomBattleCC
+	case 5, EventScript_IndividualRandomBattleCC
+	case 6, EventScript_DoblesRandomBattleCC
 	case 127, EventScript_End
 	release
 	end
@@ -705,11 +705,11 @@ Text_Placeholder_Option4_ActiveFlagsAdventure:
 Text_Placeholder_Option5_DisableFlagsAdventure:
 	.string "DISABLEFLAGADVEN$"
 	
-Text_Placeholder_Option6_ActiveFlagRandomBattleCC:
-	.string "ACTIVERANDOMCC$"
+Text_Placeholder_Option6_IndividualRandomBattleCC:
+	.string "EMPIEZA INDIVIDUAL CC$"
 	
-Text_Placeholder_Option7_DisableFlagRandomBattleCC:
-	.string "DISABLERANDOMCC$"
+Text_Placeholder_Option7_DoblesRandomBattleCC:
+	.string "EMPIEZA DOBLES CC$"
 	
 EventScript_End:
     callnative(CheckSaveFileSize)
@@ -910,12 +910,20 @@ EventScript_DisableFlagsAdventure::
 	release
 	end
 	
-EventScript_ActiveFlagRandomBattleCC::
+EventScript_IndividualRandomBattleCC::
+    special SavePlayerParty
 	setflag FLAG_RYU_RANDOMBATTLE  // Test random battle activado
+	trainerbattle_no_intro TRAINER_DEBUG, Route22_Text_LateRivalDefeat
+	clearflag FLAG_RYU_RANDOMBATTLE // Test random battle desactivado
+	special LoadPlayerParty
 	release
 	end	
 
-EventScript_DisableFlagRandomBattleCC::
+EventScript_DoblesRandomBattleCC::
+    special SavePlayerParty
+	setflag FLAG_RYU_RANDOMBATTLE // Test random battle desactivado
+	trainerbattle_no_intro TRAINER_DEBUG_2, Route22_Text_LateRivalDefeat
 	clearflag FLAG_RYU_RANDOMBATTLE // Test random battle desactivado
+	special LoadPlayerParty
 	release
 	end
