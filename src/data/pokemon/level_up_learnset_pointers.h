@@ -1297,5 +1297,13 @@ const u16 *const gLevelUpLearnsets[NUM_SPECIES] =
     [SPECIES_LUXWAN] = sLuxwanLevelUpLearnset,
 	// New Evos (Giga)
 	[SPECIES_GARBODOR_GIGA] = sGarbodorGigaLevelUpLearnset,
+	[SPECIES_PARASPOR] = sParasporLevelUpLearnset,
+	[SPECIES_VULPIII] = sVulpiiiLevelUpLearnset,
+	[SPECIES_PUPPERON] = sPupperonLevelUpLearnset,
+	[SPECIES_KOLTA] = sKoltaLevelUpLearnset,
+	[SPECIES_COINPUR] = sCoinpurLevelUpLearnset,
+	[SPECIES_DODAERIE] = sDodaerieLevelUpLearnset,
+	[SPECIES_MOIBELLE] = sMoibelleLevelUpLearnset,
+	[SPECIES_BELLEDAM] = sBelledamLevelUpLearnset,
 };
 
