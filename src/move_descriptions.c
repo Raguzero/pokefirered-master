@@ -407,12 +407,15 @@ const u8 sShadowClawDescription[] = _("Strikes with\na shadow claw.\nHigh CRIT r
 const u8 sMirrorShotDescription[] = _("Emits a flash of\nenergy to damage\nand cut ACCURACY.");
 const u8 sFlashCannonDescription[] = _("Releases a blast\nof light that may\nlower SP.DEF.");
 const u8 sPowerWhipDescription[] = _("Violently lashes\nthe foe with\nvines or tentacles.");
-const u8 sAquaJetDescription[] = _("Strikes first by\ndashing at the\nfoe at a high speed.");
+const u8 sAquaJetDescription[] = _("Strikes first by\ndashing at the foe\nat a high speed.");
 const u8 sWildChargeDescription[] = _("An electrical\ntackle that also\nhurts the user.");
 const u8 sPlayRoughDescription[] = _("Plays rough with\nthe foe.\nMay lower ATTACK.");
 const u8 sMeteorBeamDescription[] = _("A 2-turn move\nthat raises SP.ATK\nbefore attacking.");
-const u8 sSteelBeamDescription[] = _("Fires a beam steel\nfrom its body.\nIt hurts the user.");
+const u8 sShadowBoneDescription[] = _("Strikes with a haunted bone.\nMight drop Defense.");
 const u8 sJungleHealingDescription[] = _("Heals HP and\nstatus of itself\nand allies in battle.");
+const u8 sRazorShellDescription[] = _("Tears at the foe with\nsharp shells.\nMay lower DEFENSE.");
+const u8 sWoodHammerDescription[] = _("Slams the body into\na foe.The user\ngets hurt too.");
+const u8 sStruggleBugDescription[] = _("Resisting, the user attacks\nthe foe. Lowers Sp. Atk.");
 
 
 const u8 *const gMoveDescriptionPointers[MOVES_COUNT - 1] = {
@@ -826,7 +829,10 @@ const u8 *const gMoveDescriptionPointers[MOVES_COUNT - 1] = {
 	[MOVE_WILD_CHARGE - 1] = sWildChargeDescription,
     [MOVE_PLAY_ROUGH - 1] = sPlayRoughDescription,
     [MOVE_METEOR_BEAM - 1] = sMeteorBeamDescription,
-    [MOVE_STEEL_BEAM - 1] = sSteelBeamDescription,
+    [MOVE_SHADOW_BONE - 1] = sShadowBoneDescription,
     [MOVE_JUNGLE_HEALING - 1] = sJungleHealingDescription,
+    [MOVE_STRUGGLE_BUG - 1] = sStruggleBugDescription,
     [MOVE_AQUA_JET - 1] = sAquaJetDescription,
+    [MOVE_RAZOR_SHELL - 1] = sRazorShellDescription,
+    [MOVE_WOOD_HAMMER - 1] = sWoodHammerDescription,
 };
