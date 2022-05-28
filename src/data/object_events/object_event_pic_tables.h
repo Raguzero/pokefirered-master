@@ -1752,3 +1752,7 @@ const struct SpriteFrameImage gObjectEventPicTable_Mom[] = {
     overworld_frame(gObjectEventPic_Mom, 2, 4, 2),
     overworld_frame(gObjectEventPic_Mom, 2, 4, 2),
 };
+
+const struct SpriteFrameImage gObjectEventPicTable_GoldenTMBall[] = {
+    overworld_frame(gObjectEventPic_GoldenTMBall, 2, 2, 0),
+};
