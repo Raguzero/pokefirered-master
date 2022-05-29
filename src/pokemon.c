@@ -6601,6 +6601,12 @@ static u16 GetBattleBGM(void)
         return MUS_RS_VS_TRAINER;
     if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
     {
+        u8 trainerClass;
+        u16 trainerBattleMusic;
+        trainerBattleMusic = gTrainers[gTrainerBattleOpponent_A].battleMusic;
+        if (trainerBattleMusic != 0) {
+          return trainerBattleMusic;
+        }
         switch (gTrainers[gTrainerBattleOpponent_A].trainerClass)
         {
             case CLASS_CHAMPION_2:
