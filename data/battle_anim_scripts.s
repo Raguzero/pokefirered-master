@@ -2326,6 +2326,7 @@ Move_BUBBLE_BEAM:: @ 81C9D13
 	delay 1
 	call BulbblebeamCreateBubbles
 	createvisualtask AnimTask_SwayMon, 5, 0, 3, 3072, 8, 1
+	createvisualtask AnimTask_SwayMon, 5, 0, 3, 3072, 8, ANIM_DEF_PARTNER
 	call BulbblebeamCreateBubbles
 	call BulbblebeamCreateBubbles
 	waitforvisualfinish
@@ -12247,22 +12248,22 @@ PoisonBubblesEffect:: @ 81D575B
 	return
 
 WaterBubblesEffectShort:: @ 81D57CC
-	createsprite gWaterBubbleSpriteTemplate, ANIM_ATTACKER, 2, 10, 10, 0
+	createsprite gWaterBubbleSpriteTemplate, ANIM_ATTACKER, 2, 10, 10, 1
 	playsewithpan SE_M_BUBBLE3, 63
 	delay 6
-	createsprite gWaterBubbleSpriteTemplate, ANIM_ATTACKER, 2, 20, -20, 0
+	createsprite gWaterBubbleSpriteTemplate, ANIM_ATTACKER, 2, 20, -20, 1
 	playsewithpan SE_M_BUBBLE3, 63
 	delay 6
-	createsprite gWaterBubbleSpriteTemplate, ANIM_ATTACKER, 2, -20, 15, 0
+	createsprite gWaterBubbleSpriteTemplate, ANIM_ATTACKER, 2, -20, 15, 1
 	playsewithpan SE_M_BUBBLE3, 63
 	delay 6
-	createsprite gWaterBubbleSpriteTemplate, ANIM_ATTACKER, 2, 0, 0, 0
+	createsprite gWaterBubbleSpriteTemplate, ANIM_ATTACKER, 2, 0, 0, 1
 	playsewithpan SE_M_BUBBLE3, 63
 	delay 6
-	createsprite gWaterBubbleSpriteTemplate, ANIM_ATTACKER, 2, -20, -20, 0
+	createsprite gWaterBubbleSpriteTemplate, ANIM_ATTACKER, 2, -20, -20, 1
 	playsewithpan SE_M_BUBBLE3, 63
 	delay 6
-	createsprite gWaterBubbleSpriteTemplate, ANIM_ATTACKER, 2, 16, -8, 0
+	createsprite gWaterBubbleSpriteTemplate, ANIM_ATTACKER, 2, 16, -8, 1
 	playsewithpan SE_M_BUBBLE3, 63
 	return
 
