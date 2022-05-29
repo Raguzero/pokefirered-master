@@ -241,6 +241,7 @@ gBattleScriptsForMoveEffects::
 	.4byte BattleScript_EffectCoil
 	.4byte BattleScript_EffectRecoil50
 	.4byte BattleScript_EffectHealPulse
+	.4byte BattleScript_EffectRecoilStruggleNewGen
 	.4byte BattleScript_PowderMoveNoEffect
 
 BattleScript_EffectHit::
@@ -4652,6 +4653,10 @@ BattleScript_EffectHealPulse:
 	printstring STRINGID_PKMNREGAINEDHEALTH
 	waitmessage 0x40
 	goto BattleScript_MoveEnd
+	
+BattleScript_EffectRecoilStruggleNewGen:
+	setmoveeffect MOVE_EFFECT_RECOIL_STRUGGLENEWGEN | MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_CERTAIN
+	goto BattleScript_EffectHit
 	
 BattleScript_FriskMsg::
 	printstring STRINGID_FRISKACTIVATES

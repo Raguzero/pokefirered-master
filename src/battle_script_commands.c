@@ -911,6 +911,7 @@ static const u8 *const sMoveEffectBS_Ptrs[] =
     [MOVE_EFFECT_ATK_DEF_DOWN] = BattleScript_MoveEffectSleep,
     [MOVE_EFFECT_RECOIL_33] = BattleScript_MoveEffectRecoil,
     [MOVE_EFFECT_RECOIL_50] = BattleScript_MoveEffectRecoil,
+    [MOVE_EFFECT_RECOIL_STRUGGLENEWGEN] = BattleScript_MoveEffectRecoil,
 };
 
 // not used
@@ -3222,6 +3223,14 @@ void SetMoveEffect(bool8 primary, u8 certain)
                 break;
             case MOVE_EFFECT_RECOIL_50: // Head Smash, 50 % recoil
                 gBattleMoveDamage = gHpDealt / 2;
+                if (gBattleMoveDamage == 0)
+                    gBattleMoveDamage = 1;
+
+                BattleScriptPush(gBattlescriptCurrInstr + 1);
+                gBattlescriptCurrInstr = sMoveEffectBS_Ptrs[gBattleCommunication[MOVE_EFFECT_BYTE]];
+                break;
+            case MOVE_EFFECT_RECOIL_STRUGGLENEWGEN: // STRUGGLE GEN V
+                gBattleMoveDamage = (gBattleMons[gBattlerAttacker].maxHP + 2) / 4;
                 if (gBattleMoveDamage == 0)
                     gBattleMoveDamage = 1;
 
