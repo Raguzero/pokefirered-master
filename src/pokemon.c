@@ -3131,9 +3131,9 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         defense = (150 * defense) / 100;
 	if (defender->ability == ABILITY_DRY_SKIN && (gBattleMoves[move].type == TYPE_FIRE))
         gBattleMovePower = (125 * gBattleMovePower) / 100;
-	if (defender->ability == ABILITY_PUNK_ROCK && (move == MOVE_SNORE || move == MOVE_OVERDRIVE || move == MOVE_BOOMBURST || move == MOVE_UPROAR || move == MOVE_HYPER_VOICE))
+	if (defender->ability == ABILITY_PUNK_ROCK && (move == MOVE_SNORE || move == MOVE_OVERDRIVE || move == MOVE_BOOMBURST || move == MOVE_UPROAR || move == MOVE_HYPER_VOICE || move == MOVE_BUG_BUZZ))
       defense *= 2, spDefense *= 2;
-	if ((move == MOVE_SNORE || move == MOVE_OVERDRIVE || move == MOVE_BOOMBURST || move == MOVE_UPROAR || move == MOVE_HYPER_VOICE) && attacker->ability == ABILITY_PUNK_ROCK)
+	if ((move == MOVE_SNORE || move == MOVE_OVERDRIVE || move == MOVE_BOOMBURST || move == MOVE_UPROAR || move == MOVE_HYPER_VOICE || move == MOVE_BUG_BUZZ) && attacker->ability == ABILITY_PUNK_ROCK)
 		gBattleMovePower = (130 * gBattleMovePower) / 100;
 	if ((move == MOVE_CRUNCH || move == MOVE_BITE || move == MOVE_POISON_FANG || move == MOVE_HYPER_FANG) && attacker->ability == ABILITY_STRONG_JAW)
 		gBattleMovePower = (150 * gBattleMovePower) / 100;
