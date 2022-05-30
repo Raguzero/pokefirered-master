@@ -414,7 +414,6 @@ const u8 *const gMonIconTable[] = {
     [SPECIES_DEOXYS]      = gMonIcon_Deoxys,
     [SPECIES_CHIMECHO]    = gMonIcon_Chimecho,
     [SPECIES_EGG]         = gMonIcon_Egg,
-    [SPECIES_UNOWN_A] = gMonIcon_UnownA,
     [SPECIES_UNOWN_B] = gMonIcon_UnownB,
     [SPECIES_UNOWN_C] = gMonIcon_UnownC,
     [SPECIES_UNOWN_D] = gMonIcon_UnownD,
@@ -1653,7 +1652,6 @@ const u8 gMonIconPaletteIndices[] = {
     [SPECIES_DEOXYS]      = 0,
     [SPECIES_CHIMECHO]    = 0,
     [SPECIES_EGG]         = 1,
-    [SPECIES_UNOWN_A]     = 0,
     [SPECIES_UNOWN_B]     = 0,
     [SPECIES_UNOWN_C]     = 0,
     [SPECIES_UNOWN_D]     = 0,
@@ -2669,7 +2667,7 @@ u16 MailSpeciesToIconSpecies(u16 species)
 
     if (MailSpeciesToSpecies(species, &value) == SPECIES_UNOWN)
     {
-        value += SPECIES_UNOWN_A;
+        value += SPECIES_UNOWN_B;
         return value;
     }
     else

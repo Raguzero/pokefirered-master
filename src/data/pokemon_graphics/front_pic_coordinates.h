@@ -1005,6 +1005,11 @@ const struct MonCoords gMonFrontPicCoords[] =
         .size = 0x55,
         .y_offset = 0x0c,
     },
+    [SPECIES_UNOWN] =
+	{
+		.size = 0x35,
+		.y_offset = 0xf,
+	},
     [SPECIES_WOBBUFFET] =
     {
         .size = 0x77,
@@ -1935,11 +1940,6 @@ const struct MonCoords gMonFrontPicCoords[] =
         .size = 0x33,
         .y_offset = 0x14,
     },
-    [SPECIES_UNOWN_A] =
-	{
-		.size = 0x35,
-		.y_offset = 0xf,
-	},
     [SPECIES_UNOWN_B] =
     {
         .size = 0x34,

@@ -241,7 +241,6 @@ const u16 *const gFormSpeciesIdTables[NUM_SPECIES] =
     // Pichu
     [SPECIES_PICHU_SPIKY_EARED] = sPichuFormSpeciesIdTable,*/
     // Unown
-    [SPECIES_UNOWN_A] = sUnownFormSpeciesIdTable,
     [SPECIES_UNOWN_B] = sUnownFormSpeciesIdTable,
     [SPECIES_UNOWN_C] = sUnownFormSpeciesIdTable,
     [SPECIES_UNOWN_D] = sUnownFormSpeciesIdTable,
