@@ -488,5 +488,6 @@ u16 GetFormSpeciesId(u16 speciesId, u8 formId);
 u8 GetFormIdFromFormSpeciesId(u16 formSpeciesId);
 void CreateShinyMonWithNature(struct Pokemon *mon, u16 species, u8 level, u8 nature);
 void CreateShinyMon(struct Pokemon *mon, u16 species, u8 level);
+u8 GetNatureFromPersonality(u32 personality);
 
 #endif // GUARD_POKEMON_H
