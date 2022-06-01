@@ -505,6 +505,9 @@ static void PlayerNotOnBikeMoving(u8 direction, u16 heldKeys)
     if (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_SURFING)
     {
         // speed 2 is fast, same speed as running
+        if (heldKeys & B_BUTTON)
+			sub_805C164(direction); // fastest speed (4 speed)
+		else
         if (FlagGet(FLAG_SYS_DEXNAV_SEARCH) && (heldKeys & A_BUTTON))
         {
             gPlayerAvatar.creeping = TRUE;
@@ -878,6 +881,7 @@ void PlayerRideWaterCurrent(u8 direction)
     PlayerSetAnimId(sub_8064008(direction), 2);
 }
 
+// fastest speed (4 speed)
 void sub_805C164(u8 direction)
 {
     PlayerSetAnimId(GetWalkFastestMovementAction(direction), 2);

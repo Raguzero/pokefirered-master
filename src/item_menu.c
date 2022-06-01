@@ -1564,6 +1564,14 @@ static void Task_ItemMenuAction_Toss(u8 taskId)
     HideBagWindow(6);
     PutWindowTilemap(0);
     data[8] = 1;
+    if (itemid_is_unique(gSpecialVar_ItemId) == 1) {
+        StringExpandPlaceholders(gStringVar4, gText_CantThrow);
+        FillWindowPixelBuffer(1, PIXEL_FILL(0));
+		BagMenu_Print(1, 1, gStringVar4, 0, 3, 0, 0, 0, 5);
+        bag_menu_print_cursor_(data[0], 0);
+        Task_ReturnToBagFromContextMenu(taskId);
+        return;
+    }
     if (data[2] == 1)
     {
         Task_ConfirmTossItems(taskId);

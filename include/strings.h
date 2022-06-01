@@ -1645,4 +1645,6 @@ extern const u8 gText_FriendshipIncreased[];
 // SECRET POTION
 extern const u8 gText_IVsIncreased[];
 
+extern const u8 gText_CantThrow[];
+
 #endif //GUARD_STRINGS_H

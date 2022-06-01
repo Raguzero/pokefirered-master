@@ -1426,3 +1426,5 @@ const u8 gText_PkmnFriendlyBaseVar2CantFall[] = _("{STR_VAR_1} turned friendly.\
 const u8 gText_FriendshipIncreased[] = _("{STR_VAR_1} friendship was raised. {PAUSE_UNTIL_PRESS}");
 // SECRET POTION
 const u8 gText_IVsIncreased[] = _("{STR_VAR_1} IVs were raised. {PAUSE_UNTIL_PRESS}");
+
+const u8 gText_CantThrow[] = _("This item cannot be tossed.");

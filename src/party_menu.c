@@ -4538,7 +4538,9 @@ void ItemUseCB_MedicineStep(u8 taskId, TaskFunc func)
     if (!IsItemFlute(item))
     {
         PlaySE(SE_USE_ITEM);
-        if (gPartyMenu.action != PARTY_ACTION_REUSABLE_ITEM)
+
+        // NUEVO: objetos reusables no se gastan
+        if (itemid_is_unique(item) != 1 && gPartyMenu.action != PARTY_ACTION_REUSABLE_ITEM)
             RemoveBagItem(item, 1);
     }
     else
@@ -5090,7 +5092,8 @@ static void ItemUseCB_RareCandyStep(u8 taskId, UNUSED TaskFunc func)
     ItemUse_SetQuestLogEvent(QL_EVENT_USED_ITEM, mon, gSpecialVar_ItemId, 0xFFFF);
     PlayFanfareByFanfareNum(0);
     UpdateMonDisplayInfoAfterRareCandy(gPartyMenu.slotId, mon);
-    RemoveBagItem(gSpecialVar_ItemId, 1);
+    if (itemid_is_unique(gSpecialVar_ItemId) != 1) {
+            RemoveBagItem(gSpecialVar_ItemId, 1);  }
     GetMonNickname(mon, gStringVar1);
     level = GetMonData(mon, MON_DATA_LEVEL);
     ConvertIntToDecimalStringN(gStringVar2, level, STR_CONV_MODE_LEFT_ALIGN, 3);
