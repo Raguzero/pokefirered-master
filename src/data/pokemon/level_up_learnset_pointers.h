@@ -1295,8 +1295,6 @@ const u16 *const gLevelUpLearnsets[NUM_SPECIES] =
     [SPECIES_JUNGELA] = sJungelaLevelUpLearnset,
     [SPECIES_POLITOED_BETA] = sPolitoedBetaLevelUpLearnset,
     [SPECIES_LUXWAN] = sLuxwanLevelUpLearnset,
-	// New Evos (Giga)
-	[SPECIES_GARBODOR_GIGA] = sGarbodorGigaLevelUpLearnset,
 	[SPECIES_PARASPOR] = sParasporLevelUpLearnset,
 	[SPECIES_VULPIII] = sVulpiiiLevelUpLearnset,
 	[SPECIES_PUPPERON] = sPupperonLevelUpLearnset,
@@ -1305,5 +1303,19 @@ const u16 *const gLevelUpLearnsets[NUM_SPECIES] =
 	[SPECIES_DODAERIE] = sDodaerieLevelUpLearnset,
 	[SPECIES_MOIBELLE] = sMoibelleLevelUpLearnset,
 	[SPECIES_BELLEDAM] = sBelledamLevelUpLearnset,
+	[SPECIES_WARFURS] = sWarfursLevelUpLearnset,
+	[SPECIES_WEARLYCAN] = sWearlycanLevelUpLearnset,
+	[SPECIES_SMUJJ] = sSmujjLevelUpLearnset,
+	[SPECIES_YANMEGA_BETA] = sYanmegaBetaLevelUpLearnset,
+	[SPECIES_NOROWARA] = sNorowaraLevelUpLearnset,
+	[SPECIES_KYONPAN] = sKyonpanLevelUpLearnset,
+	[SPECIES_ORFRY] = sOrfryLevelUpLearnset,
+	[SPECIES_HOPPIP_BETA] = sHoppipBetaLevelUpLearnset,
+	[SPECIES_SKIPLOOM_BETA] = sSkiploomBetaLevelUpLearnset,
+	[SPECIES_JUMPLUFF_BETA] = sJumpluffBetaLevelUpLearnset,
+	// New Evos (Giga)
+	[SPECIES_GARBODOR_GIGA] = sGarbodorGigaLevelUpLearnset,
+	[SPECIES_KINGLER_GIGA] = sKinglerGigaLevelUpLearnset,
+	[SPECIES_BUTTERFREE_GIGA] = sButterfreeGigaLevelUpLearnset,
 };
 
