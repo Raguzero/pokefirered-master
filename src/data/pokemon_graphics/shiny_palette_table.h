@@ -1283,6 +1283,18 @@ const struct CompressedSpritePalette gMonShinyPaletteTable[] =
     SPECIES_SHINY_PAL(TRICULES, gMonShinyPalette_Tricules),
     SPECIES_SHINY_PAL(BURGELA, gMonShinyPalette_Burgela),
     SPECIES_SHINY_PAL(JUNGELA, gMonShinyPalette_Jungela),
+    SPECIES_SHINY_PAL(PUPPERON, gMonShinyPalette_Pupperon),
+    SPECIES_SHINY_PAL(VULPIII, gMonShinyPalette_Vulpiii),
+    SPECIES_SHINY_PAL(KOLTA, gMonShinyPalette_Kolta),
+    SPECIES_SHINY_PAL(COINPUR, gMonShinyPalette_Coinpur),
+    SPECIES_SHINY_PAL(DODAERIE, gMonShinyPalette_Dodaerie),
+    SPECIES_SHINY_PAL(PARASPOR, gMonShinyPalette_Paraspor),
+    SPECIES_SHINY_PAL(WARFURS, gMonShinyPalette_Warfurs),
+    SPECIES_SHINY_PAL(WEARLYCAN, gMonShinyPalette_Wearlycan),
+    SPECIES_SHINY_PAL(ARIADOS_BETA, gMonShinyPalette_AriadosBeta),
+    SPECIES_SHINY_PAL(POLITOED_BETA, gMonShinyPalette_PolitoedBeta),
+    SPECIES_SHINY_PAL(SMUJJ, gMonShinyPalette_Smujj),
+    SPECIES_SHINY_PAL(DISTURBAN, gMonShinyPalette_Disturban),
 };
 /*
 const struct CompressedSpritePalette gMonShinyPaletteTableFemale[] =

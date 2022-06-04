@@ -2130,5 +2130,66 @@ const struct MonCoords gMonBackPicCoords[] =
         .size = 0x85,
         .y_offset = 0x0e,
     },
+
+    [SPECIES_PUPPERON] =
+    {
+        .size = 0x76,
+        .y_offset = 0x0a,
+    },
+    [SPECIES_VULPIII] =
+    {
+        .size = 0x66,
+        .y_offset = 0x08,
+    },
+    [SPECIES_PARASPOR] =
+    {
+        .size = 0x85,
+        .y_offset = 0x0e,
+    },
+    [SPECIES_KOLTA] =
+    {
+        .size = 0x68,
+        .y_offset = 0x03,
+    },
+    [SPECIES_COINPUR] =
+    {
+        .size = 0x85,
+        .y_offset = 0x0e,
+    },
+    [SPECIES_DODAERIE] =
+    {
+        .size = 0x66,
+        .y_offset = 0x09,
+    },
+    [SPECIES_WARFURS] =
+    {
+        .size = 0x85,
+        .y_offset = 0x0e,
+    },
+    [SPECIES_WEARLYCAN] =
+    {
+        .size = 0x85,
+        .y_offset = 0x0e,
+    },
+    [SPECIES_ARIADOS_BETA] =
+    {
+        .size = 0x85,
+        .y_offset = 0x0e,
+    },
+    [SPECIES_POLITOED_BETA] =
+    {
+        .size = 0x85,
+        .y_offset = 0x0e,
+    },
+    [SPECIES_SMUJJ] =
+    {
+        .size = 0x75,
+        .y_offset = 0x0d,
+    },
+    [SPECIES_DISTURBAN] =
+    {
+        .size = 0x87,
+        .y_offset = 0x06,
+    },
 };
 

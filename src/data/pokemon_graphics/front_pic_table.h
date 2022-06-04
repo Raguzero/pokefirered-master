@@ -1282,6 +1282,18 @@ const struct CompressedSpriteSheet gMonFrontPicTable[] =
     SPECIES_SPRITE(TRICULES, gMonFrontPic_Tricules),
     SPECIES_SPRITE(BURGELA, gMonFrontPic_Burgela),
     SPECIES_SPRITE(JUNGELA, gMonFrontPic_Jungela),
+    SPECIES_SPRITE(PUPPERON, gMonFrontPic_Pupperon),
+    SPECIES_SPRITE(VULPIII, gMonFrontPic_Vulpiii),
+    SPECIES_SPRITE(KOLTA, gMonFrontPic_Kolta),
+    SPECIES_SPRITE(COINPUR, gMonFrontPic_Coinpur),
+    SPECIES_SPRITE(DODAERIE, gMonFrontPic_Dodaerie),
+    SPECIES_SPRITE(PARASPOR, gMonFrontPic_Paraspor),
+    SPECIES_SPRITE(WARFURS, gMonFrontPic_Warfurs),
+    SPECIES_SPRITE(WEARLYCAN, gMonFrontPic_Wearlycan),
+    SPECIES_SPRITE(ARIADOS_BETA, gMonFrontPic_AriadosBeta),
+    SPECIES_SPRITE(POLITOED_BETA, gMonFrontPic_PolitoedBeta),
+    SPECIES_SPRITE(SMUJJ, gMonFrontPic_Smujj),
+    SPECIES_SPRITE(DISTURBAN, gMonFrontPic_Disturban),
 };
 /*
 const struct CompressedSpriteSheet gMonFrontPicTableFemale[] =

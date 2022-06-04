@@ -1243,6 +1243,18 @@ const u8 *const gMonIconTable[] = {
     [SPECIES_TRICULES] = gMonIcon_Tricules,
     [SPECIES_BURGELA]   = gMonIcon_Burgela,
     [SPECIES_JUNGELA]   = gMonIcon_Jungela,
+    [SPECIES_PUPPERON] = gMonIcon_Pupperon,
+    [SPECIES_VULPIII] = gMonIcon_Vulpiii,
+    [SPECIES_KOLTA] = gMonIcon_Kolta,
+    [SPECIES_PARASPOR] = gMonIcon_Paraspor,
+    [SPECIES_COINPUR] = gMonIcon_Coinpur,
+    [SPECIES_DODAERIE] = gMonIcon_Dodaerie,
+    [SPECIES_WARFURS] = gMonIcon_Warfurs,
+    [SPECIES_WEARLYCAN] = gMonIcon_Wearlycan,
+    [SPECIES_ARIADOS_BETA] = gMonIcon_AriadosBeta,
+    [SPECIES_POLITOED_BETA] = gMonIcon_PolitoedBeta,
+    [SPECIES_SMUJJ]    = gMonIcon_Smujj,
+    [SPECIES_DISTURBAN]    = gMonIcon_Disturban,
 };
 /*
 const u8 *const gMonIconTableFemale[] =
@@ -2472,6 +2484,18 @@ const u8 gMonIconPaletteIndices[] = {
     [SPECIES_TRICULES]      = 2,
     [SPECIES_BURGELA]     = 0,
     [SPECIES_JUNGELA] = 0,
+    [SPECIES_PUPPERON] = 0,
+    [SPECIES_VULPIII] = 2,
+    [SPECIES_KOLTA] = 0,
+    [SPECIES_PARASPOR] = 0,
+    [SPECIES_COINPUR] = 1,
+    [SPECIES_DODAERIE] = 2,
+    [SPECIES_WARFURS] = 0,
+    [SPECIES_WEARLYCAN] = 0,
+    [SPECIES_ARIADOS_BETA] = 0,
+    [SPECIES_POLITOED_BETA] = 1,
+    [SPECIES_SMUJJ] = 2,
+    [SPECIES_DISTURBAN] = 2,
 };
 
 const u8 gMonIconPaletteIndicesFemale[] =
