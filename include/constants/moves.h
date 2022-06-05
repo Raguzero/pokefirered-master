@@ -362,15 +362,15 @@
 #define MOVE_BRAVE_BIRD 358
 #define MOVE_X_SCISSOR 359
 #define MOVE_IRON_HEAD 360
-#define MOVE_STONE_EDGE 361
+#define MOVE_STONE_EDGE 361 // Sin animación
 #define MOVE_DARK_PULSE 362
-#define MOVE_ENERGY_BALL 363
+#define MOVE_ENERGY_BALL 363 // Sin animación
 #define MOVE_NASTY_PLOT 364
 #define MOVE_QUIVER_DANCE 365
 #define MOVE_COIL 366
 #define MOVE_SHADOW_SNEAK 367
 #define MOVE_ROCK_POLISH 368
-#define MOVE_BOOMBURST 369
+#define MOVE_BOOMBURST 369 // Sin animación
 #define MOVE_OVERDRIVE 370 // Descripción????
 #define MOVE_LIGHT_OF_RUIN 371 // Descripción????
 #define MOVE_HEAD_SMASH 372
@@ -380,12 +380,12 @@
 #define MOVE_THUNDER_CAGE 376 // Descripción????
 #define MOVE_DRAGON_ENERGY 377 // Descripción????
 #define MOVE_ELECTROWEB 378
-#define MOVE_GRAV_APPLE 379 // Descripción????
-#define MOVE_APPLE_ACID 380 // Descripción????
+#define MOVE_GRAV_APPLE 379 // Descripción???? // Sin animación
+#define MOVE_APPLE_ACID 380 // Descripción???? // Sin animación
 #define MOVE_ACCELEROCK 381 // Descripción????
 #define MOVE_DARK_THUNDER 382
 #define MOVE_DRILL_RUN 383
-#define MOVE_LEAF_STORM 384
+#define MOVE_LEAF_STORM 384 // Sin animación
 #define MOVE_SHORE_UP 385 // Descripción????
 #define MOVE_DRAGON_HAMMER 386
 #define MOVE_MONADO_POWER 387
@@ -437,10 +437,10 @@
 // FIERY WRATH?
 // THUNDEROUS KICK?
 // PSYSHIELD BASH?
-// CHLOROBLAST?
 // MOUNTAIN GALE?
 // REVELATION DANCE? (4 VECES, CADA TIPO)
 // POLTERGEIST¿
+// TRIPLE AXEL
 
 #define LAST_MOVE_INDEX     MOVE_WOOD_HAMMER
 
