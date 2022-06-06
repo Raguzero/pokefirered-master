@@ -5367,9 +5367,7 @@ bool8 PokemonItemUseNoEffect(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mo
     {
         itemEffect = gItemEffectTable[item - 13];
     }
-	//*******CAMBIAR ESTE 7 A 6 MAS TARDE, SWEET HEART Y SECRET POTION SOLO FUNCIONAN (PERO CON MENSAJE: NO TIENE EFECTO) SI ESTO ESTÁ AQUI COMO 7*****
-    for (cmdIndex = 0; cmdIndex < 7; cmdIndex++)
-	//*******CAMBIAR ESTE 7 A 6 MAS TARDE, SWEET HEART Y SECRET POTION SOLO FUNCIONAN (PERO CON MENSAJE: NO TIENE EFECTO) SI ESTO ESTÁ AQUI COMO 7*****
+    for (cmdIndex = 0; cmdIndex < 6; cmdIndex++)
     {
         switch (cmdIndex)
         {
@@ -5567,47 +5565,6 @@ bool8 PokemonItemUseNoEffect(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mo
                 curEffect >>= 1;
             }
             break;
-	//*******BORRAR ESTO DE ABAJO MAS TARDE, SWEET HEART Y SECRET POTION SOLO FUNCIONAN (PERO CON MENSAJE: NO TIENE EFECTO) SOLO SI ESTO ESTÁ AQUI*****
-        // friendship increase
-        case 6:
-            if ((itemEffect[cmdIndex] == ITEM6_FRIENDSHIP) || ((itemEffect[cmdIndex] & ITEM6_FRIENDSHIP) && retVal == FALSE && itemEffect[5] == ITEM5_FRIENDSHIP_ALL))
-            {
-                u8 friendship = GetMonData(mon, MON_DATA_FRIENDSHIP, 0);
-                if (friendship != MAX_FRIENDSHIP)
-                {
-                    SetMonData(mon, MON_DATA_FRIENDSHIP, &(itemEffect[7]));
-                    retVal = FALSE;
-                }
-            }
-            if (itemEffect[cmdIndex] == ITEM6_IVS)
-            {
-				u8 i;
-                u8 iv = itemEffect[7]; 
-                bool8 full6IVs = TRUE;
-                const u8 ivStatsData[] = {MON_DATA_HP_IV, MON_DATA_ATK_IV, MON_DATA_DEF_IV,
-                                         MON_DATA_SPATK_IV, MON_DATA_SPDEF_IV, MON_DATA_SPEED_IV};
-
-                for (i = 0; i < NUM_STATS && full6IVs; i++) {
-                    if (GetMonData(mon, ivStatsData[i], 0) != MAX_IV)
-                    {
-                        full6IVs = FALSE;
-                    }
-                }
-
-                if (!full6IVs)
-                {
-                    SetMonData(mon, MON_DATA_HP_IV, &iv);
-                    SetMonData(mon, MON_DATA_ATK_IV, &iv);
-                    SetMonData(mon, MON_DATA_DEF_IV, &iv);
-                    SetMonData(mon, MON_DATA_SPATK_IV, &iv);
-                    SetMonData(mon, MON_DATA_SPDEF_IV, &iv);
-                    SetMonData(mon, MON_DATA_SPEED_IV, &iv);
-                    CalculateMonStats(mon);
-                    retVal = FALSE;
-                }
-            }
-            break;
-	//*******BORRAR ESTO DE ARRIBA MAS TARDE, SWEET HEART Y SECRET POTION SOLO FUNCIONAN (PERO CON MENSAJE: NO TIENE EFECTO) SOLO SI ESTO ESTÁ AQUI*****
         }
     }
     return retVal;
