@@ -63,6 +63,7 @@
 #include "constants/items.h"
 #include "constants/maps.h"
 #include "constants/moves.h"
+#include "constants/party_menu.h"
 #include "constants/pokemon.h"
 #include "constants/quest_log.h"
 #include "constants/songs.h"
@@ -4970,7 +4971,7 @@ static void CB2_ShowSummaryScreenToForgetMove(void)
 static void CB2_ReturnToPartyMenuWhileLearningMove(void)
 {
     // [R]: Skipped call to item animation routine
-    if (gSpecialVar_ItemId == ITEM_RARE_CANDY && gPartyMenu.menuType == PARTY_MENU_TYPE_FIELD && CheckBagHasItem(gSpecialVar_ItemId, 1))
+    if ((gSpecialVar_ItemId == ITEM_RARE_CANDY || gSpecialVar_ItemId == ITEM_GOLDEN_CANDY) && gPartyMenu.menuType == PARTY_MENU_TYPE_FIELD && CheckBagHasItem(gSpecialVar_ItemId, 1))
         InitPartyMenu(PARTY_MENU_TYPE_FIELD, PARTY_LAYOUT_SINGLE, PARTY_ACTION_USE_ITEM, TRUE, PARTY_MSG_NONE, Task_ReturnToPartyMenuWhileLearningMove, gPartyMenu.exitCallback);
     else
 		InitPartyMenu(PARTY_MENU_TYPE_FIELD, PARTY_LAYOUT_SINGLE, PARTY_ACTION_CHOOSE_MON, TRUE, PARTY_MSG_NONE, Task_ReturnToPartyMenuWhileLearningMove, gPartyMenu.exitCallback);
@@ -5091,7 +5092,19 @@ static void Task_TryLearningNextMoveAfterText(u8 taskId)
         Task_TryLearningNextMove(taskId);
 }
 
-void ItemUseCB_RareCandy(u8 taskId, TaskFunc task)
+/**
+    Returns TRUE if the candy can be used with the current Pokémon level.
+    Else returns FALSE.
+**/
+bool8 CanUseCandyItem(u16 itemId, u16 monLevel) {
+    u16 levelCap = GetLevelCap();
+    if ((itemId == ITEM_GOLDEN_CANDY || itemId == ITEM_RARE_CANDY) && monLevel < levelCap) {
+        return TRUE;
+    }
+    return FALSE;
+} 
+
+void ItemUseCB_Candy(u8 taskId, TaskFunc task)
 {
     struct Pokemon *mon = &gPlayerParty[gPartyMenu.slotId];
     struct PartyMenuInternal *ptr = sPartyMenuInternal;
@@ -5099,7 +5112,7 @@ void ItemUseCB_RareCandy(u8 taskId, TaskFunc task)
     u16 *itemPtr = &gSpecialVar_ItemId;
     bool8 cannotUseEffect;
 	
-	if (GetMonData(mon, MON_DATA_LEVEL) != MAX_LEVEL)
+	if (CanUseCandyItem(gSpecialVar_ItemId, GetMonData(mon, MON_DATA_LEVEL)))
     {
 		GetMonLevelUpWindowStats(mon, arrayPtr);
         cannotUseEffect = ExecuteTableBasedItemEffect_(gPartyMenu.slotId, *itemPtr, 0);
@@ -5152,7 +5165,7 @@ static void UpdateMonDisplayInfoAfterRareCandy(u8 slot, struct Pokemon *mon)
 
 static void CB2_ReturnToPartyMenuUsingRareCandy(void)
 {
-    gItemUseCB = ItemUseCB_RareCandy;
+    gItemUseCB = ItemUseCB_Candy;
     SetMainCallback2(CB2_ShowPartyMenuForItemUse);
 }
 

@@ -1275,6 +1275,7 @@ static u8 DexNavTryGenerateMonLevel(u16 species, u8 environment)
 {
     u8 levelBase = GetEncounterLevelFromMapData(species, environment);
     u8 levelBonus = gSaveBlock1Ptr->dexNavChain / 5;
+    u8 capLevel = GetLevelCap();
 
     if (levelBase == MON_LEVEL_NONEXISTENT)
         return MON_LEVEL_NONEXISTENT;   //species not found in the area
@@ -1290,10 +1291,14 @@ static u8 DexNavTryGenerateMonLevel(u16 species, u8 environment)
 	   levelBonus += 5; //4% chance of having a +5 level
 	}
 
-    if (levelBase + levelBonus > MAX_LEVEL)
-        return MAX_LEVEL;
-    else
+    if (levelBase + levelBonus > capLevel)
+    {
+        return capLevel;
+    }
+    else 
+    {
         return levelBase + levelBonus;
+	}
 }
 
 static void DexNavGenerateMoveset(u16 species, u8 searchLevel, u8 encounterLevel, u16* moveDst)

@@ -15,7 +15,7 @@ void FieldUseFunc_PokeFlute(u8 taskId);
 void FieldUseFunc_Medicine(u8 taskId);
 void FieldUseFunc_Ether(u8 taskId);
 void FieldUseFunc_PpUp(u8 taskId);
-void FieldUseFunc_RareCandy(u8 taskId);
+void ItemUseOutOfBattle_Candy(u8);
 void FieldUseFunc_EvoItem(u8 taskId);
 void FieldUseFunc_SacredAsh(u8 taskId);
 void ItemUseOutOfBattle_AbilityCapsule(u8);
@@ -40,9 +40,11 @@ void ItemUseOutOfBattle_EnigmaBerry(u8 taskId);
 void ItemUseInBattle_EnigmaBerry(u8 taskId);
 void ItemUseOutOfBattle_Itemfinder(u8 taskId);
 void ItemUseOutOfBattle_FormChange(u8);
+void ItemUseOutOfBattle_LevelCap(u8 taskId);
 void sub_80A1C44(u8 taskId);
 u8 CanUseEscapeRopeOnCurrMap(void);
 u8 CheckIfItemIsTMHMOrEvolutionStone(u16 itemId);
 void ItemUseOutOfBattle_ReduceEV(u8 taskId);
+bool8 CanUseCandyItem(u16 itemId, u16 monLevel);
 
 #endif //GUARD_ITEM_USE_H

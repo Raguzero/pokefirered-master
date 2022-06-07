@@ -233,7 +233,7 @@
 #define ITEM_POWER_HERB 229
 #define ITEM_PINK_PETAL 230
 #define ITEM_PSYCHE_ARMOR 231 // IMPLEMENTED BUT BUGGY
-#define ITEM_LEVEL_CAP 232 // NOT IMPLEMENTED
+#define ITEM_LEVEL_CAP 232
 #define ITEM_0E9 233
 #define ITEM_0EA 234
 #define ITEM_0EB 235
@@ -452,6 +452,10 @@
 
 #define NUM_TECHNICAL_MACHINES 50
 #define NUM_HIDDEN_MACHINES     8
+
+// NUEVO: número de niveles que aumentan los caramelos
+#define GOLDEN_CANDY_LEVELS 20 
+#define RARE_CANDY_LEVELS   1
 
 // Check if the item is one that can be used on a Pokemon.
 #define IS_POKEMON_ITEM(item) ((item) >= ITEM_POTION && (item) <= ITEM_UP_GRADE)

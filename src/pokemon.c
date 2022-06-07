@@ -2214,6 +2214,38 @@ static const struct SpriteTemplate sOakSpeechNidoranFDummyTemplate =
     .callback = SpriteCallbackDummy,
 };
 
+// NUEVO PARA LEVEL CAP BADGE
+static const u16 sLevelCapFlags[] =
+{
+    FLAG_BADGE01_GET, FLAG_BADGE02_GET, FLAG_BADGE03_GET, FLAG_BADGE04_GET,
+    FLAG_BADGE05_GET, FLAG_BADGE06_GET, FLAG_BADGE07_GET, FLAG_BADGE08_GET,
+    /*????,  // Postgame Begin
+    FLAG_????,  // ????
+    FLAG_????,  // ????
+    FLAG_????,  // ????
+    FLAG_????   // ????*/
+};
+
+static const u8 sCapLevels[] =
+{
+    15,  // 0 medallas
+    20,  // 1 medalla
+    30,  // 2 medallas
+    35,  // 3 medallas
+    35,  // 4 medallas
+    45,  // 5 medallas
+    50,  // 6 medallas
+    55,  // 7 medallas
+    100,  // 8 medallas  // 65
+    /*80,  // Postgame Begin
+    85,  // ????
+    90,  // ????
+    95,  // ????
+    100, // ????*/
+};
+// NUEVO PARA LEVEL CAP BADGE
+
+
 static const u8 gHiddenPowerTypes[NUMBER_OF_MON_TYPES - 2] = {
     TYPE_FIGHTING,
     TYPE_FLYING,
@@ -4693,6 +4725,22 @@ bool8 ExecuteTableBasedItemEffect(struct Pokemon *mon, u16 item, u8 partyIndex, 
     return PokemonUseItemEffects(mon, item, partyIndex, moveIndex, 0);
 }
 
+/**
+    Returns the number of level ups availables with the current item and Pokémon level.
+**/
+static s16 GetNumberOfLevelUps(u16 level, u16 item) {
+    u16 levelCap = GetLevelCap();
+    if (item == ITEM_RARE_CANDY) {
+        return RARE_CANDY_LEVELS;
+    }
+
+    if (level + GOLDEN_CANDY_LEVELS > levelCap) {
+        return levelCap - level;
+    } else {
+        return GOLDEN_CANDY_LEVELS;
+    }
+}
+
 bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 moveIndex, u8 e)
 {
     u32 data;
@@ -4844,9 +4892,11 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
                 retVal = FALSE;
             }
             if ((itemEffect[cmdIndex] & ITEM3_LEVEL_UP)  // raise level
-             && GetMonData(mon, MON_DATA_LEVEL, NULL) != 100)
+			&& CanUseCandyItem(item, GetMonData(mon, MON_DATA_LEVEL, NULL)))
             {
-                data = gExperienceTables[gBaseStats[GetMonData(mon, MON_DATA_SPECIES, NULL)].growthRate][GetMonData(mon, MON_DATA_LEVEL, NULL) + 1];
+                u16 level = GetMonData(mon, MON_DATA_LEVEL, NULL);
+                s16 numberOfLevelUps = GetNumberOfLevelUps(level, item);
+                data = gExperienceTables[gBaseStats[GetMonData(mon, MON_DATA_SPECIES, NULL)].growthRate][level + numberOfLevelUps];
                 SetMonData(mon, MON_DATA_EXP, &data);
                 CalculateMonStats(mon);
                 retVal = FALSE;
@@ -6466,37 +6516,26 @@ void PartySpreadPokerus(struct Pokemon *party)
     }
 }
 
-static void SetMonExpWithMaxLevelCheck(struct Pokemon *mon, int species, u8 unused, u32 data)
-{
-    if (data > gExperienceTables[gBaseStats[species].growthRate][100])
-    {
-        data = gExperienceTables[gBaseStats[species].growthRate][100];
-        SetMonData(mon, MON_DATA_EXP, &data);
-    }
-}
-
 bool8 TryIncrementMonLevel(struct Pokemon *mon)
 {
-    u16 species = GetMonData(mon, MON_DATA_SPECIES, NULL);
-    u8 level = GetMonData(mon, MON_DATA_LEVEL, NULL);
-    u8 newLevel = level + 1;
-    u32 exp = GetMonData(mon, MON_DATA_EXP, NULL);
+    u16 species = GetMonData(mon, MON_DATA_SPECIES, 0);
+    u8 nextLevel = GetMonData(mon, MON_DATA_LEVEL, 0) + 1;
+    u32 expPoints = GetMonData(mon, MON_DATA_EXP, 0);
 
-    if (level < 100)
-    {
-        if (exp > gExperienceTables[gBaseStats[species].growthRate][newLevel])
-        {
-            SetMonData(mon, MON_DATA_LEVEL, &newLevel);
-            SetMonExpWithMaxLevelCheck(mon, species, newLevel, exp);
-            return TRUE;
-        }
-        else
-            return FALSE;
+    if (expPoints > gExperienceTables[gBaseStats[species].growthRate][GetLevelCap()])
+  {
+   expPoints = gExperienceTables[gBaseStats[species].growthRate][GetLevelCap()];
+
+   SetMonData(mon, MON_DATA_EXP, &expPoints);
+    }
+   if (nextLevel > GetLevelCap() || expPoints < gExperienceTables[gBaseStats[species].growthRate][nextLevel])
+ {
+        return FALSE;
     }
     else
     {
-        SetMonExpWithMaxLevelCheck(mon, species, level, exp);
-        return FALSE;
+        SetMonData(mon, MON_DATA_LEVEL, &nextLevel);
+        return TRUE;
     }
 }
 
@@ -7244,6 +7283,24 @@ void *OakSpeechNidoranFGetBuffer(u8 bufferId)
         return sOakSpeechNidoranResources->bufferPtrs[bufferId];
     }
 }
+
+// NUEVO PARA LEVEL CAP BADGE
+u8 GetLevelCap()
+{
+    u8 i, capLevelIndex;
+
+    for (capLevelIndex = 0, i = 0; i < NELEMS(sLevelCapFlags); i++)
+    {
+        if (FlagGet(sLevelCapFlags[i]))
+        {
+            capLevelIndex++;
+        }
+    }
+
+    return sCapLevels[capLevelIndex];
+}
+// NUEVO PARA LEVEL CAP BADGE
+
 
 u8 GetRandomType() {
     u32 random;

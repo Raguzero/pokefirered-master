@@ -436,9 +436,9 @@ void FieldUseFunc_PpUp(u8 taskId)
     sub_80A16D0(taskId);
 }
 
-void FieldUseFunc_RareCandy(u8 taskId)
+void ItemUseOutOfBattle_Candy(u8 taskId)
 {
-    gItemUseCB = ItemUseCB_RareCandy;
+    gItemUseCB = ItemUseCB_Candy;
     sub_80A16D0(taskId);
 }
 
@@ -871,7 +871,7 @@ void ItemUseOutOfBattle_EnigmaBerry(u8 taskId)
         break;
     case 0:
         gTasks[taskId].data[4] = 1;
-        FieldUseFunc_RareCandy(taskId);
+        ItemUseOutOfBattle_Candy(taskId);
         break;
     case 18:
     case 19:
@@ -950,4 +950,19 @@ void ItemUseOutOfBattle_ReduceEV(u8 taskId)
 {
     gItemUseCB = ItemUseCB_ReduceEV;
     Task_FadeOuFromBackToField(taskId);
+}
+
+void ItemUseOutOfBattle_LevelCap(u8 taskId)
+{
+    ConvertIntToDecimalStringN(gStringVar1, GetLevelCap(), STR_CONV_MODE_LEFT_ALIGN, 3);
+    StringExpandPlaceholders(gStringVar4, gText_LevelCap);
+
+    if (gTasks[taskId].data[3] == 0)
+    {
+        DisplayItemMessageInBag(taskId, 2, gStringVar4, Task_ReturnToBagFromContextMenu);
+    }
+    else
+    {
+        DisplayItemMessageOnField(taskId, 2, gStringVar4, Task_ItemUse_CloseMessageBoxAndReturnToField);
+    }
 }

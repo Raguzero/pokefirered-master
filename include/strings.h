@@ -1647,4 +1647,6 @@ extern const u8 gText_IVsIncreased[];
 
 extern const u8 gText_CantThrow[];
 
+extern const u8 gText_LevelCap[];
+
 #endif //GUARD_STRINGS_H

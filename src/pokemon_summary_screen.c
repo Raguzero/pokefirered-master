@@ -2360,7 +2360,7 @@ static void BufferMonSkills(void)
 
     level = GetMonData(&sMonSummaryScreen->currentMon, MON_DATA_LEVEL);
     expToNextLevel = 0;
-    if (level < 100)
+	if (level < GetLevelCap())
     {
         species = GetMonData(&sMonSummaryScreen->currentMon, MON_DATA_SPECIES);
         expToNextLevel = gExperienceTables[gBaseStats[species].growthRate][level + 1] - exp;
@@ -4843,7 +4843,7 @@ static void UpdateExpBarObjs(void)
     level = GetMonData(&sMonSummaryScreen->currentMon, MON_DATA_LEVEL);
     species = GetMonData(&sMonSummaryScreen->currentMon, MON_DATA_SPECIES);
 
-    if (level < 100)
+	if (level < GetLevelCap())
     {
         totalExpToNextLevel = gExperienceTables[gBaseStats[species].growthRate][level + 1] - gExperienceTables[gBaseStats[species].growthRate][level];
         curExpToNextLevel = exp - gExperienceTables[gBaseStats[species].growthRate][level];

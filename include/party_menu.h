@@ -66,7 +66,7 @@ u16 ItemIdToBattleMoveId(u16 item);
 bool8 IsMoveHm(u16 move);
 bool8 MonKnowsMove(struct Pokemon *mon, u16 move);
 void ItemUseCB_TMHM(u8 taskId, UNUSED TaskFunc func);
-void ItemUseCB_RareCandy(u8 taskId, TaskFunc func);
+void ItemUseCB_Candy(u8 taskId, TaskFunc task);
 void ItemUseCB_SacredAsh(u8 taskId, UNUSED TaskFunc func);
 void ItemUseCB_EvolutionStone(u8 taskId, TaskFunc func);
 u8 GetItemEffectType(u16 item);
@@ -97,5 +97,6 @@ bool8 GiveAllMons(void);
 void GiveAllItems(void);
 void ItemUseCB_ReduceEV(u8 taskId, TaskFunc task);
 void ItemUseCB_ReduceEV2(u8 taskId, TaskFunc task);
+bool8 CanUseCandyItem(u16 itemId, u16 monLevel);
 
 #endif // GUARD_PARTY_MENU_H
