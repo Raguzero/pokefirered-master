@@ -934,7 +934,6 @@
 #define SPECIES_LUREEL 860 // Evo Lureel
 #define SPECIES_MOIBELLE 861 // Gato Cascabel
 #define SPECIES_BELLEDAM 862 // Evo Moibelle
-//#define SPECIES_LATYKEN 862 // Latias/Blaziken PSYCHC/FIRE  Beta   ???
 
 #define SPECIES_WYRDEER 863
 #define SPECIES_URSALUNA 864
@@ -2368,7 +2367,6 @@
 #define NATIONAL_DEX_LUREEL 860 // Evo Lureel
 #define NATIONAL_DEX_MOIBELLE 861 // Gato Cascabel
 #define NATIONAL_DEX_BELLEDAM 862 // Evo Moibelle
-//#define SPECIES_LATYKEN 862 // Latias/Blaziken PSYCHC/FIRE  Beta   ???
 
 #define NATIONAL_DEX_WYRDEER 863
 #define NATIONAL_DEX_URSALUNA 864
