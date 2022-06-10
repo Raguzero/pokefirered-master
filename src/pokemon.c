@@ -3274,7 +3274,7 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
     if (gBattleMoves[move].effect == EFFECT_EXPLOSION)
         defense /= 2;
 	if (move == MOVE_KNOCK_OFF && defender->item && !gWishFutureKnock.knockedOffMons[gBattlerTarget])
-		Attack = (Attack * 3) / 2;
+		attack = (attack * 3) / 2;
 	if (move == MOVE_HEX && defender->status1)
         gBattleMovePower = (200 * gBattleMovePower) / 100;
 
