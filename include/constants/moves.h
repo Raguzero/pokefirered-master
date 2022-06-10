@@ -375,7 +375,7 @@
 #define MOVE_LIGHT_OF_RUIN 371 // Descripción????
 #define MOVE_HEAD_SMASH 372
 #define MOVE_HEAL_PULSE 373
-#define MOVE_MIDELE_POWER 374 // NOT IMPLEMENTED  // Descripción????
+#define MOVE_MIDELE_POWER 374 // NOT IMPLEMENTED????  // Descripción????
 #define MOVE_GUNK_SHOT 375
 #define MOVE_THUNDER_CAGE 376 // Descripción????
 #define MOVE_DRAGON_ENERGY 377 // Descripción????
@@ -413,38 +413,38 @@
 #define MOVE_POWER_WHIP    409
 #define MOVE_FOCUS_BLAST    410  // Descripción???? // Sin animación
 #define MOVE_VACUUM_WAVE    411
-#define MOVE_BULLET_PUNCH    412  // Descripción???? // Sin animación
-#define MOVE_JUNGLE_HEALING    413 // NOT IMPLEMENTED  // Descripción???? // Sin animación
+#define MOVE_PSYCHIC_FANGS    412  // Sin animación
+#define MOVE_JUNGLE_HEALING    413 // NOT IMPLEMENTED  // Descripción????
 #define MOVE_STRUGGLE_BUG    414  // Descripción???? // Sin animación
-#define MOVE_PSYCHO_CUT_O_ZEN_HEADBUTT    415 // NOT IMPLEMENTED // Sin animación
-#define MOVE_AIR_SLASH_O_HURRICANE    416 // NOT IMPLEMENTED // Sin animación
+#define MOVE_ZEN_HEADBUTT    415 // Sin animación
+#define MOVE_AIR_SLASH    416 // Sin animación
 #define MOVE_RAZOR_SHELL    417  // Descripción???? // Sin animación
 #define MOVE_WOOD_HAMMER    418  // Animación fea
+#define MOVE_NIGHT_SLASH    419   // Sin animación
+#define MOVE_HEX    420   // Sin animación
+#define MOVE_HURRICANE 421  // Sin animación
+// PHANTOM FORCE?
 // GRAVITY?
 // TAILWIND?
 // CLOSE COMBAT?
-// POWER TRICK?
 // TRICK ROOM?
 // ATTACK ORDER?
 // FLAME CHARGE?
-// HEX?
 // INFERNO?
 // AURA WHEEL?
 // DRUM BEATING?
-// SPIRIT BREAK?
-// FALSE SURRENDER?
 // FREEZING GLARE?
 // FIERY WRATH?
 // THUNDEROUS KICK?
 // PSYSHIELD BASH?
 // MOUNTAIN GALE?
-// REVELATION DANCE? (4 VECES, CADA TIPO)
+// REVELATION DANCE? (4 VECES, CADA TIPO??)
 // POLTERGEIST¿
 // TRIPLE AXEL
 
-#define LAST_MOVE_INDEX     MOVE_WOOD_HAMMER
+#define LAST_MOVE_INDEX     MOVE_HURRICANE
 
-#define MOVES_COUNT 419
+#define MOVES_COUNT 422
 
 #define MOVETUTOR_MEGA_PUNCH    0
 #define MOVETUTOR_SWORDS_DANCE  1

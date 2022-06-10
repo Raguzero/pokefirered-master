@@ -1261,7 +1261,7 @@ static bool8 AccuracyCalcHelper(u16 move)
     }
     gHitMarker &= ~HITMARKER_IGNORE_UNDERWATER;
 	// Fix BLIZZARD in HAIL WEATHER bug 
-    if ((WEATHER_HAS_EFFECT && (((gBattleWeather & WEATHER_RAIN_ANY) && gBattleMoves[move].effect == EFFECT_THUNDER)
+    if ((WEATHER_HAS_EFFECT && (((gBattleWeather & WEATHER_RAIN_ANY) && (gBattleMoves[move].effect == EFFECT_THUNDER || gBattleMoves[move].effect == EFFECT_HURRICANE))
      || ((gBattleWeather & WEATHER_HAIL_ANY) && move == MOVE_BLIZZARD)))
      || (gBattleMoves[move].effect == EFFECT_ALWAYS_HIT || gBattleMoves[move].effect == EFFECT_VITAL_THROW || gCurrentMove == MOVE_STRUGGLE)) // Struggle perfect accuracy like current gens
     {
@@ -1328,8 +1328,8 @@ static void atk01_accuracycheck(void)
         if (buff > 0xC)
             buff = 0xC;
         moveAcc = gBattleMoves[move].accuracy;
-        // check Thunder on sunny weather
-        if (WEATHER_HAS_EFFECT && gBattleWeather & WEATHER_SUN_ANY && gBattleMoves[move].effect == EFFECT_THUNDER)
+        // check Thunder or Hurricane on sunny weather
+        if (WEATHER_HAS_EFFECT && gBattleWeather & WEATHER_SUN_ANY && (gBattleMoves[move].effect == EFFECT_THUNDER || gBattleMoves[move].effect == EFFECT_HURRICANE))
             moveAcc = 50;
         calc = sAccuracyStageRatios[buff].dividend * moveAcc;
         calc /= sAccuracyStageRatios[buff].divisor;
@@ -1586,6 +1586,11 @@ void PrepareDynamicMoveTypeAndDamageForAI_CalcDmg(u8 attacker, u8 defender)
     else if (gCurrentMove == MOVE_FACADE)
     {
         if (gBattleMons[attacker].status1 & (STATUS1_POISON | STATUS1_BURN | STATUS1_PARALYSIS | STATUS1_TOXIC_POISON))
+            gBattleScripting.dmgMultiplier = 2;
+    }
+    else if (gCurrentMove == MOVE_HEX)
+    {
+        if (gBattleMons[defender].status1 & (STATUS1_POISON | STATUS1_BURN | STATUS1_PARALYSIS | STATUS1_TOXIC_POISON | STATUS1_FREEZE | STATUS1_SLEEP))
             gBattleScripting.dmgMultiplier = 2;
     }
 	else if (gCurrentMove == MOVE_LOW_KICK)

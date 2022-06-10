@@ -5220,7 +5220,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
       [MOVE_MIDELE_POWER] =
     {
-        .effect = EFFECT_HIT, // EFFECT_MIDELE_POWER
+        .effect = EFFECT_MIDELE_POWER,
         .power = 70,
         .type = TYPE_MYSTERY,
         .accuracy = 100,
@@ -5607,18 +5607,18 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .category = CATEGORY_PHYSICAL,
     },
 	
-    [MOVE_BULLET_PUNCH] =
+    [MOVE_PSYCHIC_FANGS] =
     {
-        .effect = EFFECT_HIT,
-        .power = 40,
-        .type = TYPE_STEEL,
-        .accuracy = 100,
-        .pp = 30,
-        .secondaryEffectChance = 0,
-        .target = MOVE_TARGET_SELECTED,
-        .priority = 1,
-        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGSROCK_AFFECTED | FLAG_IRON_FIST_BOOST,
-        .category = CATEGORY_PHYSICAL,
+            .effect = EFFECT_BRICK_BREAK,
+            .power = 85,
+            .type = TYPE_PSYCHIC,
+            .accuracy = 100,
+            .pp = 10,
+            .secondaryEffectChance = 0,
+            .target = MOVE_TARGET_SELECTED,
+            .priority = 0,
+            .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGSROCK_AFFECTED,
+            .category = CATEGORY_PHYSICAL,
     },
 	
     [MOVE_ICE_SHARD] =
@@ -5803,4 +5803,75 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGSROCK_AFFECTED,
         .category = CATEGORY_PHYSICAL,
      },
+	 
+    [MOVE_NIGHT_SLASH] =
+    {
+        .effect = EFFECT_HIGH_CRITICAL,
+        .power = 70,
+        .type = TYPE_DARK,
+        .accuracy = 100,
+        .pp = 15,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGSROCK_AFFECTED,
+        .category = CATEGORY_PHYSICAL,
+    },
+	
+    [MOVE_HEX] =
+    {
+        .power = 65,
+        .effect = EFFECT_HEX,
+        .type = TYPE_GHOST,
+        .accuracy = 100,
+        .pp = 10,
+        .secondaryEffectChance = 0,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGSROCK_AFFECTED,
+        .category = CATEGORY_SPECIAL,
+    },
+	
+    [MOVE_ZEN_HEADBUTT] =
+    {
+        .effect = EFFECT_FLINCH_HIT,
+        .power = 80,
+        .type = TYPE_PSYCHIC,
+        .accuracy = 90,
+        .pp = 15,
+        .secondaryEffectChance = 20,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_SHEER_FORCE_BOOST,
+        .category = CATEGORY_PHYSICAL,
+    },
+	
+    [MOVE_AIR_SLASH] =
+    {
+        .effect = EFFECT_FLINCH_HIT,
+        .power = 75,
+        .type = TYPE_FLYING,
+        .accuracy = 95,
+		.pp = 15,
+        .secondaryEffectChance = 30,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_SHEER_FORCE_BOOST,
+        .category = CATEGORY_SPECIAL,
+    },
+	
+    [MOVE_HURRICANE] =
+    {
+        .effect = EFFECT_HURRICANE,
+        .power = 120,
+        .type = TYPE_FLYING,
+        .accuracy = 70,
+        .pp = 10,
+        .secondaryEffectChance = 30,
+        .target = MOVE_TARGET_SELECTED,
+        .priority = 0,
+        .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGSROCK_AFFECTED | FLAG_SHEER_FORCE_BOOST,
+        .category = CATEGORY_SPECIAL,
+    },
+	
 };

@@ -1702,6 +1702,7 @@ AI_CV_EvasionUp_BlizzardCheck:
 
 AI_CV_EvasionUp_ThunderCheck:
     if_next_turn_target_might_use_move_with_effect EFFECT_THUNDER, Score_Minus2
+    if_next_turn_target_might_use_move_with_effect EFFECT_HURRICANE, Score_Minus2
     goto AI_CV_EvasionUp_NoProblematicWeather
 
 AI_CV_AlwaysHit:
@@ -4420,6 +4421,7 @@ AI_TrySkillSwapOnAlly2:
 	if_has_move AI_USER_PARTNER, MOVE_ZAP_CANNON, AI_TrySkillSwapOnAllyPlus3
 	if_has_move AI_USER_PARTNER, MOVE_STONE_EDGE, AI_TrySkillSwapOnAllyPlus3
 	if_has_move AI_USER_PARTNER, MOVE_GUNK_SHOT, AI_TrySkillSwapOnAllyPlus3
+	if_has_move AI_USER_PARTNER, MOVE_HURRICANE, AI_TrySkillSwapOnAllyPlus3
 	goto Score_Minus30_
 
 AI_TrySkillSwapOnAllyPlus3:

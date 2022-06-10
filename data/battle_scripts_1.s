@@ -242,6 +242,10 @@ gBattleScriptsForMoveEffects::
 	.4byte BattleScript_EffectRecoil50
 	.4byte BattleScript_EffectHealPulse
 	.4byte BattleScript_EffectRecoilStruggleNewGen
+	.4byte BattleScript_EffectMorningSun @ EEFECT_SHORE_UP
+	.4byte BattleScript_EffectAllStatsUpHit @ EFFECT_MIDELE_POWER
+	.4byte BattleScript_EffectHit                     @ EFFECT_HEX
+	.4byte BattleScript_EffectHurricane
 	.4byte BattleScript_PowderMoveNoEffect
 
 BattleScript_EffectHit::
@@ -1962,6 +1966,11 @@ BattleScript_SolarbeamOnFirstTurn::
 
 BattleScript_EffectThunder::
 	setmoveeffect MOVE_EFFECT_PARALYSIS
+	orword gHitMarker, HITMARKER_IGNORE_ON_AIR
+	goto BattleScript_EffectHit
+	
+BattleScript_EffectHurricane::
+	setmoveeffect MOVE_EFFECT_CONFUSION
 	orword gHitMarker, HITMARKER_IGNORE_ON_AIR
 	goto BattleScript_EffectHit
 

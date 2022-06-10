@@ -1008,7 +1008,7 @@ static u8 ChooseMoveOrAction_Singles(void)
                    (gBattleMoves[move].accuracy == 0
                     || (gBattleMoves[move].accuracy >= 80 && ((gBattleMons[gBattlerAttacker].ability == ABILITY_KEEN_EYE 
 					|| gBattleMons[gBattlerTarget].statStages[STAT_EVASION] < 9) && gBattleMons[gBattlerAttacker].statStages[STAT_ACC] > 4))
-                    || (WEATHER_HAS_EFFECT && (((gBattleWeather & WEATHER_RAIN_ANY) && gBattleMoves[move].effect == EFFECT_THUNDER) || ((gBattleWeather & WEATHER_HAIL_ANY) && move == MOVE_BLIZZARD)))
+                    || (WEATHER_HAS_EFFECT && (((gBattleWeather & WEATHER_RAIN_ANY) && (gBattleMoves[move].effect == EFFECT_THUNDER || gBattleMoves[move].effect == EFFECT_HURRICANE)) || ((gBattleWeather & WEATHER_HAIL_ANY) && move == MOVE_BLIZZARD)))
                    );
             u8 nhko_taken = CalculateNHKO(gBattlerTarget, gBattlerAttacker, FALSE, MOVE_NONE, FALSE, ignoreFocusPunch);
             bool8 ai_is_faster = gBattleMoves[move].effect == EFFECT_QUICK_ATTACK || gBattleMoves[move].effect == EFFECT_FAKE_OUT || GetWhoStrikesFirst(gBattlerAttacker, gBattlerTarget, TRUE) == 0;
@@ -3192,7 +3192,7 @@ static void Cmd_if_accuracy_less_than(void)
 
     // ataques que cambian de precisión en clima
     if (WEATHER_HAS_EFFECT) {
-        if (gBattleMoves[move].effect == EFFECT_THUNDER) {
+        if (gBattleMoves[move].effect == EFFECT_THUNDER || gBattleMoves[move].effect == EFFECT_HURRICANE) {
             if (gBattleWeather & WEATHER_RAIN_ANY)
                 return;
             if (gBattleWeather & WEATHER_SUN_ANY)

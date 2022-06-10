@@ -458,13 +458,16 @@ gBattleAnims_Moves::
 	.4byte Move_POWER_WHIP    
 	.4byte Move_FOCUS_BLAST    
 	.4byte Move_VACUUM_WAVE   
-	.4byte Move_BULLET_PUNCH    
+	.4byte Move_PSYCHIC_FANGS    
 	.4byte Move_JUNGLE_HEALING  
 	.4byte Move_STRUGGLE_BUG   
-	.4byte Move_PSYCHO_CUT_O_ZEN_HEADBUTT
-	.4byte Move_AIR_SLASH_O_HURRICANE 
+	.4byte Move_ZEN_HEADBUTT
+	.4byte Move_AIR_SLASH
 	.4byte Move_RAZOR_SHELL 
-	.4byte Move_WOOD_HAMMER  
+	.4byte Move_WOOD_HAMMER
+	.4byte Move_NIGHT_SLASH 
+	.4byte Move_HEX
+	.4byte Move_HURRICANE 
 	.4byte Move_COUNT
 
 gBattleAnims_StatusConditions::
@@ -12042,19 +12045,19 @@ Move_VACUUM_WAVE:
 	blendoff
 	end
 	
-Move_BULLET_PUNCH:    
+Move_PSYCHIC_FANGS:    
 	end
 	
 Move_JUNGLE_HEALING: 
-	end
+	goto Move_AROMATHERAPY
 	
 Move_STRUGGLE_BUG:   
 	end
 	
-Move_PSYCHO_CUT_O_ZEN_HEADBUTT:
+Move_ZEN_HEADBUTT:
 	end
 	
-Move_AIR_SLASH_O_HURRICANE: 
+Move_AIR_SLASH: 
 	end
 	
 Move_RAZOR_SHELL: 
@@ -12084,6 +12087,15 @@ Move_WOOD_HAMMER:
 	waitforvisualfinish
 	clearmonbg ANIM_TARGET
 	blendoff
+	end
+	
+Move_NIGHT_SLASH:
+	end
+	
+Move_HEX:
+	end
+	
+Move_HURRICANE: 
 	end
 
 Move_COUNT:: @ 81D53D9
