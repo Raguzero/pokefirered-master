@@ -87,6 +87,8 @@
 #define VARIOUS_TRY_TRAINER_SLIDE_MSG_LAST_ON 	16
 #define VARIOUS_TRY_FRISK                       17
 #define VARIOUS_TRY_HEAL_PULSE                  18
+#define VARIOUS_ARGUMENT_STATUS_EFFECT          19
+#define VARIOUS_ARGUMENT_TO_MOVE_EFFECT         20
 
 // atk80, dmg manipulation
 #define ATK80_DMG_CHANGE_SIGN                               0

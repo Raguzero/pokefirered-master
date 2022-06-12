@@ -246,6 +246,7 @@ gBattleScriptsForMoveEffects::
 	.4byte BattleScript_EffectAllStatsUpHit @ EFFECT_MIDELE_POWER
 	.4byte BattleScript_EffectHit                     @ EFFECT_HEX
 	.4byte BattleScript_EffectHurricane
+	.4byte BattleScript_EffectRecoil33Status          @ EFFECT_RECOIL_33_STATUS
 	.4byte BattleScript_PowderMoveNoEffect
 
 BattleScript_EffectHit::
@@ -2650,6 +2651,10 @@ BattleScript_EffectSecretPower::
 BattleScript_EffectDoubleEdge::
 	setmoveeffect MOVE_EFFECT_RECOIL_33 | MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_CERTAIN
 	goto BattleScript_EffectHit
+	
+BattleScript_EffectRecoil33Status:
+	setmoveeffect MOVE_EFFECT_RECOIL_33_STATUS | MOVE_EFFECT_AFFECTS_USER | MOVE_EFFECT_CERTAIN
+	goto BattleScript_EffectHit
 
 BattleScript_EffectTeeterDance::
 	attackcanceler
@@ -3989,6 +3994,8 @@ BattleScript_MoveEffectConfusion::
 	waitmessage 0x40
 	return
 
+BattleScript_MoveEffectRecoilWithStatus::
+	argumentstatuseffect
 BattleScript_MoveEffectRecoil::
 	jumpifmove MOVE_STRUGGLE, BattleScript_DoRecoil
 	jumpifability BS_ATTACKER, ABILITY_ROCK_HEAD, BattleScript_RecoilEnd
@@ -4000,6 +4007,10 @@ BattleScript_DoRecoil::
 	waitmessage 0x40
 	tryfaintmon BS_ATTACKER, 0, NULL
 BattleScript_RecoilEnd::
+	return
+	
+BattleScript_EffectWithChance::
+	seteffectwithchance
 	return
 
 BattleScript_ItemSteal::

@@ -1339,6 +1339,14 @@
 	.macro tryfriskmsg battler:req
 	various \battler, VARIOUS_TRY_FRISK
 	.endm
+	
+	.macro argumentstatuseffect
+	various BS_ATTACKER, VARIOUS_ARGUMENT_STATUS_EFFECT
+	.endm
+	
+	.macro argumenttomoveeffect
+	various BS_ATTACKER, VARIOUS_ARGUMENT_TO_MOVE_EFFECT
+	.endm
 
 @ helpful macros
 	.macro setstatchanger stat:req, stages:req, down:req

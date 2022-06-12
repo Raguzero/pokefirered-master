@@ -4818,12 +4818,13 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_VOLT_TACKLE] =
     {
-            .effect = EFFECT_DOUBLE_EDGE,
+            .effect = EFFECT_RECOIL_33_STATUS,
+            .argument = STATUS1_PARALYSIS,
             .power = 120,
             .type = TYPE_ELECTRIC,
             .accuracy = 100,
             .pp = 15,
-            .secondaryEffectChance = 0,
+			.secondaryEffectChance = 10,
             .target = MOVE_TARGET_SELECTED,
             .priority = 0,
             .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGSROCK_AFFECTED | FLAG_SHEER_FORCE_BOOST,
@@ -5440,7 +5441,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     },
     [MOVE_FLARE_BLITZ] =
     {
-        .effect = EFFECT_HIT, // EFFECT_RECOIL_33_STATUS
+        .effect = EFFECT_RECOIL_33_STATUS, 
         .power = 120,
         .type = TYPE_FIRE,
         .accuracy = 100,
@@ -5450,7 +5451,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGSROCK_AFFECTED | FLAG_SHEER_FORCE_BOOST, // FLAG_THAW_USER
         .category = CATEGORY_PHYSICAL,
-        //.argument = STATUS1_BURN,
+        .argument = STATUS1_BURN,
     },
 	
     [MOVE_WILD_CHARGE] =

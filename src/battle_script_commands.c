@@ -912,6 +912,7 @@ static const u8 *const sMoveEffectBS_Ptrs[] =
     [MOVE_EFFECT_RECOIL_33] = BattleScript_MoveEffectRecoil,
     [MOVE_EFFECT_RECOIL_50] = BattleScript_MoveEffectRecoil,
     [MOVE_EFFECT_RECOIL_STRUGGLENEWGEN] = BattleScript_MoveEffectRecoil,
+    [MOVE_EFFECT_RECOIL_33_STATUS] = BattleScript_MoveEffectRecoilWithStatus,
 };
 
 // not used
@@ -3248,6 +3249,13 @@ void SetMoveEffect(bool8 primary, u8 certain)
                     gBattleMoveDamage = 1;
                 BattleScriptPush(gBattlescriptCurrInstr + 1);
                 gBattlescriptCurrInstr = sMoveEffectBS_Ptrs[gBattleCommunication[MOVE_EFFECT_BYTE]];
+                break;
+            case MOVE_EFFECT_RECOIL_33_STATUS: // Flare Blitz - can burn, Volt Tackle - can paralyze
+                gBattleMoveDamage = gHpDealt / 3;
+                if (gBattleMoveDamage == 0)
+                    gBattleMoveDamage = 1;
+                BattleScriptPush(gBattlescriptCurrInstr + 1);
+                gBattlescriptCurrInstr = BattleScript_MoveEffectRecoilWithStatus;
                 break;
             case MOVE_EFFECT_THRASH:
                 if (gBattleMons[gEffectBattler].status2 & STATUS2_LOCK_CONFUSE)
@@ -6699,7 +6707,42 @@ static void atk76_various(void)
         gBattleStruct->friskedBattler = 0;
         gBattleStruct->friskedAbility = FALSE;
         break;
-    }
+    case VARIOUS_ARGUMENT_STATUS_EFFECT:
+        switch (gBattleMoves[gCurrentMove].argument)
+        {
+        case STATUS1_SLEEP:
+			gBattleCommunication[MOVE_EFFECT_BYTE] = MOVE_EFFECT_SLEEP;
+            break;
+        case STATUS1_BURN:
+        gBattleCommunication[MOVE_EFFECT_BYTE] = MOVE_EFFECT_BURN;
+            break;
+        case STATUS1_FREEZE:
+        gBattleCommunication[MOVE_EFFECT_BYTE] = MOVE_EFFECT_FREEZE;
+            break;
+        case STATUS1_PARALYSIS:
+        gBattleCommunication[MOVE_EFFECT_BYTE] = MOVE_EFFECT_PARALYSIS;
+            break;
+        case STATUS1_POISON:
+        gBattleCommunication[MOVE_EFFECT_BYTE] = MOVE_EFFECT_POISON;
+            break;
+        case STATUS1_TOXIC_POISON:
+        gBattleCommunication[MOVE_EFFECT_BYTE] = MOVE_EFFECT_TOXIC;
+            break;
+        default:
+            gBattleCommunication[MOVE_EFFECT_BYTE] = 0;
+            break;
+        }
+        if (gBattleCommunication[MOVE_EFFECT_BYTE] != 0)
+        {
+            BattleScriptPush(gBattlescriptCurrInstr + 3);
+            gBattlescriptCurrInstr = BattleScript_EffectWithChance;
+            return;
+        }
+        break;
+    case VARIOUS_ARGUMENT_TO_MOVE_EFFECT:
+        gBattleCommunication[MOVE_EFFECT_BYTE] = gBattleMoves[gCurrentMove].argument;
+        break;
+	}
     gBattlescriptCurrInstr += 3;
 }
 
