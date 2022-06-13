@@ -1316,6 +1316,9 @@ const u16 *const gLevelUpLearnsets[NUM_SPECIES] =
     [SPECIES_ESPEON_BETA] = sEspeonBetaLevelUpLearnset,
     [SPECIES_UMBREON_BETA] = sUmbreonBetaLevelUpLearnset,
     [SPECIES_LEAFEON_BETA] = sLeafeonBetaLevelUpLearnset,
+	[SPECIES_TYKER] = sTykerLevelUpLearnset,
+	[SPECIES_STRAIGAR] = sStraigarLevelUpLearnset,
+	[SPECIES_TYGRETHOR] = sTygrethorLevelUpLearnset,
 	// New Evos (Giga)
 	[SPECIES_GARBODOR_GIGA] = sGarbodorGigaLevelUpLearnset,
 	[SPECIES_KINGLER_GIGA] = sKinglerGigaLevelUpLearnset,
