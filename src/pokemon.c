@@ -3247,7 +3247,7 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
       defense *= 2, spDefense *= 2;
 	if ((move == MOVE_SNORE || move == MOVE_OVERDRIVE || move == MOVE_BOOMBURST || move == MOVE_UPROAR || move == MOVE_HYPER_VOICE || move == MOVE_BUG_BUZZ) && attacker->ability == ABILITY_PUNK_ROCK)
 		gBattleMovePower = (130 * gBattleMovePower) / 100;
-	if ((move == MOVE_CRUNCH || move == MOVE_BITE || move == MOVE_POISON_FANG || move == MOVE_HYPER_FANG) && attacker->ability == ABILITY_STRONG_JAW)
+	if ((move == MOVE_CRUNCH || move == MOVE_BITE || move == MOVE_POISON_FANG || move == MOVE_HYPER_FANG  || move == MOVE_THUNDER_FANG || move == MOVE_ICE_FANG || move == MOVE_FIRE_FANG ) && attacker->ability == ABILITY_STRONG_JAW)
 		gBattleMovePower = (150 * gBattleMovePower) / 100;
 	if ((move == MOVE_DARK_PULSE || move == MOVE_DRAGON_PULSE || move == MOVE_WATER_PULSE || move == MOVE_AURA_SPHERE) && attacker->ability == ABILITY_MEGA_LAUNCHER)
 		gBattleMovePower = (150 * gBattleMovePower) / 100;

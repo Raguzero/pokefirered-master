@@ -423,6 +423,9 @@
 #define MOVE_NIGHT_SLASH    419   // Sin animación
 #define MOVE_HEX    420   // Sin animación
 #define MOVE_HURRICANE 421  // Sin animación
+#define MOVE_THUNDER_FANG 422 // Sin animación
+#define MOVE_ICE_FANG 423 // Sin animación
+#define MOVE_FIRE_FANG 424 // Sin animación
 // PHANTOM FORCE?
 // GRAVITY?
 // TAILWIND?
@@ -442,9 +445,9 @@
 // POLTERGEIST¿
 // TRIPLE AXEL
 
-#define LAST_MOVE_INDEX     MOVE_HURRICANE
+#define LAST_MOVE_INDEX     MOVE_FIRE_FANG
 
-#define MOVES_COUNT 422
+#define MOVES_COUNT 425
 
 #define MOVETUTOR_MEGA_PUNCH    0
 #define MOVETUTOR_SWORDS_DANCE  1

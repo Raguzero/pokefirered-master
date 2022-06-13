@@ -468,6 +468,9 @@ gBattleAnims_Moves::
 	.4byte Move_NIGHT_SLASH 
 	.4byte Move_HEX
 	.4byte Move_HURRICANE 
+	.4byte Move_THUNDER_FANG
+	.4byte Move_ICE_FANG
+	.4byte Move_FIRE_FANG
 	.4byte Move_COUNT
 
 gBattleAnims_StatusConditions::
@@ -12096,6 +12099,15 @@ Move_HEX:
 	end
 	
 Move_HURRICANE: 
+	end
+	
+Move_THUNDER_FANG: 
+	end
+
+Move_ICE_FANG: 
+	end
+
+Move_FIRE_FANG: 
 	end
 
 Move_COUNT:: @ 81D53D9

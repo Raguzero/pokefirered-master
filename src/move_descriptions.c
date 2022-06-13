@@ -421,6 +421,9 @@ const u8 sHexDescription[] = _("Does double damage\nif the foe has\na status pro
 const u8 sZenHeadbuttDescription[] = _("Hits with a strong\nheadbutt. May\ncause flinching.");
 const u8 sAirSlashDescription[] = _("Attacks with a\nblade of air. May\ncause flinching.");
 const u8 sHurricaneDescription[] = _("Traps the foe in a\nfierce wind. May\ncause confusion.");
+const u8 sThunderFangDescription[] = _("May cause flinch or\nleave the foe\nparalyzed.");
+const u8 sIceFangDescription[] = _("May cause flinch or\nleave the foe\nfrozen.");
+const u8 sFireFangDescription[] = _("May cause flinch or\nleave the foe\nwith a burn.");
 
 const u8 *const gMoveDescriptionPointers[MOVES_COUNT - 1] = {
     [MOVE_POUND         - 1] = gMoveDescription_Pound,
@@ -844,4 +847,7 @@ const u8 *const gMoveDescriptionPointers[MOVES_COUNT - 1] = {
     [MOVE_ZEN_HEADBUTT - 1] = sZenHeadbuttDescription,
     [MOVE_AIR_SLASH - 1] = sAirSlashDescription,
     [MOVE_HURRICANE - 1] = sHurricaneDescription,
+    [MOVE_THUNDER_FANG - 1] = sThunderFangDescription,
+    [MOVE_ICE_FANG - 1] = sIceFangDescription,
+    [MOVE_FIRE_FANG - 1] = sFireFangDescription,
 };

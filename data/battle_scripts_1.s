@@ -247,6 +247,7 @@ gBattleScriptsForMoveEffects::
 	.4byte BattleScript_EffectHit                     @ EFFECT_HEX
 	.4byte BattleScript_EffectHurricane
 	.4byte BattleScript_EffectRecoil33Status          @ EFFECT_RECOIL_33_STATUS
+	.4byte BattleScript_EffectFlinchStatus            @ EFFECT_FLINCH_STATUS
 	.4byte BattleScript_PowderMoveNoEffect
 
 BattleScript_EffectHit::
@@ -691,6 +692,33 @@ BattleScript_EffectConversion::
 BattleScript_EffectFlinchHit::
 	setmoveeffect MOVE_EFFECT_FLINCH
 	goto BattleScript_EffectHit
+	
+
+BattleScript_EffectFlinchStatus:
+	setmoveeffect MOVE_EFFECT_FLINCH
+	attackcanceler
+	accuracycheck BattleScript_PrintMoveMissed, ACC_CURR_MOVE
+	attackstring
+	ppreduce
+	critcalc
+	damagecalc
+	typecalc
+	adjustnormaldamage
+	attackanimation
+	waitanimation
+	effectivenesssound
+	hitanimation BS_TARGET
+	waitstate
+	healthbarupdate BS_TARGET
+	datahpupdate BS_TARGET
+	critmessage
+	waitmessage 0x40
+	resultmessage
+	waitmessage 0x40
+	seteffectwithchance
+	argumentstatuseffect
+	tryfaintmon BS_TARGET, 0, NULL
+	goto BattleScript_MoveEnd
 
 BattleScript_EffectRestoreHp::
 	attackcanceler
