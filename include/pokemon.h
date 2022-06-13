@@ -247,7 +247,7 @@ struct BattleMove
     u8 secondaryEffectChance;
     u8 target;
     s8 priority;
-    u8 flags;
+    u16 flags;
     u8 category;
     u8 argument;
 };
@@ -262,6 +262,7 @@ extern const struct BattleMove gBattleMoves[];
 #define FLAG_KINGSROCK_AFFECTED     0x20
 #define FLAG_SHEER_FORCE_BOOST      0x40
 #define FLAG_IRON_FIST_BOOST        0x80
+#define FLAG_THAW_USER              0x100 // luego 0x200, 0x400, x800, x1000, x2000......
 
 struct SpindaSpot
 {
