@@ -5456,7 +5456,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 	
     [MOVE_WILD_CHARGE] =
     {
-        .effect = EFFECT_HIT, // EFFECT_RECOIL_25
+        .effect = EFFECT_RECOIL,
         .power = 90,
         .type = TYPE_ELECTRIC,
         .accuracy = 100,
@@ -5918,6 +5918,48 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
         .priority = 0,
         .category = CATEGORY_PHYSICAL,
         .argument = STATUS1_BURN,
+    },
+	
+    [MOVE_FREEZING_GLARE] =
+    {
+            .effect = EFFECT_FREEZE_HIT,
+            .power = 90,
+            .type = TYPE_PSYCHIC,
+            .accuracy = 100,
+            .pp = 10,
+            .secondaryEffectChance = 10,
+            .target = MOVE_TARGET_SELECTED,
+            .priority = 0,
+            .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGSROCK_AFFECTED | FLAG_SHEER_FORCE_BOOST,
+            .category = CATEGORY_SPECIAL,
+    },
+	
+    [MOVE_THUNDEROUS_KICK] =
+    {
+            .effect = EFFECT_DEFENSE_DOWN_HIT,
+            .power = 90,
+            .type = TYPE_FIGHTING,
+            .accuracy = 100,
+            .pp = 15,
+            .secondaryEffectChance = 100,
+            .target = MOVE_TARGET_SELECTED,
+            .priority = 0,
+            .flags = FLAG_MAKES_CONTACT | FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGSROCK_AFFECTED | FLAG_SHEER_FORCE_BOOST,
+            .category = CATEGORY_PHYSICAL,
+    },
+	
+    [MOVE_FIERY_WRATH] =
+    {
+            .effect = EFFECT_FLINCH_HIT,
+            .power = 90,
+            .type = TYPE_DARK,
+            .accuracy = 100,
+            .pp = 10,
+            .secondaryEffectChance = 20,
+            .target = MOVE_TARGET_BOTH,
+            .priority = 0,
+            .flags = FLAG_PROTECT_AFFECTED | FLAG_MIRROR_MOVE_AFFECTED | FLAG_KINGSROCK_AFFECTED | FLAG_SHEER_FORCE_BOOST,
+            .category = CATEGORY_SPECIAL,
     },
 	
 };

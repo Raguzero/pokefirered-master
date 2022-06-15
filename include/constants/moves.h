@@ -375,7 +375,7 @@
 #define MOVE_LIGHT_OF_RUIN 371 // Descripción????
 #define MOVE_HEAD_SMASH 372
 #define MOVE_HEAL_PULSE 373
-#define MOVE_MIDELE_POWER 374 // NOT IMPLEMENTED????  // Descripción????
+#define MOVE_MIDELE_POWER 374 // NOT IMPLEMENTED????
 #define MOVE_GUNK_SHOT 375
 #define MOVE_THUNDER_CAGE 376 // Descripción????
 #define MOVE_DRAGON_ENERGY 377 // Descripción????
@@ -389,36 +389,36 @@
 #define MOVE_SHORE_UP 385 // Descripción????
 #define MOVE_DRAGON_HAMMER 386
 #define MOVE_MONADO_POWER 387
-#define MOVE_BRUTAL_BALL 388  // Descripción????
-#define MOVE_SEISMIC_PUNCH 389  // Descripción????
+#define MOVE_BRUTAL_BALL 388
+#define MOVE_SEISMIC_PUNCH 389
 #define MOVE_HOLA_REINA    390
 #define MOVE_DRAGON_PULSE    391 // Descripción???? // Sin animación
 #define MOVE_BUG_BUZZ    392
-#define MOVE_GIGA_IMPACT    393 // Descripción???? // Sin animación
-#define MOVE_WILD_CHARGE    394 // NOT IMPLEMENTED  // Descripción???? // Sin animación
-#define MOVE_PLAY_ROUGH    395 // Descripción???? // Sin animación
-#define MOVE_AURA_SPHERE    396 // Descripción???? // Sin animación
-#define MOVE_FLARE_BLITZ    397 // NOT IMPLEMENTED // Sin animación
+#define MOVE_GIGA_IMPACT    393 // Sin animación
+#define MOVE_WILD_CHARGE    394 // Sin animación
+#define MOVE_PLAY_ROUGH    395 // Sin animación
+#define MOVE_AURA_SPHERE    396 // Sin animación
+#define MOVE_FLARE_BLITZ    397 // Sin animación
 #define MOVE_SHADOW_CLAW    398
 #define MOVE_SEED_BOMB    399
 #define MOVE_EARTH_POWER    400
 #define MOVE_ICE_SHARD    401
 #define MOVE_AQUA_JET    402
-#define MOVE_POISON_JAB    403 // Descripción???? // Sin animación
+#define MOVE_POISON_JAB    403 // Sin animación
 #define MOVE_POWER_GEM    404 // Descripción???? // Sin animación
 #define MOVE_METEOR_BEAM    405 // NOT IMPLEMENTED   // Descripción???? // Sin animación
 #define MOVE_MIRROR_SHOT    406
-#define MOVE_FLASH_CANNON    407 // Descripción???? // Sin animación
-#define MOVE_SHADOW_BONE    408  // Descripción???? // Sin animación
+#define MOVE_FLASH_CANNON    407 // Sin animación
+#define MOVE_SHADOW_BONE    408 // Sin animación
 #define MOVE_POWER_WHIP    409
-#define MOVE_FOCUS_BLAST    410  // Descripción???? // Sin animación
+#define MOVE_FOCUS_BLAST    410  // Sin animación
 #define MOVE_VACUUM_WAVE    411
 #define MOVE_PSYCHIC_FANGS    412  // Sin animación
 #define MOVE_JUNGLE_HEALING    413 // NOT IMPLEMENTED  // Descripción????
-#define MOVE_STRUGGLE_BUG    414  // Descripción???? // Sin animación
+#define MOVE_STRUGGLE_BUG    414  // Sin animación
 #define MOVE_ZEN_HEADBUTT    415 // Sin animación
 #define MOVE_AIR_SLASH    416 // Sin animación
-#define MOVE_RAZOR_SHELL    417  // Descripción???? // Sin animación
+#define MOVE_RAZOR_SHELL    417  // Sin animación
 #define MOVE_WOOD_HAMMER    418  // Animación fea
 #define MOVE_NIGHT_SLASH    419   // Sin animación
 #define MOVE_HEX    420   // Sin animación
@@ -426,28 +426,24 @@
 #define MOVE_THUNDER_FANG 422 // Sin animación
 #define MOVE_ICE_FANG 423 // Sin animación
 #define MOVE_FIRE_FANG 424 // Sin animación
+#define MOVE_FREEZING_GLARE 425 // Sin animación
+#define MOVE_FIERY_WRATH 426 // Sin animación
+#define MOVE_THUNDEROUS_KICK 427 // Sin animación
 // PHANTOM FORCE?
 // GRAVITY?
 // TAILWIND?
-// CLOSE COMBAT?
 // TRICK ROOM?
 // ATTACK ORDER?
-// FLAME CHARGE?
-// INFERNO?
 // AURA WHEEL?
-// DRUM BEATING?
-// FREEZING GLARE?
-// FIERY WRATH?
-// THUNDEROUS KICK?
 // PSYSHIELD BASH?
 // MOUNTAIN GALE?
-// REVELATION DANCE? (4 VECES, CADA TIPO??)
+// REVELATION DANCE?
 // POLTERGEIST¿
 // TRIPLE AXEL
 
-#define LAST_MOVE_INDEX     MOVE_FIRE_FANG
+#define LAST_MOVE_INDEX     MOVE_THUNDEROUS_KICK
 
-#define MOVES_COUNT 425
+#define MOVES_COUNT 428
 
 #define MOVETUTOR_MEGA_PUNCH    0
 #define MOVETUTOR_SWORDS_DANCE  1

@@ -471,6 +471,9 @@ gBattleAnims_Moves::
 	.4byte Move_THUNDER_FANG
 	.4byte Move_ICE_FANG
 	.4byte Move_FIRE_FANG
+	.4byte Move_FREEZING_GLARE 
+	.4byte Move_FIERY_WRATH
+	.4byte Move_THUNDEROUS_KICK
 	.4byte Move_COUNT
 
 gBattleAnims_StatusConditions::
@@ -12108,6 +12111,15 @@ Move_ICE_FANG:
 	end
 
 Move_FIRE_FANG: 
+	end
+	
+Move_FREEZING_GLARE:
+	end
+
+Move_FIERY_WRATH:
+	end
+
+Move_THUNDEROUS_KICK:
 	end
 
 Move_COUNT:: @ 81D53D9

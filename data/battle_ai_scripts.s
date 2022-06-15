@@ -4016,8 +4016,9 @@ AI_TryToFaint_NotSolarBeamOnSun:
     if_effect EFFECT_SUPERPOWER, AI_TryToFaint_WhiteHerb
     if_effect EFFECT_OVERHEAT, AI_TryToFaint_WhiteHerb
     if_effect EFFECT_RECOIL_50, AI_TryToFaint_DiscourageRecoil50 @ LIGHT OF RUIN, HEAD SMASH
-    if_effect EFFECT_DOUBLE_EDGE, AI_TryToFaint_DiscourageRecoil33 @ DOUBLE EDGE, BRAVE BIRD, VOLT TACKLE
-    if_effect EFFECT_RECOIL, AI_TryToFaint_DiscourageRecoil25 @ TAKE DOWN, SUBMISION
+    if_effect EFFECT_DOUBLE_EDGE, AI_TryToFaint_DiscourageRecoil33 @ DOUBLE EDGE, BRAVE BIRD, WOOD HAMMER
+    if_effect EFFECT_RECOIL_33_STATUS, AI_TryToFaint_DiscourageRecoil33 @ FLARE BLITZ, VOLT TACKLE
+    if_effect EFFECT_RECOIL, AI_TryToFaint_DiscourageRecoil25 @ TAKE DOWN, SUBMISION, WILD CHARGE
     if_effect EFFECT_VITAL_THROW, AI_TryToFaint_DiscourageLowPriorityMovesIfUserIsFaster
     if_effect EFFECT_REVENGE, AI_TryToFaint_DiscourageLowPriorityMovesIfUserIsFaster
 	if_effect EFFECT_EXPLOSION, AI_TryToFaint_EncourageExplosionIfOpponentHasOneMonLeft
@@ -4422,6 +4423,7 @@ AI_TrySkillSwapOnAlly2:
 	if_has_move AI_USER_PARTNER, MOVE_STONE_EDGE, AI_TrySkillSwapOnAllyPlus3
 	if_has_move AI_USER_PARTNER, MOVE_GUNK_SHOT, AI_TrySkillSwapOnAllyPlus3
 	if_has_move AI_USER_PARTNER, MOVE_HURRICANE, AI_TrySkillSwapOnAllyPlus3
+	if_has_move AI_USER_PARTNER, MOVE_FOCUS_BLAST, AI_TrySkillSwapOnAllyPlus3
 	goto Score_Minus30_
 
 AI_TrySkillSwapOnAllyPlus3:
