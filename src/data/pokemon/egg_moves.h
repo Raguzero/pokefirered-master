@@ -3978,5 +3978,14 @@ const u16 gEggMoves[] = {
               MOVE_PURSUIT,
 			MOVE_SCARY_FACE),
 			
+	egg_moves(WINTASS,
+		MOVE_AMNESIA,
+		MOVE_SUPERPOWER,
+		MOVE_STOMP,
+		MOVE_ROCK_BLAST,
+		MOVE_ARM_THRUST,
+		MOVE_YAWN,
+		MOVE_ICE_BALL),
+			
     EGG_MOVES_TERMINATOR
 };

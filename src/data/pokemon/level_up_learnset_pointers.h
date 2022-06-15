@@ -1323,5 +1323,8 @@ const u16 *const gLevelUpLearnsets[NUM_SPECIES] =
 	[SPECIES_GARBODOR_GIGA] = sGarbodorGigaLevelUpLearnset,
 	[SPECIES_KINGLER_GIGA] = sKinglerGigaLevelUpLearnset,
 	[SPECIES_BUTTERFREE_GIGA] = sButterfreeGigaLevelUpLearnset,
+	[SPECIES_WINTASS] = sWintassLevelUpLearnset,
+	[SPECIES_DARK_PIKA] = sDarkPikachuLevelUpLearnset,
+	[SPECIES_HONEDGE_MONADO] = sHonedgeMonadoLevelUpLearnset,
 };
 
