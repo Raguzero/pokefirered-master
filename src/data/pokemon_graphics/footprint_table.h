@@ -916,4 +916,18 @@ const u8 *const gMonFootprintTable[] =
     [SPECIES_WEARLYCAN] = gMonFootprint_Wearlycan,
     [SPECIES_SMUJJ] = gMonFootprint_Smujj,
     [SPECIES_DISTURBAN] = gMonFootprint_Disturban,
+    [SPECIES_YANMEGA_BETA] = gMonFootprint_YanmegaBeta,
+    [SPECIES_POSORD] = gMonFootprint_Posord,
+    [SPECIES_PRINPAWN] = gMonFootprint_Prinpawn,
+    [SPECIES_COUREEN] = gMonFootprint_Coureen,
+    [SPECIES_KINCURS] = gMonFootprint_Kincurs,
+    [SPECIES_HOPPIP_BETA] = gMonFootprint_HoppipBeta,
+    [SPECIES_SKIPLOOM_BETA] = gMonFootprint_SkiploomBeta,
+    [SPECIES_JUMPLUFF_BETA] = gMonFootprint_JumpluffBeta,
+    [SPECIES_KINGLER_GIGA] = gMonFootprint_KinglerGiga,
+    [SPECIES_BUTTERFREE_GIGA] = gMonFootprint_ButterfreeGiga,
+    [SPECIES_DARK_PIKA] = gMonFootprint_DarkPikachu,
+    [SPECIES_WINTASS] = gMonFootprint_Wintass,
+    [SPECIES_HONEDGE_MONADO] = gMonFootprint_HonedgeMonado,
+
 };

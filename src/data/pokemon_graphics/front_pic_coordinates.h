@@ -2075,4 +2075,54 @@ const struct MonCoords gMonFrontPicCoords[] =
         .size = 0x35,
         .y_offset = 0x0d,
     },
+    [SPECIES_YANMEGA_BETA] =
+    {
+        .size = 0x66,
+        .y_offset = 0x5,
+    },
+    [SPECIES_POSORD] =
+    {
+        .size = 0x88,
+        .y_offset = 0x00,
+    },
+    [SPECIES_PRINPAWN] =
+    {
+        .size = 0x56,
+        .y_offset = 0x0e,
+    },
+    [SPECIES_COUREEN] =
+    {
+        .size = 0x55,
+        .y_offset = 0x0c,
+    },
+    [SPECIES_KINCURS] =
+    {
+        .size = 0x55,
+        .y_offset = 0x0c,
+    },
+    [SPECIES_BUTTERFREE_GIGA] =
+    {
+        .size = 0x76,
+        .y_offset = 0x09,
+    },
+    [SPECIES_KINGLER_GIGA] =
+    {
+        .size = 0x88,
+        .y_offset = 0x03,
+    },
+    [SPECIES_WINTASS] =
+    {
+        .size = 0x88,
+        .y_offset = 0x02,
+    },
+    [SPECIES_DARK_PIKA] =
+    {
+        .size = 0x67,
+        .y_offset = 0x04,
+    },
+    [SPECIES_HONEDGE_MONADO] =
+    {
+        .size = 0x88,
+        .y_offset = 0x01,
+    },
 };

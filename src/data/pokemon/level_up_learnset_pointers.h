@@ -1326,5 +1326,9 @@ const u16 *const gLevelUpLearnsets[NUM_SPECIES] =
 	[SPECIES_WINTASS] = sWintassLevelUpLearnset,
 	[SPECIES_DARK_PIKA] = sDarkPikachuLevelUpLearnset,
 	[SPECIES_HONEDGE_MONADO] = sHonedgeMonadoLevelUpLearnset,
+	[SPECIES_PRINPAWN] = sPrinpawnLevelUpLearnset,
+	[SPECIES_COUREEN] = sCoureenLevelUpLearnset,
+	[SPECIES_KINCURS] = sKincursLevelUpLearnset,
+	[SPECIES_POSORD] = sPosordLevelUpLearnset,
 };
 

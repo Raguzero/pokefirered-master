@@ -1255,6 +1255,19 @@ const u8 *const gMonIconTable[] = {
     [SPECIES_POLITOED_BETA] = gMonIcon_PolitoedBeta,
     [SPECIES_SMUJJ]    = gMonIcon_Smujj,
     [SPECIES_DISTURBAN]    = gMonIcon_Disturban,
+    [SPECIES_YANMEGA_BETA] = gMonIcon_YanmegaBeta,
+    [SPECIES_POSORD] = gMonIcon_Posord,
+    [SPECIES_PRINPAWN] = gMonIcon_Prinpawn,
+    [SPECIES_COUREEN] = gMonIcon_Coureen,
+    [SPECIES_KINCURS] = gMonIcon_Kincurs,
+    [SPECIES_HOPPIP_BETA] = gMonIcon_HoppipBeta,
+    [SPECIES_SKIPLOOM_BETA] = gMonIcon_SkiploomBeta,
+    [SPECIES_JUMPLUFF_BETA] = gMonIcon_JumpluffBeta,
+    [SPECIES_KINGLER_GIGA] = gMonIcon_KinglerGiga,
+    [SPECIES_BUTTERFREE_GIGA] = gMonIcon_ButterfreeGiga,
+    [SPECIES_DARK_PIKA] = gMonIcon_DarkPikachu,
+    [SPECIES_WINTASS] = gMonIcon_Wintass,
+    [SPECIES_HONEDGE_MONADO] = gMonIcon_HonedgeMonado,
 };
 /*
 const u8 *const gMonIconTableFemale[] =
@@ -2496,6 +2509,19 @@ const u8 gMonIconPaletteIndices[] = {
     [SPECIES_POLITOED_BETA] = 1,
     [SPECIES_SMUJJ] = 2,
     [SPECIES_DISTURBAN] = 2,
+    [SPECIES_YANMEGA_BETA] = 1,
+    [SPECIES_POSORD] = 2,
+    [SPECIES_PRINPAWN] = 0,
+    [SPECIES_COUREEN] = 0,
+    [SPECIES_KINCURS] = 0,
+    [SPECIES_HOPPIP_BETA] = 1,
+    [SPECIES_SKIPLOOM_BETA] = 1,
+    [SPECIES_JUMPLUFF_BETA] = 2,
+    [SPECIES_KINGLER_GIGA] = 0,
+    [SPECIES_BUTTERFREE_GIGA] = 0,
+    [SPECIES_DARK_PIKA] = 0,
+    [SPECIES_WINTASS] = 0,
+    [SPECIES_HONEDGE_MONADO] = 1,
 };
 
 const u8 gMonIconPaletteIndicesFemale[] =

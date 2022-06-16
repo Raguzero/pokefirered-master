@@ -2191,5 +2191,70 @@ const struct MonCoords gMonBackPicCoords[] =
         .size = 0x87,
         .y_offset = 0x06,
     },
+    [SPECIES_YANMEGA_BETA] =
+    {
+        .size = 0x66,
+        .y_offset = 0x6,
+    },
+    [SPECIES_POSORD] =
+    {
+        .size = 0x88,
+        .y_offset = 0x00,
+    },
+    [SPECIES_PRINPAWN] =
+    {
+        .size = 0x77,
+        .y_offset = 0x06,
+    },
+    [SPECIES_COUREEN] =
+    {
+        .size = 0x65,
+        .y_offset = 0x0c,
+    },
+    [SPECIES_KINCURS] =
+    {
+        .size = 0x65,
+        .y_offset = 0x0c,
+    },
+    [SPECIES_HOPPIP_BETA] =
+    {
+        .size = 0x66,
+        .y_offset = 0x0b,
+    },
+    [SPECIES_SKIPLOOM_BETA] =
+    {
+        .size = 0x65,
+        .y_offset = 0x0d,
+    },
+    [SPECIES_JUMPLUFF_BETA] =
+    {
+        .size = 0x87,
+        .y_offset = 0x04,
+    },
+    [SPECIES_KINGLER_GIGA] =
+    {
+        .size = 0x77,
+        .y_offset = 0x04,
+    },
+    [SPECIES_BUTTERFREE_GIGA] =
+    {
+        .size = 0x87,
+        .y_offset = 0x06,
+    },	
+    [SPECIES_WINTASS] =
+    {
+        .size = 0x85,
+        .y_offset = 0x0e,
+    },
+    [SPECIES_DARK_PIKA] =
+    {
+        .size = 0x77,
+        .y_offset = 0x07,
+    },
+    [SPECIES_HONEDGE_MONADO] =
+    {
+        .size = 0x90,
+        .y_offset = 0x02,
+    },
 };
 
