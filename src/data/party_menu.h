@@ -475,9 +475,9 @@ static const struct WindowTemplate sItemGiveTakeWindowTemplate =
 {
     .bg = 2,
     .tilemapLeft = 22,
-    .tilemapTop = 13,
+    .tilemapTop = 11,
     .width = 7,
-    .height = 6,
+    .height = 8,
     .paletteNum = 14,
     .baseBlock = 0x373,
 };
@@ -671,6 +671,7 @@ static const u8 *const sActionStringTable[] =
     [PARTY_MSG_BOOST_PP_WHICH_MOVE]    = gText_BoostPp,
     [PARTY_MSG_DO_WHAT_WITH_ITEM]      = gText_DoWhatWithItem,
     [PARTY_MSG_DO_WHAT_WITH_MAIL]      = gText_DoWhatWithMail,
+	[PARTY_MSG_MOVE_ITEM_WHERE]        = gText_MoveItemWhere,
 };
 
 static const u8 *const sDescriptionStringTable[] =
@@ -1079,6 +1080,7 @@ enum
     MENU_ITEM,
     MENU_GIVE,
     MENU_TAKE_ITEM,
+	MENU_MOVE_ITEM,
     MENU_MAIL,
     MENU_TAKE_MAIL,
     MENU_READ,
@@ -1106,6 +1108,7 @@ static struct
     [MENU_ITEM] = {gText_Item, CursorCB_Item},
     [MENU_GIVE] = {gOtherText_Give, CursorCB_Give},
     [MENU_TAKE_ITEM] = {gText_Take, CursorCB_TakeItem},
+	[MENU_MOVE_ITEM] = {gMenuText_Move, CursorCb_MoveItem},
     [MENU_MAIL] = {gText_Mail, CursorCB_Mail},
     [MENU_TAKE_MAIL] = {gText_Take2, CursorCB_TakeMail},
     [MENU_READ] = {gText_Read2, CursorCB_Read},
@@ -1139,7 +1142,7 @@ static const u8 sPartyMenuAction_SummaryCancel[] = {MENU_SUMMARY, MENU_CANCEL1};
 static const u8 sPartyMenuAction_EnterSummaryCancel[] = {MENU_ENTER, MENU_SUMMARY, MENU_CANCEL1};
 static const u8 sPartyMenuAction_NoEntrySummaryCancel[] = {MENU_NO_ENTRY, MENU_SUMMARY, MENU_CANCEL1};
 static const u8 sPartyMenuAction_StoreSummaryCancel[] = {MENU_STORE, MENU_SUMMARY, MENU_CANCEL1};
-static const u8 sPartyMenuAction_GiveTakeItemCancel[] = {MENU_GIVE, MENU_TAKE_ITEM, MENU_CANCEL2};
+static const u8 sPartyMenuAction_GiveTakeItemCancel[] = {MENU_GIVE, MENU_TAKE_ITEM, MENU_MOVE_ITEM, MENU_CANCEL2};
 static const u8 sPartyMenuAction_ReadTakeMailCancel[] = {MENU_READ, MENU_TAKE_MAIL, MENU_CANCEL2};
 static const u8 sPartyMenuAction_RegisterSummaryCancel[] = {MENU_REGISTER, MENU_SUMMARY, MENU_CANCEL1};
 static const u8 sPartyMenuAction_TradeSummaryCancel1[] = {MENU_TRADE1, MENU_SUMMARY, MENU_CANCEL1};
