@@ -1649,4 +1649,6 @@ extern const u8 gText_CantThrow[];
 
 extern const u8 gText_LevelCap[];
 
+extern const u8 gText_NombreRival[];
+
 #endif //GUARD_STRINGS_H

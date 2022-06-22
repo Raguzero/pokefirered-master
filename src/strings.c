@@ -1430,3 +1430,5 @@ const u8 gText_IVsIncreased[] = _("{STR_VAR_1} IVs were raised. {PAUSE_UNTIL_PRE
 const u8 gText_CantThrow[] = _("This item cannot be tossed.");
 
 const u8 gText_LevelCap[] = _("Tus POKéMON no pueden superar el\nnivel: {STR_VAR_1}{PAUSE_UNTIL_PRESS}");
+
+const u8 gText_NombreRival[] = _("EEVEETO");

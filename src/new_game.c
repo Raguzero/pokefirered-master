@@ -26,6 +26,7 @@
 #include "renewable_hidden_items.h"
 #include "trainer_tower.h"
 #include "script.h"
+#include "strings.h"
 #include "berry_powder.h"
 #include "pokemon_jump.h"
 #include "registered_item.h"
@@ -110,12 +111,11 @@ void ResetMenuAndMonGlobals(void)
 
 void NewGameInitData(void)
 {
-    u8 i, rivalName[PLAYER_NAME_LENGTH + 1];
+    u8 i;
     
     if (gSaveFileStatus == SAVE_STATUS_EMPTY || gSaveFileStatus == SAVE_STATUS_INVALID)
         RtcReset();
 
-    StringCopy(rivalName, gSaveBlock1Ptr->rivalName);
     gDifferentSaveFile = TRUE;
     gSaveBlock2Ptr->encryptionKey = 0;
     ZeroPlayerPartyMons();
@@ -155,7 +155,7 @@ void NewGameInitData(void)
     SetAllRenewableItemFlags();
     WarpToPlayersRoom();
     ScriptContext2_RunNewScript(EventScript_ResetAllMapFlags);
-    StringCopy(gSaveBlock1Ptr->rivalName, rivalName);
+    StringCopy(gSaveBlock1Ptr->rivalName, gText_NombreRival);
     ResetTrainerTowerResults();
 	memset(gSaveBlock1Ptr->dexNavSearchLevels, 0, sizeof(gSaveBlock1Ptr->dexNavSearchLevels));
 	gSaveBlock1Ptr->dexNavChain = 0;
