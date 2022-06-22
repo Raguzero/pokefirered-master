@@ -9325,4 +9325,9 @@ extern const u32 gDexScreen_TopMenuIconTiles_AtoZ[];
 extern const u32 gMoveTypes_Gfx[];
 extern const u32 gMoveTypes_Pal[];
 
+// registered_item
+extern const u8 gRegisteredItemBoxSpriteGfx[];
+extern const u16 gRegisteredItemBoxSpritePal[];
+extern const u8 gRegisteredItemCursorSpriteGfx[];
+
 #endif //GUARD_GRAPHICS_H

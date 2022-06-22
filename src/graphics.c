@@ -1427,3 +1427,7 @@ const u32 gBerryCrush_Crusher_Tilemap[] = INCBIN_U32("graphics/berry_crush/data_
 
 const u32 gMoveTypes_Gfx[] = INCBIN_U32("graphics/types/move_types.4bpp.lz");
 const u32 gMoveTypes_Pal[] = INCBIN_U32("graphics/types/move_types.gbapal.lz");
+
+const u8 gRegisteredItemBoxSpriteGfx[] = INCBIN_U8("graphics/registered_items/registered_item_box.4bpp");
+const u8 gRegisteredItemCursorSpriteGfx[] = INCBIN_U8("graphics/registered_items/registered_item_cursor.4bpp");
+const u16 gRegisteredItemBoxSpritePal[] = INCBIN_U16("graphics/registered_items/registered_item_box.gbapal");

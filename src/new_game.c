@@ -28,6 +28,7 @@
 #include "script.h"
 #include "berry_powder.h"
 #include "pokemon_jump.h"
+#include "registered_item.h"
 #include "event_scripts.h"
 #include "save.h"
 #include "rtc.h"
@@ -109,7 +110,7 @@ void ResetMenuAndMonGlobals(void)
 
 void NewGameInitData(void)
 {
-    u8 rivalName[PLAYER_NAME_LENGTH + 1];
+    u8 i, rivalName[PLAYER_NAME_LENGTH + 1];
     
     if (gSaveFileStatus == SAVE_STATUS_EMPTY || gSaveFileStatus == SAVE_STATUS_INVALID)
         RtcReset();
@@ -141,7 +142,8 @@ void NewGameInitData(void)
     ZeroPlayerPartyMons();
     ResetPokemonStorageSystem();
     ClearRoamerData();
-    gSaveBlock1Ptr->registeredItem = 0;
+    for (i = 0; i < REGISTERED_ITEMS_COUNT; i++)
+        gSaveBlock1Ptr->registeredItem[i] = 0;
     ClearBag();
     NewGameInitPCItems();
     ClearEnigmaBerries();
