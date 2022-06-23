@@ -25,6 +25,7 @@
 #include "money.h"
 #include "quest_log.h"
 #include "script.h"
+#include "strings.h"
 #include "constants/songs.h"
 #include "constants/items.h"
 #include "constants/game_stat.h"
@@ -1052,7 +1053,19 @@ static void Task_ReturnToItemListAfterItemPurchase(u8 taskId)
     if (JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON))
     {
         PlaySE(SE_SELECT);
-        if((ItemId_GetPocket(tItemId) == POCKET_TM_CASE))
+
+        if ((ItemId_GetPocket(tItemId) == POCKET_POKE_BALLS) && tItemCount > 9 && AddBagItem(ITEM_PREMIER_BALL, tItemCount / 10) == TRUE)
+        {
+            if (tItemCount > 19)
+            {
+                BuyMenuDisplayMessage(taskId, gText_ThrowInPremierBalls, BuyMenuReturnToItemList);
+            }
+            else
+            {
+                BuyMenuDisplayMessage(taskId, gText_ThrowInPremierBall, BuyMenuReturnToItemList);
+            }
+		}
+       else if((ItemId_GetPocket(tItemId) == POCKET_TM_CASE))
         {
             RedrawListMenu(tListTaskId);
             BuyMenuReturnToItemList(taskId);
