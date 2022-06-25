@@ -990,25 +990,6 @@ const u16 *const gLevelUpLearnsets[NUM_SPECIES] =
     [SPECIES_DARMANITAN_GALARIAN] = sDarmanitanGalarianLevelUpLearnset,
     [SPECIES_YAMASK_GALARIAN] = sYamaskGalarianLevelUpLearnset,
     [SPECIES_STUNFISK_GALARIAN] = sStunfiskGalarianLevelUpLearnset,
-    // Misc Forms
-    // Cosplay Pikachu
-   /* [SPECIES_PIKACHU_COSPLAY] = sPikachuLevelUpLearnset,
-    [SPECIES_PIKACHU_ROCK_STAR] = sPikachuLevelUpLearnset,
-    [SPECIES_PIKACHU_BELLE] = sPikachuLevelUpLearnset,
-    [SPECIES_PIKACHU_POP_STAR] = sPikachuLevelUpLearnset,
-    [SPECIES_PIKACHU_PH_D] = sPikachuLevelUpLearnset,
-    [SPECIES_PIKACHU_LIBRE] = sPikachuLevelUpLearnset,
-    // Cap Pikachu
-    [SPECIES_PIKACHU_ORIGINAL_CAP] = sPikachuLevelUpLearnset,
-    [SPECIES_PIKACHU_HOENN_CAP] = sPikachuLevelUpLearnset,
-    [SPECIES_PIKACHU_SINNOH_CAP] = sPikachuLevelUpLearnset,
-    [SPECIES_PIKACHU_UNOVA_CAP] = sPikachuLevelUpLearnset,
-    [SPECIES_PIKACHU_KALOS_CAP] = sPikachuLevelUpLearnset,
-    [SPECIES_PIKACHU_ALOLA_CAP] = sPikachuLevelUpLearnset,
-    [SPECIES_PIKACHU_PARTNER_CAP] = sPikachuLevelUpLearnset,
-    [SPECIES_PIKACHU_WORLD_CAP] = sPikachuLevelUpLearnset,
-    // Pichu
-    [SPECIES_PICHU_SPIKY_EARED] = sPichuLevelUpLearnset,*/
     // Unown
     [SPECIES_UNOWN_B] = sUnownLevelUpLearnset,
     [SPECIES_UNOWN_C] = sUnownLevelUpLearnset,
@@ -1188,15 +1169,13 @@ const u16 *const gLevelUpLearnsets[NUM_SPECIES] =
     [SPECIES_ORICORIO_POM_POM] = sOricorioLevelUpLearnset,
     [SPECIES_ORICORIO_PAU] = sOricorioLevelUpLearnset,
     [SPECIES_ORICORIO_SENSU] = sOricorioLevelUpLearnset,
-    // Rockruff
-   // [SPECIES_ROCKRUFF_OWN_TEMPO] = sRockruffLevelUpLearnset,
     // Lycanroc
     [SPECIES_LYCANROC_MIDNIGHT] = sLycanrocMidnightLevelUpLearnset,
     [SPECIES_LYCANROC_DUSK] = sLycanrocDuskLevelUpLearnset,
     // Wishiwashi
- /*   [SPECIES_WISHIWASHI_SCHOOL] = sWishiwashiLevelUpLearnset,
+    [SPECIES_WISHIWASHI_SCHOOL] = sWishiwashiSchoolLevelUpLearnset,
     // Silvally
-    [SPECIES_SILVALLY_FIGHTING] = sSilvallyLevelUpLearnset,
+    /*[SPECIES_SILVALLY_FIGHTING] = sSilvallyLevelUpLearnset,
     [SPECIES_SILVALLY_FLYING] = sSilvallyLevelUpLearnset,
     [SPECIES_SILVALLY_POISON] = sSilvallyLevelUpLearnset,
     [SPECIES_SILVALLY_GROUND] = sSilvallyLevelUpLearnset,
@@ -1237,11 +1216,11 @@ const u16 *const gLevelUpLearnsets[NUM_SPECIES] =
     [SPECIES_MAGEARNA_ORIGINAL_COLOR] = sMagearnaLevelUpLearnset,
     // Cramorant
     [SPECIES_CRAMORANT_GULPING] = sCramorantLevelUpLearnset,
-    [SPECIES_CRAMORANT_GORGING] = sCramorantLevelUpLearnset,
+    [SPECIES_CRAMORANT_GORGING] = sCramorantLevelUpLearnset,*/
     // Toxtricity
     [SPECIES_TOXTRICITY_LOW_KEY] = sToxtricityLowKeyLevelUpLearnset,
     // Sinistea
-    [SPECIES_SINISTEA_ANTIQUE] = sSinisteaLevelUpLearnset,
+   /* [SPECIES_SINISTEA_ANTIQUE] = sSinisteaLevelUpLearnset,
     // Polteageist
     [SPECIES_POLTEAGEIST_ANTIQUE] = sPolteageistLevelUpLearnset,
     // Alcremie
@@ -1252,9 +1231,9 @@ const u16 *const gLevelUpLearnsets[NUM_SPECIES] =
     [SPECIES_ALCREMIE_SALTED_CREAM] = sAlcremieLevelUpLearnset,
     [SPECIES_ALCREMIE_RUBY_SWIRL] = sAlcremieLevelUpLearnset,
     [SPECIES_ALCREMIE_CARAMEL_SWIRL] = sAlcremieLevelUpLearnset,
-    [SPECIES_ALCREMIE_RAINBOW_SWIRL] = sAlcremieLevelUpLearnset,
+    [SPECIES_ALCREMIE_RAINBOW_SWIRL] = sAlcremieLevelUpLearnset,*/
     // Eiscue
-    [SPECIES_EISCUE_NOICE_FACE] = sEiscueLevelUpLearnset,*/
+    [SPECIES_EISCUE_NOICE_FACE] = sEiscueNoIceFaceLevelUpLearnset,
     // Indeedee
     [SPECIES_INDEEDEE_FEMALE] = sIndeedeeFemaleLevelUpLearnset,
     // Morpeko
