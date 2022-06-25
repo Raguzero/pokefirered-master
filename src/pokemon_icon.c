@@ -2731,10 +2731,7 @@ u16 MailSpeciesToIconSpecies(u16 species)
 
 const u8 *GetMonIconTiles(u16 species, bool32 extra)
 {
-    const u8 *iconSprite = gMonIconTable[species];
-    if (species == SPECIES_DEOXYS && extra == TRUE)
-        iconSprite += 0x400;
-    return iconSprite;
+    return gMonIconTable[species];
 }
 
 const u8 *GetMonIconPtr(u16 species, u32 personality, bool32 extra)
