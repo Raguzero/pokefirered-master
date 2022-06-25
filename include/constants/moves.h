@@ -371,7 +371,7 @@
 #define MOVE_SHADOW_SNEAK 367
 #define MOVE_ROCK_POLISH 368
 #define MOVE_BOOMBURST 369 // Sin animación
-#define MOVE_OVERDRIVE 370 // Descripción????
+#define MOVE_OVERDRIVE 370
 #define MOVE_LIGHT_OF_RUIN 371 // Descripción????
 #define MOVE_HEAD_SMASH 372
 #define MOVE_HEAL_PULSE 373
@@ -380,19 +380,19 @@
 #define MOVE_THUNDER_CAGE 376 // Descripción????
 #define MOVE_DRAGON_ENERGY 377 // Descripción????
 #define MOVE_ELECTROWEB 378
-#define MOVE_GRAV_APPLE 379 // Descripción???? // Sin animación
-#define MOVE_APPLE_ACID 380 // Descripción???? // Sin animación
-#define MOVE_ACCELEROCK 381 // Descripción????
+#define MOVE_GRAV_APPLE 379 // Sin animación
+#define MOVE_APPLE_ACID 380 // Sin animación
+#define MOVE_ACCELEROCK 381
 #define MOVE_DARK_THUNDER 382
 #define MOVE_DRILL_RUN 383
 #define MOVE_LEAF_STORM 384 // Sin animación
-#define MOVE_SHORE_UP 385 // Descripción????
+#define MOVE_SHORE_UP 385
 #define MOVE_DRAGON_HAMMER 386
 #define MOVE_MONADO_POWER 387
 #define MOVE_BRUTAL_BALL 388
 #define MOVE_SEISMIC_PUNCH 389
 #define MOVE_HOLA_REINA    390
-#define MOVE_DRAGON_PULSE    391 // Descripción???? // Sin animación
+#define MOVE_DRAGON_PULSE    391 // Sin animación
 #define MOVE_BUG_BUZZ    392
 #define MOVE_GIGA_IMPACT    393 // Sin animación
 #define MOVE_WILD_CHARGE    394 // Sin animación
@@ -405,7 +405,7 @@
 #define MOVE_ICE_SHARD    401
 #define MOVE_AQUA_JET    402
 #define MOVE_POISON_JAB    403 // Sin animación
-#define MOVE_POWER_GEM    404 // Descripción???? // Sin animación
+#define MOVE_POWER_GEM    404 // Sin animación
 #define MOVE_METEOR_BEAM    405 // NOT IMPLEMENTED   // Descripción???? // Sin animación
 #define MOVE_MIRROR_SHOT    406
 #define MOVE_FLASH_CANNON    407 // Sin animación
