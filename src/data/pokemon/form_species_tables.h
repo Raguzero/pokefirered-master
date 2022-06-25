@@ -17,26 +17,7 @@ static const u16 sRaticateFormSpeciesIdTable[] = {
     SPECIES_RATICATE_ALOLAN,
     FORM_SPECIES_END,
 };
-/*
-static const u16 sPikachuFormSpeciesIdTable[] = {
-    SPECIES_PIKACHU,
-    SPECIES_PIKACHU_COSPLAY,
-    SPECIES_PIKACHU_ROCK_STAR,
-    SPECIES_PIKACHU_BELLE,
-    SPECIES_PIKACHU_POP_STAR,
-    SPECIES_PIKACHU_PH_D,
-    SPECIES_PIKACHU_LIBRE,
-    SPECIES_PIKACHU_ORIGINAL_CAP,
-    SPECIES_PIKACHU_HOENN_CAP,
-    SPECIES_PIKACHU_SINNOH_CAP,
-    SPECIES_PIKACHU_UNOVA_CAP,
-    SPECIES_PIKACHU_KALOS_CAP,
-    SPECIES_PIKACHU_ALOLA_CAP,
-    SPECIES_PIKACHU_PARTNER_CAP,
-    SPECIES_PIKACHU_WORLD_CAP,
-    FORM_SPECIES_END,
-};
-*/
+
 static const u16 sRaichuFormSpeciesIdTable[] = {
     SPECIES_RAICHU,
     SPECIES_RAICHU_ALOLAN,
@@ -211,12 +192,6 @@ static const u16 sAriadosFormSpeciesIdTable[] = {
     SPECIES_ARIADOS_BETA,
     FORM_SPECIES_END,
 };
-/*
-static const u16 sPichuFormSpeciesIdTable[] = {
-    SPECIES_PICHU,
-    SPECIES_PICHU_SPIKY_EARED,
-    FORM_SPECIES_END,
-};*/
 
 static const u16 sSlowkingFormSpeciesIdTable[] = {
     SPECIES_SLOWKING,
@@ -327,18 +302,6 @@ static const u16 sGastrodonFormSpeciesIdTable[] = {
     SPECIES_GASTRODON,
     SPECIES_GASTRODON_EAST_SEA,
     FORM_SPECIES_END,
-};
-
-static const u16 sLopunnyFormSpeciesIdTable[] = {
-    SPECIES_LOPUNNY,
-    SPECIES_LOPUNNY_MEGA,
-    FORM_SPECIES_END,
-};
-
-static const u16 sAbomasnowFormSpeciesIdTable[] = {
-    SPECIES_ABOMASNOW,
-    SPECIES_ABOMASNOW_MEGA,
-    FORM_SPECIES_END,
 };*/
 
 static const u16 sLickilickyFormSpeciesIdTable[] = {
@@ -388,12 +351,6 @@ static const u16 sArceusFormSpeciesIdTable[] = {
     SPECIES_ARCEUS_DRAGON,
     SPECIES_ARCEUS_DARK,
     SPECIES_ARCEUS_FAIRY,
-    FORM_SPECIES_END,
-};
-
-static const u16 sAudinoFormSpeciesIdTable[] = {
-    SPECIES_AUDINO,
-    SPECIES_AUDINO_MEGA,
     FORM_SPECIES_END,
 };*/
 
@@ -620,12 +577,6 @@ static const u16 sOricorioFormSpeciesIdTable[] = {
     SPECIES_ORICORIO_SENSU,
     FORM_SPECIES_END,
 };
-/*
-static const u16 sRockruffFormSpeciesIdTable[] = {
-    SPECIES_ROCKRUFF,
-    SPECIES_ROCKRUFF_OWN_TEMPO,
-    FORM_SPECIES_END,
-};*/
 
 static const u16 sLycanrocFormSpeciesIdTable[] = {
     SPECIES_LYCANROC,
