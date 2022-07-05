@@ -1,5 +1,6 @@
 #include "global.h"
 #include "gflib.h"
+#include "fieldmap.h"
 #include "field_player_avatar.h"
 #include "field_effect.h"
 #include "party_menu.h"
@@ -13,6 +14,7 @@
 #include "constants/event_objects.h"
 #include "constants/event_object_movement.h"
 #include "constants/maps.h"
+#include "constants/metatile_behaviors.h"
 
 static void Task_FieldEffectShowMon_Init(u8 taskId);
 static void Task_FieldEffectShowMon_WaitFldeff(u8 taskId);
@@ -20,6 +22,8 @@ static void Task_FieldEffectShowMon_WaitPlayerAnim(u8 taskId);
 static void Task_FieldEffectShowMon_Cleanup(u8 taskId);
 static void sub_80C9A10(void);
 static void sub_80C9A60(void);
+static void FieldMove_Headbutt(void);
+static void FieldCallback_Headbutt(void);
 
 EWRAM_DATA struct MapPosition gPlayerFacingPosition = {};
 
@@ -134,4 +138,45 @@ static void sub_80C9A60(void)
     PlaySE(SE_M_ROCK_THROW);
     FieldEffectActiveListRemove(FLDEFF_USE_ROCK_SMASH);
     EnableBothScriptContexts();
+}
+
+// The important part is handled by EventScript_Headbutt, but I'm following Rock Smash's lead :P
+static void FieldMove_Headbutt(void)
+{
+    PlaySE(SE_NOT_EFFECTIVE);
+    FieldEffectActiveListRemove(FLDEFF_USE_HEADBUTT);
+    EnableBothScriptContexts();
+}
+
+bool8 FldEff_UseHeadbutt(void)
+{
+    u8 taskId = CreateFieldEffectShowMon();
+
+    gTasks[taskId].data[8] = (u32)FieldMove_Headbutt >> 16;
+    gTasks[taskId].data[9] = (u32)FieldMove_Headbutt;
+    IncrementGameStat(GAME_STAT_USED_HEADBUTT);
+    return FALSE;
+}
+
+// Called when Headbutt is used from the party menu
+// For interacting with a headbuttable tree in the field, see EventScript_Headbutt
+bool8 SetUpFieldMove_Headbutt(void)
+{
+    GetXYCoordsOneStepInFrontOfPlayer(&gPlayerFacingPosition.x, &gPlayerFacingPosition.y);
+    if (MapGridGetMetatileBehaviorAt(gPlayerFacingPosition.x, gPlayerFacingPosition.y) == MB_HEADBUTT)
+    {
+        gFieldCallback2 = FieldCallback_PrepareFadeInFromMenu;
+        gPostMenuFieldCallback = FieldCallback_Headbutt;
+        return TRUE;
+    }
+    else
+    {
+        return FALSE;
+    }
+}
+
+static void FieldCallback_Headbutt(void)
+{
+    gFieldEffectArguments[0] = GetCursorSelectionMonId();
+    ScriptContext1_SetupScript(EventScript_UseHeadbutt);
 }

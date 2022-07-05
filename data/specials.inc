@@ -457,4 +457,5 @@ gSpecials:: @ 815FD60
 	def_special MideleResetSelectedMonEVs
 	def_special GiveAllMons
 	def_special GiveAllItems
+	def_special HeadbuttWildEncounter
 gSpecialsEnd::

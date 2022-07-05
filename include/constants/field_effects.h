@@ -72,6 +72,7 @@
 #define FLDEFF_DESTROY_DEOXYS_ROCK       68
 #define FLDEFF_UNK_45                    69 // TODO: related to fame checker photos
 #define FLDEFF_CAVE_DUST                 70
+#define FLDEFF_USE_HEADBUTT              71
 
 #define FLDEFF_PAL_TAG_GENERAL_0          0x1004
 #define FLDEFF_PAL_TAG_GENERAL_1          0x1005
@@ -116,5 +117,6 @@
 #define FLDEFFOBJ_BUBBLES                  34
 #define FLDEFFOBJ_SMALL_SPARKLE            35
 #define FLDEFFOBJ_CAVE_DUST                36
+#define FLDEFFOBJ_HEADBUTT                 37
 
 #endif // GUARD_CONSTANTS_FIELD_EFFECTS_H
