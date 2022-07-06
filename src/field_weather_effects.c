@@ -737,7 +737,7 @@ void Snow_InitVars(void)
     gWeatherPtr->weatherGfxLoaded = FALSE;
     gWeatherPtr->gammaTargetIndex = 3;
     gWeatherPtr->gammaStepDelay = 20;
-    gWeatherPtr->targetSnowflakeSpriteCount = 16;
+    gWeatherPtr->targetSnowflakeSpriteCount = 20;
     gWeatherPtr->snowflakeVisibleCounter = 0;
 }
 
@@ -901,7 +901,7 @@ static void InitSnowflakeSpriteMovement(struct Sprite *sprite)
 
 static void WaitSnowflakeSprite(struct Sprite *sprite)
 {
-    if (gWeatherPtr->unknown_6E2 > 18)
+    if (++gWeatherPtr->unknown_6E2 > 18)
     {
         sprite->invisible = FALSE;
         sprite->callback = UpdateSnowflakeSprite;
