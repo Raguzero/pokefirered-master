@@ -5446,7 +5446,7 @@
       "price": 3000,
       "holdEffect": "HOLD_EFFECT_NONE",
       "holdEffectParam": 0,
-      "description_english": "A move that steals the effects of\\nany status-changing or healing move\\nthat the foe tries to use.",
+      "description_english": "The user attacks with its head.\\nIt may make the foe flinch.\\nTo find Pokémon, hit trees.",
       "importance": 1,
       "exitsBagOnUse": 0,
       "pocket": "POCKET_TM_CASE",
@@ -5455,7 +5455,7 @@
       "battleUsage": 0,
       "battleUseFunc": "NULL",
       "secondaryId": 0,
-      "moveId": "Snatch"
+      "moveId": "Headbutt"
     },
     {
       "english": "TM50",
