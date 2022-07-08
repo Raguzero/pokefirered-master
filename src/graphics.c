@@ -1431,3 +1431,10 @@ const u32 gMoveTypes_Pal[] = INCBIN_U32("graphics/types/move_types.gbapal.lz");
 const u8 gRegisteredItemBoxSpriteGfx[] = INCBIN_U8("graphics/registered_items/registered_item_box.4bpp");
 const u8 gRegisteredItemCursorSpriteGfx[] = INCBIN_U8("graphics/registered_items/registered_item_cursor.4bpp");
 const u16 gRegisteredItemBoxSpritePal[] = INCBIN_U16("graphics/registered_items/registered_item_box.gbapal");
+
+const u32 gBattleAnimSpriteGfx_DragonPulseRing[] = INCBIN_U32("graphics/battle_anims/sprites/dragon_pulse_ring.4bpp.lz");
+const u32 gBattleAnimSpritePal_DragonPulseRing[] = INCBIN_U32("graphics/battle_anims/sprites/dragon_pulse_ring.gbapal.lz");
+const u32 gBattleAnimSpriteGfx_DragonPulse[] = INCBIN_U32("graphics/battle_anims/sprites/dragon_pulse.4bpp.lz");
+const u32 gBattleAnimSpritePal_DragonPulse[] = INCBIN_U32("graphics/battle_anims/sprites/dragon_pulse.gbapal.lz");
+const u32 gBattleAnimSpriteGfx_EnergyBall[] = INCBIN_U32("graphics/battle_anims/sprites/energy_ball.4bpp.lz");
+const u32 gBattleAnimSpritePal_EnergyBall[] = INCBIN_U32("graphics/battle_anims/sprites/energy_ball.gbapal.lz");
