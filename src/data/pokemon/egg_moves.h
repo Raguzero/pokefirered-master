@@ -1232,7 +1232,7 @@ const u16 gEggMoves[] = {
               MOVE_ICE_FANG,
               MOVE_FIRE_FANG,
               MOVE_PLAY_ROUGH,
-			MOVE_SLEEP_TALK,
+			MOVE_SNATCH,
 			MOVE_THUNDER_FANG),
 
     egg_moves(ZIGZAGOON,
