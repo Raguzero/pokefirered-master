@@ -3562,3 +3562,14 @@ u32 GetBattlerHoldEffect(u8 battlerId, bool32 checkNegating)
     else
         return ItemId_GetHoldEffect(gBattleMons[battlerId].item);
 }
+
+void HandleAction_ThrowBall(void)
+{
+    gBattlerAttacker = gBattlerByTurnOrder[gCurrentTurnActionNumber];
+    gBattle_BG0_X = 0;
+    gBattle_BG0_Y = 0;
+    gLastUsedItem = gSaveBlock2Ptr->lastUsedBall;
+    RemoveBagItem(gLastUsedItem, 1);
+    gBattlescriptCurrInstr = gBattlescriptsForBallThrow[1];
+    gCurrentActionFuncId = B_ACTION_EXEC_SCRIPT;
+}

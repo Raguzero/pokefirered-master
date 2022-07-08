@@ -43,6 +43,7 @@
 #define B_ACTION_FINISHED                  12
 #define B_ACTION_CANCEL_PARTNER            12 // when choosing an action
 #define B_ACTION_NOTHING_FAINTED           13 // when choosing an action
+#define B_ACTION_THROW_BALL                20 // Throw Poké Ball shortcut
 #define B_ACTION_NONE                      0xFF
 
 #define MAX_TRAINER_ITEMS 4
@@ -478,7 +479,8 @@ struct BattleStruct
     u8 switchInItemsCounter;
     u8 field_DA; // battle tower related
     u8 turnSideTracker;
-    u8 fillerDC[0xDF-0xDC];
+    u8 fillerDC;
+    u8 ballSpriteIds[2];
     u8 givenExpMons;
     u8 lastTakenMoveFrom[MAX_BATTLERS_COUNT * MAX_BATTLERS_COUNT * 2];
     u16 castformPalette[MAX_BATTLERS_COUNT][16];

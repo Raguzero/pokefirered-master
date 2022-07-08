@@ -92,5 +92,6 @@ u8 GetMoveTarget(u16 move, u8 setTarget);
 u8 IsMonDisobedient(void);
 bool32 IsBattlerAlive(u8 battlerId);
 u32 GetBattlerHoldEffect(u8 battlerId, bool32 checkNegating);
+void HandleAction_ThrowBall(void);
 
 #endif // GUARD_BATTLE_UTIL_H
