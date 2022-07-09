@@ -1405,6 +1405,11 @@ const struct CompressedSpriteSheet gBattleAnimPicTable[] =
     {gBattleAnimSpriteGfx_EnergyBall, 0x0200, ANIM_TAG_ENERGY_BALL},
 	{gBattleAnimSpriteGfx_DragonPulse, 0x0100, ANIM_TAG_DRAGON_PULSE},
 	{gBattleAnimSpriteGfx_DragonPulseRing, 0x200, ANIM_TAG_DRAGON_PULSE_RING},
+    {gBattleAnimSpriteGfx_WoodHammer, 0x0C00, ANIM_TAG_WOOD_HAMMER},
+    {gBattleAnimSpriteGfx_PowerGem, 0x0080, ANIM_TAG_POWER_GEM},
+    {gBattleAnimSpriteGfx_StoneEdge, 0x0A00, ANIM_TAG_STONE_EDGE},
+    {gBattleAnimSpriteGfx_PoisonJab, 0x0080, ANIM_TAG_POISON_JAB},
+    {gBattleAnimSpriteSheet_296, 0x800,  ANIM_TAG_PURPLE_JAB},
 };
 
 const struct CompressedSpritePalette gBattleAnimPaletteTable[] =
@@ -1701,6 +1706,11 @@ const struct CompressedSpritePalette gBattleAnimPaletteTable[] =
     {gBattleAnimSpritePal_EnergyBall, ANIM_TAG_ENERGY_BALL},
 	{gBattleAnimSpritePal_DragonPulse, ANIM_TAG_DRAGON_PULSE},
 	{gBattleAnimSpritePal_DragonPulseRing, ANIM_TAG_DRAGON_PULSE_RING},
+    {gBattleAnimSpritePal_WoodHammer, ANIM_TAG_WOOD_HAMMER},
+    {gBattleAnimSpritePal_PowerGem, ANIM_TAG_POWER_GEM},
+    {gBattleAnimSpritePal_StoneEdge, ANIM_TAG_STONE_EDGE},
+    {gBattleAnimSpritePal_PoisonJab, ANIM_TAG_POISON_JAB},
+    {gBattleAnimSpritePalette_296, ANIM_TAG_PURPLE_JAB},
 };
 
 const struct BattleAnimBackground gBattleAnimBackgroundTable[] =

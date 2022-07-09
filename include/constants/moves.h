@@ -362,9 +362,9 @@
 #define MOVE_BRAVE_BIRD 358
 #define MOVE_X_SCISSOR 359
 #define MOVE_IRON_HEAD 360
-#define MOVE_STONE_EDGE 361 // Sin animación
+#define MOVE_STONE_EDGE 361
 #define MOVE_DARK_PULSE 362
-#define MOVE_ENERGY_BALL 363 // Sin animación
+#define MOVE_ENERGY_BALL 363
 #define MOVE_NASTY_PLOT 364
 #define MOVE_QUIVER_DANCE 365
 #define MOVE_COIL 366
@@ -375,7 +375,7 @@
 #define MOVE_LIGHT_OF_RUIN 371 // Descripción????
 #define MOVE_HEAD_SMASH 372
 #define MOVE_HEAL_PULSE 373
-#define MOVE_MIDELE_POWER 374 // NOT IMPLEMENTED????
+#define MOVE_MIDELE_POWER 374
 #define MOVE_GUNK_SHOT 375
 #define MOVE_THUNDER_CAGE 376 // Descripción????
 #define MOVE_DRAGON_ENERGY 377 // Descripción????
@@ -392,20 +392,20 @@
 #define MOVE_BRUTAL_BALL 388
 #define MOVE_SEISMIC_PUNCH 389
 #define MOVE_HOLA_REINA    390
-#define MOVE_DRAGON_PULSE    391 // Sin animación
+#define MOVE_DRAGON_PULSE    391
 #define MOVE_BUG_BUZZ    392
-#define MOVE_GIGA_IMPACT    393 // Sin animación
+#define MOVE_GIGA_IMPACT    393
 #define MOVE_WILD_CHARGE    394 // Sin animación
 #define MOVE_PLAY_ROUGH    395 // Sin animación
 #define MOVE_AURA_SPHERE    396 // Sin animación
-#define MOVE_FLARE_BLITZ    397 // Sin animación
+#define MOVE_FLARE_BLITZ    397
 #define MOVE_SHADOW_CLAW    398
 #define MOVE_SEED_BOMB    399
 #define MOVE_EARTH_POWER    400
 #define MOVE_ICE_SHARD    401
 #define MOVE_AQUA_JET    402
-#define MOVE_POISON_JAB    403 // Sin animación
-#define MOVE_POWER_GEM    404 // Sin animación
+#define MOVE_POISON_JAB    403
+#define MOVE_POWER_GEM    404
 #define MOVE_METEOR_BEAM    405 // NOT IMPLEMENTED   // Descripción???? // Sin animación
 #define MOVE_MIRROR_SHOT    406
 #define MOVE_FLASH_CANNON    407 // Sin animación
@@ -416,16 +416,16 @@
 #define MOVE_PSYCHIC_FANGS    412  // Sin animación
 #define MOVE_JUNGLE_HEALING    413 // NOT IMPLEMENTED  // Descripción????
 #define MOVE_STRUGGLE_BUG    414  // Sin animación
-#define MOVE_ZEN_HEADBUTT    415 // Sin animación
-#define MOVE_AIR_SLASH    416 // Sin animación
+#define MOVE_ZEN_HEADBUTT    415 // animación fea y rara
+#define MOVE_AIR_SLASH    416
 #define MOVE_RAZOR_SHELL    417  // Sin animación
 #define MOVE_WOOD_HAMMER    418  // Animación fea
 #define MOVE_NIGHT_SLASH    419   // Sin animación
 #define MOVE_HEX    420   // Sin animación
 #define MOVE_HURRICANE 421  // Sin animación
-#define MOVE_THUNDER_FANG 422 // Sin animación
-#define MOVE_ICE_FANG 423 // Sin animación
-#define MOVE_FIRE_FANG 424 // Sin animación
+#define MOVE_THUNDER_FANG 422
+#define MOVE_ICE_FANG 423
+#define MOVE_FIRE_FANG 424
 #define MOVE_FREEZING_GLARE 425 // Sin animación
 #define MOVE_FIERY_WRATH 426 // Sin animación
 #define MOVE_THUNDEROUS_KICK 427 // Sin animación
