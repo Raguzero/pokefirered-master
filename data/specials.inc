@@ -458,4 +458,6 @@ gSpecials:: @ 815FD60
 	def_special GiveAllMons
 	def_special GiveAllItems
 	def_special HeadbuttWildEncounter
+	def_special CheckDeoxys
+	def_special ChangeDeoxysForm
 gSpecialsEnd::

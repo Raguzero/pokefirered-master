@@ -75,6 +75,10 @@
 #define MULTICHOICE_MIDELE_NATURES_2             68
 #define MULTICHOICE_MIDELE_EV_STATS              69
 #define MULTICHOICE_CUSTOM                       70 // Populate from gCustomVar0 up to gCustomVar6
+#define MULTI_DEOXYS_CHANGE_FORM_NORMAL    71
+#define MULTI_DEOXYS_CHANGE_FORM_ATTACK    72
+#define MULTI_DEOXYS_CHANGE_FORM_DEFENSE   73
+#define MULTI_DEOXYS_CHANGE_FORM_SPEED   74
 
 #define LISTMENU_BADGES                    0
 #define LISTMENU_SILPHCO_FLOORS            1

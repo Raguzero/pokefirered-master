@@ -575,6 +575,38 @@ static const struct MenuAction sScriptMultiChoiceMenu_CustomOptions[] = {
     { gCustomStr6 },
 };
 
+static const struct MenuAction MultichoiceList_Deoxys_Change_Form_Normal[] =
+{
+    {gText_Deoxys_Attack},
+    {gText_Deoxys_Defense},
+    {gText_Deoxys_Speed},
+    {gText_Exit}
+};
+
+static const struct MenuAction MultichoiceList_Deoxys_Change_Form_Attack[] =
+{
+    {gText_Deoxys},
+    {gText_Deoxys_Defense},
+    {gText_Deoxys_Speed},
+    {gText_Exit}
+};
+
+static const struct MenuAction MultichoiceList_Deoxys_Change_Form_Defense[] =
+{
+    {gText_Deoxys},
+    {gText_Deoxys_Attack},
+    {gText_Deoxys_Speed},
+    {gText_Exit}
+};
+
+static const struct MenuAction MultichoiceList_Deoxys_Change_Form_Speed[] =
+{
+    {gText_Deoxys},
+    {gText_Deoxys_Attack},
+    {gText_Deoxys_Defense},
+    {gText_Exit}
+};
+
 static const struct MenuAction sScriptMultiChoiceMenu_Exit[] = {
     { gOtherText_Exit }
 };
@@ -650,7 +682,11 @@ const struct MultichoiceListStruct gScriptMultiChoiceMenus[] = {
     { sScriptMultiChoiceMenu_MideleNatures1, NELEMS(sScriptMultiChoiceMenu_MideleNatures1) },
     { sScriptMultiChoiceMenu_MideleNatures2, NELEMS(sScriptMultiChoiceMenu_MideleNatures2) },
     { sScriptMultiChoiceMenu_MideleEVStats, NELEMS(sScriptMultiChoiceMenu_MideleEVStats) },
-    { sScriptMultiChoiceMenu_CustomOptions, NELEMS(sScriptMultiChoiceMenu_CustomOptions) }
+    { sScriptMultiChoiceMenu_CustomOptions, NELEMS(sScriptMultiChoiceMenu_CustomOptions) },
+	{ MultichoiceList_Deoxys_Change_Form_Normal, NELEMS(MultichoiceList_Deoxys_Change_Form_Normal) },
+	{ MultichoiceList_Deoxys_Change_Form_Attack, NELEMS(MultichoiceList_Deoxys_Change_Form_Attack) },
+	{ MultichoiceList_Deoxys_Change_Form_Defense, NELEMS(MultichoiceList_Deoxys_Change_Form_Defense) },
+	{ MultichoiceList_Deoxys_Change_Form_Speed, NELEMS(MultichoiceList_Deoxys_Change_Form_Speed) }
 };
 
 // From Cool to Berries goes unused

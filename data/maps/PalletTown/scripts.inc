@@ -611,7 +611,137 @@ PalletTown_EventScript_OaksLabSign:: @ 8165838
 
 PalletTown_EventScript_PlayersHouseSign:: @ 8165850
 	msgbox PalletTown_Text_PlayersHouse, MSGBOX_SIGN
+	//end
+// Deoxys change form
+	specialvar VAR_RESULT, CheckDeoxys
+	copyvar VAR_0x8004, VAR_RESULT
+	compare VAR_RESULT, FALSE
+	goto_if_eq FallarborTown_CozmosHouse_EventScript_NoEffect
+	msgbox FallarborTown_CozmosHouse_Text_Deoxys, MSGBOX_DEFAULT
+	msgbox FallarborTown_Text_Deoxys_Changer, MSGBOX_YESNO
+	compare VAR_RESULT, NO
+	goto_if_eq FallarborTown_EventScript_Deoxys_NoChange
+compare VAR_0x8004, SPECIES_DEOXYS
+	goto_if_eq FallarborTown_CozmosHouse_EventScript_ChangeForm_Normal
+	compare VAR_0x8004, SPECIES_DEOXYS_ATTACK
+	goto_if_eq FallarborTown_CozmosHouse_EventScript_ChangeForm_Attack
+	compare VAR_0x8004, SPECIES_DEOXYS_DEFENSE
+	goto_if_eq FallarborTown_CozmosHouse_EventScript_ChangeForm_Defense
+	compare VAR_0x8004, SPECIES_DEOXYS_SPEED
+	goto_if_eq FallarborTown_CozmosHouse_EventScript_ChangeForm_Speed
+	release
 	end
+	
+FallarborTown_CozmosHouse_EventScript_ChangeForm_Normal:
+	multichoicegrid 0, 0, MULTI_DEOXYS_CHANGE_FORM_NORMAL, 4, 0
+	switch VAR_RESULT
+	case 0, FallarborTown_EventScript_Deoxys_Attack
+	case 1, FallarborTown_EventScript_Deoxys_Defense
+	case 2, FallarborTown_EventScript_Deoxys_Speed
+	case 3, FallarborTown_EventScript_Deoxys_NoChange
+	case SCR_MENU_CANCEL, FallarborTown_EventScript_Deoxys_NoChange
+	release
+	end
+	
+FallarborTown_CozmosHouse_EventScript_ChangeForm_Attack:
+	multichoicegrid 0, 0, MULTI_DEOXYS_CHANGE_FORM_ATTACK, 4, 0
+	switch VAR_RESULT
+	case 0, FallarborTown_EventScript_Deoxys
+	case 1, FallarborTown_EventScript_Deoxys_Defense
+	case 2, FallarborTown_EventScript_Deoxys_Speed
+	case 3, FallarborTown_EventScript_Deoxys_NoChange
+	case SCR_MENU_CANCEL, FallarborTown_EventScript_Deoxys_NoChange
+	release
+	end
+	
+FallarborTown_CozmosHouse_EventScript_ChangeForm_Defense:
+	multichoicegrid 0, 0, MULTI_DEOXYS_CHANGE_FORM_DEFENSE, 4, 0
+	switch VAR_RESULT
+	case 0, FallarborTown_EventScript_Deoxys
+	case 1, FallarborTown_EventScript_Deoxys_Attack
+	case 2, FallarborTown_EventScript_Deoxys_Speed
+	case 3, FallarborTown_EventScript_Deoxys_NoChange
+	case SCR_MENU_CANCEL, FallarborTown_EventScript_Deoxys_NoChange
+	release
+	end
+
+FallarborTown_CozmosHouse_EventScript_ChangeForm_Speed:
+	multichoicegrid 0, 0, MULTI_DEOXYS_CHANGE_FORM_SPEED, 4, 0
+	switch VAR_RESULT
+	case 0, FallarborTown_EventScript_Deoxys
+	case 1, FallarborTown_EventScript_Deoxys_Attack
+	case 2, FallarborTown_EventScript_Deoxys_Defense
+	case 3, FallarborTown_EventScript_Deoxys_NoChange
+	case SCR_MENU_CANCEL, FallarborTown_EventScript_Deoxys_NoChange
+	release
+	end
+	
+FallarborTown_CozmosHouse_EventScript_NoEffect::
+	release
+	end
+	
+FallarborTown_EventScript_Deoxys_NoChange::
+	msgbox FallarborTown_Deoxys_NoChange_Text
+	release
+	end
+	
+FallarborTown_EventScript_Deoxys::
+	setvar VAR_0x8005, SPECIES_DEOXYS
+	special ChangeDeoxysForm
+	delay 20
+	msgbox FallarborTown_Deoxys_Change1
+	release
+	end
+	
+FallarborTown_EventScript_Deoxys_Attack::
+	setvar VAR_0x8005, SPECIES_DEOXYS_ATTACK
+	special ChangeDeoxysForm
+	delay 20
+	msgbox FallarborTown_Deoxys_Change2
+	release
+	end
+	
+FallarborTown_EventScript_Deoxys_Defense::
+	setvar VAR_0x8005, SPECIES_DEOXYS_DEFENSE
+	special ChangeDeoxysForm
+	delay 20
+	msgbox FallarborTown_Deoxys_Change3
+	release
+	end
+	
+FallarborTown_EventScript_Deoxys_Speed::
+	setvar VAR_0x8005, SPECIES_DEOXYS_SPEED
+	special ChangeDeoxysForm
+	delay 20
+	msgbox FallarborTown_Deoxys_Change4
+	release
+	end
+
+FallarborTown_CozmosHouse_Text_Deoxys: 
+	.string "DEOXYS is reacting to the METEORITE.\p"
+
+	.string "PROF. COZMO: OH MY GOD!\n"
+	.string "THE METEORITE IS SHINING!$"
+	
+FallarborTown_Deoxys_NoChange_Text: 
+	.string "The METEORITE stopped glowing!$"
+	
+FallarborTown_Deoxys_Change1: 
+	.string "DEOXYS changed to NORMAL FORM!$"
+
+FallarborTown_Deoxys_Change2: 
+	.string "DEOXYS changed to ATTACK FORM!$"
+	
+FallarborTown_Deoxys_Change3: 
+	.string "DEOXYS changed to DEFENSE FORM!$"
+	
+FallarborTown_Deoxys_Change4: 
+	.string "DEOXYS changed to SPEED FORM!$"
+	
+FallarborTown_Text_Deoxys_Changer:
+	.string "Change DEOXYS form?$"
+// Deoxys change form		
+
 
 PalletTown_EventScript_RivalsHouseSign:: @ 8165859
 	msgbox PalletTown_Text_RivalsHouse, MSGBOX_SIGN

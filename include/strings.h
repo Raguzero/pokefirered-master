@@ -1659,4 +1659,9 @@ extern const u8 gText_XsYWereSwapped[];
 extern const u8 gText_ThrowInPremierBall[];
 extern const u8 gText_ThrowInPremierBalls[];
 
+extern const u8 gText_Deoxys[];
+extern const u8 gText_Deoxys_Attack[];
+extern const u8 gText_Deoxys_Defense[];
+extern const u8 gText_Deoxys_Speed[];
+
 #endif //GUARD_STRINGS_H

@@ -1440,3 +1440,8 @@ const u8 gText_XsYWereSwapped[] = _("{STR_VAR_1}'s\l{STR_VAR_2} were swapped!{PA
 
 const u8 gText_ThrowInPremierBall[] = _("I'll throw in a PREMIER BALL, too.{PAUSE_UNTIL_PRESS}");
 const u8 gText_ThrowInPremierBalls[] = _("I'll throw in some Premier Balls, too.{PAUSE_UNTIL_PRESS}");
+
+const u8 gText_Deoxys[]    =     _("NORMAL");
+const u8 gText_Deoxys_Attack[] =  _("ATTACK");
+const u8 gText_Deoxys_Defense[] = _("DEFENSE");
+const u8 gText_Deoxys_Speed[] =  _("SPEED");

@@ -2573,3 +2573,48 @@ void CheckSaveFileSize(void)//used in debug menu from time to time as a special 
     ConvertIntToDecimalStringN(gStringVar2, size2, STR_CONV_MODE_LEFT_ALIGN, 6);
     ConvertIntToDecimalStringN(gStringVar3, size3, STR_CONV_MODE_LEFT_ALIGN, 6);
 }
+
+u16 CheckDeoxys(void)
+{
+    u8 i;
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+         if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) == SPECIES_DEOXYS)
+         {
+             return SPECIES_DEOXYS;
+         }
+		 if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) == SPECIES_DEOXYS_ATTACK)
+         {
+             return SPECIES_DEOXYS_ATTACK;
+         }
+		 if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) == SPECIES_DEOXYS_DEFENSE)
+         {
+             return SPECIES_DEOXYS_DEFENSE;
+         }
+		 if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) == SPECIES_DEOXYS_SPEED)
+         {
+             return SPECIES_DEOXYS_SPEED;
+         }
+    }
+    return FALSE;
+}
+
+bool8 ChangeDeoxysForm(void)
+{
+    u8 i;
+    u16 deoxys = gSpecialVar_0x8005; // Forma de deoxys
+    // Solo cambia la forma del primer DEOXYS que encuentre en el equipo (en teoría debería haber solo uno como mucho)
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+        if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) == SPECIES_DEOXYS
+            || GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) == SPECIES_DEOXYS_ATTACK
+            || GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) == SPECIES_DEOXYS_DEFENSE
+            || GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) == SPECIES_DEOXYS_SPEED)
+        {
+            SetMonData(&gPlayerParty[i], MON_DATA_SPECIES, &deoxys);
+            CalculateMonStats(&gPlayerParty[i]);
+            return TRUE;
+        }
+    }
+    return FALSE;
+}
