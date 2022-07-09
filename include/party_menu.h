@@ -98,5 +98,6 @@ void GiveAllItems(void);
 void ItemUseCB_ReduceEV(u8 taskId, TaskFunc task);
 void ItemUseCB_ReduceEV2(u8 taskId, TaskFunc task);
 bool8 CanUseCandyItem(u16 itemId, u16 monLevel);
+void IsSelectedMonDeoxys(void);
 
 #endif // GUARD_PARTY_MENU_H

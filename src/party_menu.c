@@ -6958,3 +6958,26 @@ void CursorCb_MoveItem(u8 taskId)
         gTasks[taskId].func = Task_UpdateHeldItemSprite;
     }
 }
+
+/*
+ * Comprueba si el mon de la posición gSpecialVar_0x8004 del equipo es DEOXYS o no según sLegendaryMons.
+ * gSpecialVar_Result: TRUE si es DEOXYS, FALSE si no lo es.
+ * gSpecialVar_0x8005: si es DEOXYS, guarda la especie del mon.
+ */
+void IsSelectedMonDeoxys(void)
+{
+    u8 i;
+    bool8 isDeoxys;
+    u16 species;
+
+    isDeoxys = FALSE;
+    species = GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_SPECIES2);
+    if (species == SPECIES_DEOXYS || species == SPECIES_DEOXYS_ATTACK
+      || species == SPECIES_DEOXYS_DEFENSE || species == SPECIES_DEOXYS_SPEED)
+    {
+      isDeoxys = TRUE;
+      gSpecialVar_0x8005 = species;
+    }
+
+    gSpecialVar_Result = isDeoxys;
+}

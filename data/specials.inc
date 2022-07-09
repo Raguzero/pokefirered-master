@@ -460,4 +460,5 @@ gSpecials:: @ 815FD60
 	def_special HeadbuttWildEncounter
 	def_special CheckDeoxys
 	def_special ChangeDeoxysForm
+	def_special IsSelectedMonDeoxys
 gSpecialsEnd::
