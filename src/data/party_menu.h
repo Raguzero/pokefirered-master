@@ -702,6 +702,7 @@ static const u8 *const sHMDescriptionTable[] =
     gText_ShareHp,
     gText_ShareHp,
     gText_LureWildPokemon,
+    gText_HitTreeWildPokemon,
 };
 
 static const u32 sHeldItemGfx[] = INCBIN_U32("graphics/interface/hold_icons.4bpp");
