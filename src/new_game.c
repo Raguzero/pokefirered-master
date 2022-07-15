@@ -159,6 +159,7 @@ void NewGameInitData(void)
     ResetTrainerTowerResults();
 	memset(gSaveBlock1Ptr->dexNavSearchLevels, 0, sizeof(gSaveBlock1Ptr->dexNavSearchLevels));
 	gSaveBlock1Ptr->dexNavChain = 0;
+    gSaveBlock2Ptr->lastUsedBall = 0;
 }
 
 static void ResetMiniGamesResults(void)
