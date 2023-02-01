@@ -46,6 +46,7 @@ void GetBattleTowerTrainerName(u8 *text);
 u8 GetEreaderTrainerClassId(void);
 u8 GetBattleTowerTrainerClassNameId(void);
 void SetMonMoveAvoidReturn(struct Pokemon *mon, u16 moveArg, u8 moveSlot);
+extern const u16 gBattleTowerHeldItems[];
 extern const struct FacilityMon gBattleFrontierMons[];
 extern const struct FacilityMon *gFacilityTrainerMons;
 

@@ -26,6 +26,7 @@
 #include "m4a.h"
 #include "party_menu.h"
 #include "pokeball.h"
+#include "pokemon.h"
 #include "pokedex.h"
 #include "quest_log.h"
 #include "random.h"
@@ -40,10 +41,12 @@
 #include "constants/abilities.h"
 #include "constants/battle_move_effects.h"
 #include "constants/battle_setup.h"
+#include "constants/battle_tower.h"
 #include "constants/hold_effects.h"
 #include "constants/items.h"
 #include "constants/moves.h"
 #include "constants/pokemon.h"
+#include "constants/species.h"
 #include "constants/songs.h"
 #include "constants/trainer_classes.h"
 #include "constants/battle_frontier_mons.h"
@@ -307,6 +310,8 @@ static const union AffineAnimCmd *const gUnknown_824F044[] =
 };
 
 static const s8 sPlayerThrowXTranslation[] = { -32, -16, -16, -32, -32, 0, 0, 0 };
+
+#include "data/battle_tower/battle_frontier_sets_by_species.h"
 
 // format: attacking type, defending type, damage multiplier
 // the multiplier is a (decimal) fixed-point number:
@@ -625,6 +630,13 @@ const u8 *const gStatusConditionStringsTable[7][2] =
     { gStatusConditionString_ConfusionJpn, gText_Confusion },
     { gStatusConditionString_LoveJpn, gText_Love }
 };
+
+static const u16 accepting_probability[] = {
+           0, 65535, 41347, 32001, // probabilidad de aceptar un poke en random battle;
+       26720, 23215, 20673, 18723, // provoca que un poke con k sets tenga una
+       17168, 15892, 14822, 13908, // probabilidad de salir proporcional a log_3(2+k)
+       13118, 12425, 11812, 11266
+}; // ej: para 1 es 1, para 2 es 1.26... para 7 es 2, para 14 es 2.5
 
 void CB2_InitBattle(void)
 {
@@ -1606,24 +1618,48 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum)
                 if (FlagGet(FLAG_RYU_RANDOMBATTLE) == 1)
                 {
 					 u8 level = 100;
+					u8 zerofriendship = 0;
 					u32 otID = T1_READ_32(gSaveBlock2Ptr->playerTrainerId);
 				const struct FacilityMon * pokeenemy;
 				const struct FacilityMon * pokeplayer;
 					do {
 					pokeenemy = &gBattleFrontierMons[Random() % NUM_FRONTIER_MONS];
 						for (j=0; j<i && pokeenemy->species != GetMonData(&gEnemyParty[j], MON_DATA_SPECIES2); j++);
-						/*if (Random() > accepting_probability[num_frontier_sets_by_species[pokeenemy->species]]) j = -1;
-						*/} while (j < i);
+						if (Random() > accepting_probability[num_frontier_sets_by_species[pokeenemy->species]]) j = -1;
+						} while (j < i);
 					do {
 					pokeplayer = &gBattleFrontierMons[Random() % NUM_FRONTIER_MONS];
 						for (j=0; j<i && pokeplayer->species != GetMonData(&gPlayerParty[j], MON_DATA_SPECIES2); j++);
-						/*if (Random() > accepting_probability[num_frontier_sets_by_species[pokeplayer->species]]) j = -1;
-						*/} while (j < i);
+						if (Random() > accepting_probability[num_frontier_sets_by_species[pokeplayer->species]]) j = -1;
+						} while (j < i);
 				CreateMonWithEVSpreadNatureOTID(&gEnemyParty[i], pokeenemy -> species, level, pokeenemy -> nature, 31, pokeenemy -> evSpread, otID);
                 CreateMonWithEVSpreadNatureOTID(&gPlayerParty[i], pokeplayer -> species, level, pokeplayer -> nature, 31, pokeplayer -> evSpread, otID);
+				
+                    for (j = 0; j < MAX_MON_MOVES; j++)
+                    {
+                        SetMonMoveAvoidReturn(&gEnemyParty[i], pokeenemy -> moves[j], j);
+                        SetMonMoveAvoidReturn(&gPlayerParty[i], pokeplayer -> moves[j], j);
+                    }
 
-        SetMonData(&gEnemyParty[i], MON_DATA_FRIENDSHIP, 0);
-        SetMonData(&gPlayerParty[i], MON_DATA_FRIENDSHIP, 0);
+        SetMonData(&gEnemyParty[i], MON_DATA_FRIENDSHIP, &zerofriendship);
+        SetMonData(&gPlayerParty[i], MON_DATA_FRIENDSHIP, &zerofriendship);
+        
+		SetMonData(&gEnemyParty[i], MON_DATA_HELD_ITEM, &gBattleTowerHeldItems[pokeenemy -> itemTableId]);
+        SetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM, &gBattleTowerHeldItems[pokeplayer -> itemTableId]);
+            for (j = 0; j < MAX_MON_MOVES; j++)
+            {
+                u8 maxPp = CalculatePPWithBonus(pokeenemy -> moves[j], 3, 0);
+                u8 fullpp = 0xFF;
+                SetMonData(&gEnemyParty[i], MON_DATA_PP1 + j, &maxPp);
+                SetMonData(&gEnemyParty[i], MON_DATA_PP_BONUSES, &fullpp);
+            }
+            for (j = 0; j < MAX_MON_MOVES; j++)
+            {
+                u8 maxPp = CalculatePPWithBonus(pokeplayer -> moves[j], 3, 0);
+                u8 fullpp = 0xFF;
+                SetMonData(&gPlayerParty[i], MON_DATA_PP1 + j, &maxPp);
+                SetMonData(&gPlayerParty[i], MON_DATA_PP_BONUSES, &fullpp);
+            }
 					break;
                 }
 		// NUEVO RANDOM BATTLE CC
