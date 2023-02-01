@@ -14,6 +14,7 @@
 #include "play_time.h"
 #include "money.h"
 #include "battle_records.h"
+#include "pokedex.h"
 #include "pokemon_size_record.h"
 #include "pokemon_storage_system.h"
 #include "roamer.h"
@@ -48,6 +49,21 @@ void SetTrainerId(u32 trainerId, u8 *dst)
     dst[2] = trainerId >> 16;
     dst[3] = trainerId >> 24;
 }
+
+// NUEVO TEST
+static void TestingNewGame(void)
+{
+    u16 i;
+    for (i = 0; i < SPECIES_AUDINO_MEGA; i++)
+        GetSetPokedexFlag(i, FLAG_SET_SEEN);
+}
+static void TestingNewGame2(void)
+{
+    u16 i;
+    for (i = 0; i < SPECIES_AUDINO_MEGA; i++)
+        GetSetPokedexFlag(i, FLAG_SET_CAUGHT);
+}
+// NUEVO TEST
 
 void CopyTrainerId(u8 *dst, u8 *src)
 {
@@ -87,6 +103,8 @@ static void ClearBattleTower(void)
 static void WarpToPlayersRoom(void)
 {
     SetWarpDestination(MAP_GROUP(PALLET_TOWN_PLAYERS_HOUSE_2F), MAP_NUM(PALLET_TOWN_PLAYERS_HOUSE_2F), -1, 6, 6);
+	// Cambiar esto a lo de abajo mas tarde:
+    //SetWarpDestination(MAP_GROUP(VIRIDIAN_CITY_HOUSE2), MAP_NUM(VIRIDIAN_CITY_HOUSE2), -1, 6, 6);
     WarpIntoMap();
 }
 
@@ -157,6 +175,8 @@ void NewGameInitData(void)
     ScriptContext2_RunNewScript(EventScript_ResetAllMapFlags);
     StringCopy(gSaveBlock1Ptr->rivalName, gText_NombreRival);
     ResetTrainerTowerResults();
+	TestingNewGame(); // NUEVO TEST
+	TestingNewGame2(); // NUEVO TEST
 	memset(gSaveBlock1Ptr->dexNavSearchLevels, 0, sizeof(gSaveBlock1Ptr->dexNavSearchLevels));
 	gSaveBlock1Ptr->dexNavChain = 0;
     gSaveBlock2Ptr->lastUsedBall = 0;
