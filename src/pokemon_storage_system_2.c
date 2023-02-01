@@ -38,9 +38,9 @@ static const u16 sBoxSelectionPopupCenterTiles[];
 static const u16 sBoxSelectionPopupSidesTiles[];
 
 static const struct PSS_MenuStringPtrs sUnknown_83CDA20[] = {
+    {gText_MovePokemon,     gText_MoveMonDescription    },
     {gText_WithdrawPokemon, gText_WithdrawMonDescription},
     {gText_DepositPokemon,  gText_DepositMonDescription },
-    {gText_MovePokemon,     gText_MoveMonDescription    },
     {gText_MoveItems,       gText_MoveItemsDescription  },
     {gText_SeeYa,           gText_SeeYaDescription      }
 };
@@ -280,13 +280,13 @@ static void Task_PokemonStorageSystemPC(u8 taskId)
             DestroyTask(taskId);
             break;
         default:
-            if (task->data[2] == 0 && CountPartyMons() == PARTY_SIZE)
+            if (task->data[2] == 1 && CountPartyMons() == PARTY_SIZE)
             {
                 FillWindowPixelBuffer(0, PIXEL_FILL(1));
                 AddTextPrinterParameterized2(0, 2, gText_PartyFull, 0, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
                 task->data[0] = 3;
             }
-            else if (task->data[2] == 1 && CountPartyMons() == 1)
+            else if (task->data[2] == 2 && CountPartyMons() == 1)
             {
                 FillWindowPixelBuffer(0, PIXEL_FILL(1));
                 AddTextPrinterParameterized2(0, 2, gText_JustOnePkmn, 0, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
