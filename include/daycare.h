@@ -33,5 +33,7 @@ u8 GetEggStepsToSubtract(void);
 u16 sub_80722E0(void);
 bool8 ShouldEggHatch(void);
 u8 GetEggMoves(struct Pokemon *pokemon, u16 *eggMoves);
+u8 GetEggMovesSpecies(u16 species, u16 *eggMoves);
+bool8 SpeciesCanLearnEggMove(u16 species, u16 move);
 
 #endif // GUARD_DAYCARE_H

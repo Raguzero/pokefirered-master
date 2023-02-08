@@ -25,8 +25,6 @@
 #include "constants/songs.h"
 #include "constants/pokemon.h"
 
-extern struct Evolution gEvolutionTable[][EVOS_PER_MON];
-
 struct EvoInfo
 {
     u8 preEvoSpriteId;

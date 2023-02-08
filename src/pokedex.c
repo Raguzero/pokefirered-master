@@ -1,116 +1,42 @@
 #include "global.h"
+#include "battle_main.h"
+#include "bg.h"
+#include "data.h"
+#include "daycare.h"
+#include "decompress.h"
+#include "event_data.h"
+#include "gpu_regs.h"
+#include "graphics.h"
+#include "item.h"
+#include "item_menu_icons.h" 
+#include "main.h"
+#include "malloc.h"
+#include "menu.h"
+#include "m4a.h"
+#include "overworld.h"
+#include "palette.h"
+#include "party_menu.h"
 #include "pokedex.h"
+#include "pokedex_cry_screen.h"
 #include "pokedex_screen.h"
-
-const u8 *sub_8088E20(u16 dexNum)
-{
-    return gPokedexEntries[dexNum].categoryName;
-}
-
-u16 GetPokedexHeightWeight(u16 dexNum, u8 data)
-{
-    switch (data)
-    {
-    case 0:  // height
-        return gPokedexEntries[dexNum].height;
-    case 1:  // weight
-        return gPokedexEntries[dexNum].weight;
-    default:
-        return 1;
-    }
-}
-
-s8 GetSetPokedexFlag(u16 nationalDexNo, u8 caseID)
-{
-    return DexScreen_GetSetPokedexFlag(nationalDexNo, caseID, 0);
-}
-
-u16 GetNationalPokedexCount(u8 caseID)
-{
-    u16 count = 0;
-    u16 i;
-
-    for (i = 0; i < NATIONAL_DEX_COUNT; i++)
-    {
-        switch (caseID)
-        {
-        case FLAG_GET_SEEN:
-            if (GetSetPokedexFlag(i + 1, FLAG_GET_SEEN))
-                count++;
-            break;
-        case FLAG_GET_CAUGHT:
-            if (GetSetPokedexFlag(i + 1, FLAG_GET_CAUGHT))
-                count++;
-            break;
-        }
-    }
-    return count;
-}
-
-u16 GetKantoPokedexCount(u8 caseID)
-{
-    u16 count = 0;
-    u16 i;
-
-    for (i = 0; i < KANTO_DEX_COUNT; i++)
-    {
-        switch (caseID)
-        {
-        case FLAG_GET_SEEN:
-            if (GetSetPokedexFlag(i + 1, FLAG_GET_SEEN))
-                count++;
-            break;
-        case FLAG_GET_CAUGHT:
-            if (GetSetPokedexFlag(i + 1, FLAG_GET_CAUGHT))
-                count++;
-            break;
-        }
-    }
-    return count;
-}
-
-bool16 HasAllHoennMons(void)
-{
-    u16 i;
-
-    for (i = 0; i < HOENN_DEX_COUNT - 2; i++)
-    {
-        if (!GetSetPokedexFlag(HoennToNationalOrder(i + 1), FLAG_GET_CAUGHT))
-            return FALSE;
-    }
-    return TRUE;
-}
-
-bool16 HasAllKantoMons(void)
-{
-    u16 i;
-
-    for (i = 0; i < KANTO_DEX_COUNT - 1; i++)
-    {
-        if (!GetSetPokedexFlag(i + 1, FLAG_GET_CAUGHT))
-            return FALSE;
-    }
-    return TRUE;
-}
-
-bool16 HasAllMons(void)
-{
-    u16 i;
-
-    for (i = 0; i < NATIONAL_DEX_MEWTWO; i++)
-    {
-        if (!GetSetPokedexFlag(i + 1, FLAG_GET_CAUGHT))
-            return FALSE;
-    }
-    for (i = NATIONAL_DEX_MEW; i < NATIONAL_DEX_TYRANITAR; i++)
-    {
-        if (!GetSetPokedexFlag(i + 1, FLAG_GET_CAUGHT))
-            return FALSE;
-    }
-    for (i = NATIONAL_DEX_CELEBI; i < NATIONAL_DEX_RAYQUAZA; i++)
-    {
-        if (!GetSetPokedexFlag(i + 1, FLAG_GET_CAUGHT))
-            return FALSE;
-    }
-    return TRUE;
-}
+#include "pokemon_icon.h"
+#include "pokemon_summary_screen.h"
+#include "scanline_effect.h"
+#include "shop.h"
+#include "sound.h"
+#include "sprite.h"
+#include "string_util.h"
+#include "strings.h"
+#include "task.h"
+#include "text_window.h"
+#include "constants/abilities.h"
+#include "constants/items.h"
+#include "constants/moves.h"
+#include "constants/party_menu.h"
+#include "trainer_pokemon_sprites.h"
+#include "trig.h"
+#include "window.h"
+#include "constants/rgb.h"
+#include "constants/songs.h"
+#include "constants/species.h"
+#include "battle_util.h"

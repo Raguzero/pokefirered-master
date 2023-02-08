@@ -202,6 +202,7 @@ SECTIONS {
         src/field_specials.o(.text);
         src/battle_records.o(.text);
         src/evolution_scene.o(.text);
+        src/pokedex_cry_screen.o(.text);
         src/coins.o(.text);
         src/fldeff_strength.o(.text);
         src/battle_transition.o(.text);
@@ -517,6 +518,7 @@ SECTIONS {
         src/field_specials.o(.rodata);
         src/battle_records.o(.rodata);
         src/evolution_scene.o(.rodata);
+        src/pokedex_cry_screen.o(.rodata);
         src/battle_transition.o(.rodata);
         src/battle_controller_link_partner.o(.rodata);
         src/battle_message.o(.rodata);

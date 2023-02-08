@@ -5,6 +5,7 @@
 #include "quest_log.h"
 #include "menu.h"
 #include "malloc.h"
+#include "graphics.h"
 
 extern const u16 gUnknown_841F1C8[];
 static const u8 gUnknown_84566A8[] = INCBIN_U8("graphics/unknown/unknown_84566a8.bin");
@@ -215,3 +216,9 @@ void sub_8112F18(u8 windowId)
         Free(buffer);
     }
 }
+
+const u16 *GetOverworldTextboxPalettePtr(void)
+{
+    return gMessageBox_Pal;
+}
+

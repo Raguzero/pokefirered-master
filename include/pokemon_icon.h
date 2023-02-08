@@ -18,7 +18,7 @@ void LoadMonIconPalettes(void);
 void FreeMonIconPalettes(void);
 u16 MailSpeciesToIconSpecies(u16);
 u8 CreateMonIcon_HandleDeoxys(u16 species, SpriteCallback callback, s16 x, s16 y, u8 subpriority, bool32 extra);
-void DestroyMonIcon(struct Sprite *);
+void DestroyMonIcon(struct Sprite *); // (struct Sprite *sprite); ???
 u16 GetUnownLetterByPersonality(u32 personality);
 void SpriteCB_MonIcon(struct Sprite *);
 u8 CreateMonIcon(u16 species, SpriteCallback callback, s16 x, s16 y, u8 subpriority, u32 personality, bool32 extra);

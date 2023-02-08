@@ -84,7 +84,7 @@ bool32 sub_806E1C0(void)
     return TRUE;
 }
 
-void sub_806E204(void)
+void DisableNationalPokedex(void)
 {
     u16 *ptr = GetVarPointer(VAR_0x404E);
     gSaveBlock2Ptr->pokedex.unknown2 = 0;

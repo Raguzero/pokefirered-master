@@ -5925,7 +5925,7 @@ u16 NationalPokedexNumToSpecies(u16 nationalNum)
     return species + 1;
 }
 
-static u16 NationalToHoennOrder(u16 nationalNum)
+u16 NationalToHoennOrder(u16 nationalNum)
 {
     u16 hoennNum;
 
@@ -5934,10 +5934,10 @@ static u16 NationalToHoennOrder(u16 nationalNum)
 
     hoennNum = 0;
 
-    while (hoennNum < HOENN_DEX_COUNT - 1 && sHoennToNationalOrder[hoennNum] != nationalNum)
+    while (hoennNum < NUM_SPECIES  - 1 && sHoennToNationalOrder[hoennNum] != nationalNum)
         hoennNum++;
 
-    if (hoennNum == HOENN_DEX_COUNT - 1)
+    if (hoennNum == NUM_SPECIES  - 1)
         return 0;
 
     return hoennNum + 1;
@@ -5961,7 +5961,7 @@ static u16 SpeciesToHoennPokedexNum(u16 species)
 
 u16 HoennToNationalOrder(u16 hoennNum)
 {
-    if (!hoennNum || hoennNum >= HOENN_DEX_COUNT)
+    if (!hoennNum)
         return 0;
 
     return sHoennToNationalOrder[hoennNum - 1];
@@ -6482,6 +6482,24 @@ u32 CanMonLearnTMHM(struct Pokemon *mon, u8 tm)
     }
 }
 
+u32 CanSpeciesLearnTMHM(u16 species, u8 tm)
+{
+    if (species == SPECIES_EGG)
+    {
+        return 0;
+    }
+    else if (tm < 32)
+    {
+        u32 mask = 1 << tm;
+        return sTMHMLearnsets[species][0] & mask;
+    }
+    else
+    {
+        u32 mask = 1 << (tm - 32);
+        return sTMHMLearnsets[species][1] & mask;
+    }
+}
+
 u8 GetMoveRelearnerMoves(struct Pokemon *mon, u16 *moves)
 {
     u16 learnedMoves[4];
@@ -6837,6 +6855,14 @@ u8 GetPlayerPartyHighestLevel(void)
 u16 FacilityClassToPicIndex(u16 facilityClass)
 {
     return gFacilityClassToPicIndex[facilityClass];
+}
+
+u16 PlayerGenderToFrontTrainerPicId(u8 playerGender)
+{
+    if (playerGender != MALE)
+        return FacilityClassToPicIndex(FACILITY_CLASS_LEAF);
+    else
+        return FacilityClassToPicIndex(FACILITY_CLASS_RED);
 }
 
 bool8 ShouldIgnoreDeoxysForm(u8 caseId, u8 battlerId)

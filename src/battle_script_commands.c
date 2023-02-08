@@ -9910,14 +9910,16 @@ static void atkF2_displaydexinfo(void)
     switch (gBattleCommunication[0])
     {
     case 0:
-        BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 0x10, RGB_WHITE);
+        BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 0x10, RGB_BLACK);
         ++gBattleCommunication[0];
         break;
     case 1:
         if (!gPaletteFade.active)
         {
             FreeAllWindowBuffers();
-            gBattleCommunication[TASK_ID] = DexScreen_RegisterMonToPokedex(species);
+            gBattleCommunication[TASK_ID] = CreateDexDisplayMonDataTask(species,
+                                                                        gBattleMons[gBattlerTarget].otId,
+                                                                        gBattleMons[gBattlerTarget].personality);
             ++gBattleCommunication[0];
         }
         break;
@@ -9926,7 +9928,6 @@ static void atkF2_displaydexinfo(void)
             && gMain.callback2 == BattleMainCB2
             && !gTasks[gBattleCommunication[TASK_ID]].isActive)
         {
-            CpuFill32(0, (void *)VRAM, VRAM_SIZE);
             SetVBlankCallback(VBlankCB_Battle);
             ++gBattleCommunication[0];
         }
@@ -9940,16 +9941,7 @@ static void atkF2_displaydexinfo(void)
     case 4:
         if (!IsDma3ManagerBusyWithBgCopy())
         {
-            CreateMonPicSprite_HandleDeoxys(species,
-                                            gBattleMons[B_POSITION_OPPONENT_LEFT].otId,
-                                            gBattleMons[B_POSITION_OPPONENT_LEFT].personality,
-                                            TRUE,
-                                            120,
-                                            64,
-                                            0,
-                                            0xFFFF);
-            CpuFill32(0, gPlttBufferFaded, BG_PLTT_SIZE);
-            BeginNormalPaletteFade(0x1FFFF, 0, 0x10, 0, RGB_BLACK);
+            BeginNormalPaletteFade(0xFFFF, 0, 0x10, 0, RGB_BLACK);
             ShowBg(0);
             ShowBg(3);
             ++gBattleCommunication[0];

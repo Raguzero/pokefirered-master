@@ -5440,6 +5440,16 @@ static bool32 MapSecIsInKantoOrSevii(u8 mapSec)
         return TRUE;
     return FALSE;
 }
+/*
+void SetTypeSpritePosAndPal(u8 typeId, u8 x, u8 y, u8 spriteArrayId) //HGSS_Ui
+{
+    struct Sprite *sprite = &gSprites[sMonSummaryScreen->spriteIds[spriteArrayId]];
+    StartSpriteAnim(sprite, typeId);
+    sprite->oam.paletteNum = sMoveTypeToOamPaletteNum[typeId];
+    sprite->.x1 = x + 16;
+    sprite->.y1 = y + 8;
+    SetSpriteInvisibility(spriteArrayId, FALSE);
+}*/
 
 UNUSED
 static void Unused_ShowPokemonSummaryScreen_NullParty(void)

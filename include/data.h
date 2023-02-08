@@ -61,4 +61,6 @@ extern const struct SpriteFrameImage gTrainerBackPicTable_OldMan[];
 extern const struct SpriteFrameImage gTrainerBackPicTable_RSBrendan[];
 extern const struct SpriteFrameImage gTrainerBackPicTable_RSMay[];
 
+#define SPECIES_HAS_GENDER_DIFFERENCE(species) (species == SPECIES_FRILLISH || species == SPECIES_JELLICENT)
+
 #endif // GUARD_DATA_H

@@ -2,11 +2,12 @@
 #define GUARD_POKEDEX_H
 
 #define KANTO_DEX_COUNT 151
+#define HOENN_DEX_COUNT 212
 #define NATIONAL_DEX_COUNT 899
 
 enum
 {
-    DEX_MODE_KANTO,
+    DEX_MODE_HOENN,
     DEX_MODE_NATIONAL
 };
 
@@ -33,20 +34,16 @@ struct PokedexEntry
 };  /*size = 0x24*/
 
 void ResetPokedex(void);
-void CopyMonCategoryText(u16 species, u8 *dst);
 u16 GetPokedexHeightWeight(u16 dexNum, u8 data);
 u16 GetNationalPokedexCount(u8);
+u16 GetHoennPokedexCount(u8);
 u16 GetKantoPokedexCount(u8);
 bool16 HasAllMons(void);
-u8 CreateDexDisplayMonDataTask(u16 dexNum, u32 trainerId, u32 personality);
+u8 CreateDexDisplayMonDataTask(u16 species, u32 trainerId, u32 personality);
 s8 GetSetPokedexFlag(u16 nationalNum, u8 caseId);
-u16 GetNationalPokedexCount(u8);
+u16 CreateMonSpriteFromNationalDexNumber(u16, s16, s16, u16);
 u16 sub_80C0844(u8);
-u16 GetKantoPokedexCount(u8);
 bool16 HasAllHoennMons(void);
 bool16 HasAllKantoMons(void);
-bool16 HasAllMons(void);
-
-u8 DexScreen_RegisterMonToPokedex(u16 species);
 
 #endif // GUARD_POKEDEX_H

@@ -33,6 +33,7 @@ extern const struct SpriteSheet gSpriteSheet_HeldItem;
 extern const u16 gHeldItemPalette[];
 
 extern void (*gItemUseCB)(u8, TaskFunc);
+extern const u16 sTutorMoves[];
 
 void InitPartyMenu(u8 menuType, u8 layout, u8 partyAction, bool8 keepCursorPos, u8 messageId, TaskFunc task, MainCallback callback);
 void AnimatePartySlot(u8 slot, u8 animNum);
@@ -97,5 +98,6 @@ bool8 GiveAllMons(void);
 void GiveAllItems(void);
 void ItemUseCB_ReduceEV(u8 taskId, TaskFunc task);
 void ItemUseCB_ReduceEV2(u8 taskId, TaskFunc task);
+bool8 CanLearnTutorMove(u16, u8);
 
 #endif // GUARD_PARTY_MENU_H
